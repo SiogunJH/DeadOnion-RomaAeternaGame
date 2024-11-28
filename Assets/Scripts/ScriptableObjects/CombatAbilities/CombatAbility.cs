@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CombatAbility", menuName = "Combat Ability")]
 public class CombatAbility : ScriptableObject
 {
     public string Name = "NOT SET";
