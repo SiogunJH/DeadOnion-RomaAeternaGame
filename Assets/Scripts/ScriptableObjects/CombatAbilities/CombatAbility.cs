@@ -11,5 +11,5 @@ public class CombatAbility : ScriptableObject
     public int Height = 0;
 
     [HideInInspector]
-    public CombatAbility[] AbilityEffects;
+    public CombatAbilityEffect[] AbilityEffects;
 }

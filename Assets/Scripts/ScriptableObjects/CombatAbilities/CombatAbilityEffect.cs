@@ -8,7 +8,7 @@ public class CombatAbilityEffect
     public EffectType Type;
     public int Amount;
 
-    public Vector2Int[] RelativeAffectedPositions;
+    public List<Vector2Int> RelativeAffectedPositions = new();
 
     public enum EffectType
     {
@@ -16,5 +16,17 @@ public class CombatAbilityEffect
         Damage = 1,
         Heal = 2,
         Stun = 3,
+    }
+
+    public static CombatAbilityEffect Duplicate(CombatAbilityEffect original)
+    {
+        CombatAbilityEffect copy = new CombatAbilityEffect();
+        copy.Type = original.Type;
+        copy.Amount = original.Amount;
+        foreach(var pos in original.RelativeAffectedPositions)
+        {
+            copy.RelativeAffectedPositions.Add(pos);
+        }
+        return copy;
     }
 }
