@@ -11,5 +11,7 @@ public class CombatAbility : ScriptableObject
     public int Height = 0;
 
     [HideInInspector]
-    public CombatAbilityEffect[] AbilityEffects;
+    public CombatAbilityEffect[] AbilityEffects = new CombatAbilityEffect[0];
+    [HideInInspector]
+    public List<Vector2Int> Range = new();
 }
