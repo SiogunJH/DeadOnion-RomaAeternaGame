@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [CreateAssetMenu(fileName = "NewGridMap", menuName = "Grid/Grid Map")]
 public class GridMap : ScriptableObject
@@ -45,6 +48,8 @@ public class GridMap : ScriptableObject
         }
     }
 }
+
+#if UNITY_EDITOR
 
 [CustomEditor(typeof(GridMap))]
 public class GridMapEditor : Editor
@@ -99,3 +104,5 @@ public class GridMapEditor : Editor
         }
     }
 }
+
+#endif
