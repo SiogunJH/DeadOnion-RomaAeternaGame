@@ -5,7 +5,7 @@ using UnityEngine;
 public class GridEntity : MonoBehaviour
 {
     public string UserFriendlyName;
-    public GridTile Location;
+    [HideInInspector] public GridTile Location;
     public GridEntityCategory Category;
 }
 
