@@ -23,25 +23,34 @@ public class GridTile
     #region Occupants
 
     //
-    private HashSet<GridEntity> Occupants = new();
+    private List<GridEntity> _occupants = new();
 
     //
-    public bool IsOccupied { get => Occupants.Any(); } // this logic might need to be expanded in the future, as some GridEntities may be allowed to co-exist on the same tile (or not, idk)
+    public bool IsOccupied { get => _occupants.Any(); } // this logic might need to be expanded in the future, as some GridEntities may be allowed to co-exist on the same tile (or not, idk)
 
     //
-    public HashSet<GridEntity> GetOccupants() => Occupants;
+    public List<GridEntity> GetOccupants() => _occupants;
 
     //
     public bool AddOccupant(GridEntity occupant)
     {
-        if (!IsOccupied) return Occupants.Add(occupant);
-        return false;
+        if (!IsOccupied) return false;
+
+        _occupants.Add(occupant);
+        return true;
+
     }
 
     //
     public bool RemoveOccupant(GridEntity occupant)
     {
-        return Occupants.Remove(occupant);
+        return _occupants.Remove(occupant);
+    }
+
+    //
+    public void SetOccupants(IEnumerable<GridEntity> occupants)
+    {
+        _occupants = occupants.ToList();
     }
 
     #endregion
