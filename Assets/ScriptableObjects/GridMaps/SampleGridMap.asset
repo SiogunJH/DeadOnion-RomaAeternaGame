@@ -47,7 +47,8 @@ MonoBehaviour:
     _occupants: []
   - Coordinates: {x: 2, y: 2}
     IsEnabled: 1
-    _occupants: []
+    _occupants:
+    - {fileID: 0}
   - Coordinates: {x: 2, y: 3}
     IsEnabled: 0
     _occupants: []
@@ -69,7 +70,7 @@ MonoBehaviour:
   - Coordinates: {x: 4, y: 1}
     IsEnabled: 1
     _occupants:
-    - {fileID: -5657959850804328302, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
+    - {fileID: 7644224293185759868, guid: 2be73b83d65f53d4289a9f3710673572, type: 3}
   - Coordinates: {x: 4, y: 2}
     IsEnabled: 1
     _occupants: []
@@ -85,14 +86,13 @@ MonoBehaviour:
   - Coordinates: {x: 5, y: 2}
     IsEnabled: 1
     _occupants:
-    - {fileID: 7644224293185759868, guid: 2be73b83d65f53d4289a9f3710673572, type: 3}
+    - {fileID: 7644224293185759868, guid: 64ecfc7ad7a6c584b80bff5866ac1425, type: 3}
   - Coordinates: {x: 5, y: 3}
     IsEnabled: 1
     _occupants: []
   - Coordinates: {x: 6, y: 0}
     IsEnabled: 1
-    _occupants:
-    - {fileID: 7644224293185759868, guid: 64ecfc7ad7a6c584b80bff5866ac1425, type: 3}
+    _occupants: []
   - Coordinates: {x: 6, y: 1}
     IsEnabled: 1
     _occupants: []
@@ -104,7 +104,8 @@ MonoBehaviour:
     _occupants: []
   - Coordinates: {x: 7, y: 0}
     IsEnabled: 1
-    _occupants: []
+    _occupants:
+    - {fileID: -5657959850804328302, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
   - Coordinates: {x: 7, y: 1}
     IsEnabled: 1
     _occupants: []
@@ -113,4 +114,76 @@ MonoBehaviour:
     _occupants: []
   - Coordinates: {x: 7, y: 3}
     IsEnabled: 0
+    _occupants: []
+  - Coordinates: {x: 0, y: 4}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 1, y: 4}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 2, y: 4}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 3, y: 4}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 4, y: 4}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 5, y: 4}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 6, y: 4}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 7, y: 4}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 0, y: 5}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 1, y: 5}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 2, y: 5}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 3, y: 5}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 4, y: 5}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 5, y: 5}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 6, y: 5}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 7, y: 5}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 0, y: 6}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 1, y: 6}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 2, y: 6}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 3, y: 6}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 4, y: 6}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 5, y: 6}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 6, y: 6}
+    IsEnabled: 1
+    _occupants: []
+  - Coordinates: {x: 7, y: 6}
+    IsEnabled: 1
     _occupants: []
