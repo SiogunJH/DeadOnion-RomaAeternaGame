@@ -29,9 +29,7 @@ public class GridMap : ScriptableObject
 
     public void InitializeGrid()
     {
-        var tilesOld = Tiles != null ? Tiles : new();
-
-        Tiles = new();
+        if (Tiles == null) Tiles = new();
 
         for (int x = 0; x < GridWidth; x++)
         {
@@ -39,14 +37,11 @@ public class GridMap : ScriptableObject
             {
                 Vector2 index = new(x, y);
 
-                if (tilesOld.Where(tile => tile.Coordinates == index).Any())
-                {
-                    Tiles.Add(tilesOld.FirstOrDefault(tile => tile.Coordinates == index));
-                }
-                else
-                {
-                    Tiles.Add(new(x, y));
-                }
+                // Check if tile already exists
+                if (Tiles.Any(tile => tile.Coordinates == index)) continue;
+
+                // Add a new tile if it doesn't exist
+                Tiles.Add(new GridTile(x, y));
             }
         }
     }
