@@ -137,11 +137,22 @@ public class GridMapEditor : Editor
                 {
                     EditorGUILayout.BeginHorizontal();
 
-                    string occupantName;
-                    if (occupants[i] != null) occupantName = occupants[i].UserFriendlyName;
-                    else occupantName = $"Occupant {i + 1}";
+                    // Validate occupant and get its name
+                    bool occupantExists = occupants[i] != null;
+                    string occupantName = occupantExists ? occupants[i].UserFriendlyName : "Missing occupant reference";
 
-                    occupants[i] = (GridEntity)EditorGUILayout.ObjectField(occupantName, occupants[i], typeof(GridEntity), false);
+                    // Mark red, if an occupant is missing
+                    Color previousColor = GUI.color;
+                    if (occupants[i] == null) GUI.color = Color.red;
+
+                    // Name label
+                    GUILayout.Label(occupantName, GUILayout.Width(250));
+
+                    // Revert color
+                    GUI.color = previousColor;
+
+                    // Create occupant field
+                    occupants[i] = (GridEntity)EditorGUILayout.ObjectField(occupants[i], typeof(GridEntity), false);
 
                     if (GUILayout.Button("Remove", GUILayout.Width(60)))
                     {
