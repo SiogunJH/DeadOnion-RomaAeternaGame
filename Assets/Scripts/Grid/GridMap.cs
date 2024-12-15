@@ -75,7 +75,7 @@ public class GridMapEditor : Editor
         if (tile == _selectedTile) return _tileColor["Selected"];
         if (!tile.IsEnabled) return _tileColor["Disabled"];
         if (!tile.IsOccupied) return _tileColor["Empty"];
-        if (tile.GetOccupants().Where(occupant => occupant == null).Any()) return _tileColor["Invalid Occupants"];
+        if (tile.Occupants.Where(occupant => occupant == null).Any()) return _tileColor["Invalid Occupants"];
         return _tileColor["Occupied"];
     }
 
@@ -135,7 +135,7 @@ public class GridMapEditor : Editor
                 EditorGUILayout.Space();
 
                 // Occupants field with drag-and-drop support for multiple entities
-                List<GridEntity> occupants = _selectedTile.GetOccupants();
+                List<GridEntity> occupants = _selectedTile.Occupants;
                 if (occupants == null) occupants = new();
 
                 for (int i = 0; i < occupants.Count; i++)
