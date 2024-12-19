@@ -14,7 +14,7 @@ public struct AudioEntry
         NoConsecutiveRepeats,
         UseAllSamplesBeforeRepeat
     }
-    
+
     [SerializeField] private AudioClip[] audioClips;
     [SerializeField] public AudioMixerGroup audioMixerGroup;
     [SerializeField, Range(-3f, 3f)] public float minPitch;
@@ -30,10 +30,10 @@ public struct AudioEntry
         this.minPitch = minPitch;
         this.maxPitch = maxPitch;
         playbackMode = mode;
-        
-        
+
+
         lastIndex = -1;
-        
+
         // dla UseAllBeforeRepeat
         availableIndices = new int[clips.Length];
         for (int i = 0; i < availableIndices.Length; i++)
@@ -41,7 +41,7 @@ public struct AudioEntry
             availableIndices[i] = i;
         }
     }
-    
+
     public AudioClip GetAudioClip()
     {
         if (audioClips == null || audioClips.Length == 0)
@@ -62,7 +62,7 @@ public struct AudioEntry
         }
     }
 
-    
+
     private AudioClip GetInOrder()
     {
         lastIndex = (lastIndex + 1) % audioClips.Length;
@@ -73,10 +73,10 @@ public struct AudioEntry
     {
         return audioClips[Random.Range(0, audioClips.Length)];
     }
-    
+
     private AudioClip GetNoConsecutiveRepeat()
     {
-        
+
         int newIndex = Random.Range(0, audioClips.Length);
 
         if (newIndex == lastIndex)
@@ -85,9 +85,9 @@ public struct AudioEntry
         lastIndex = newIndex;
         return audioClips[newIndex];
     }
-    
+
     private int[] availableIndices;
-    
+
     // miesza kolejność algorytmem Fisher-Yates
     private void ShuffleOrder()
     {
@@ -97,7 +97,7 @@ public struct AudioEntry
             (availableIndices[i], availableIndices[j]) = (availableIndices[j], availableIndices[i]);
         }
     }
-    
+
     private AudioClip GetAllBeforeRepeat()
     {
         lastIndex = (lastIndex + 1) % audioClips.Length;
