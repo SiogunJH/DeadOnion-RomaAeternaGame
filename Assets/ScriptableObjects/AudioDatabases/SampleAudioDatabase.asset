@@ -12,3 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee79a55af62fbb4181b2d9448a3d78a, type: 3}
   m_Name: SampleAudioDatabase
   m_EditorClassIdentifier: 
+  AudioGroups:
+    serializedKvps:
+    - Key: 
+      Value:
+        audioClips: []
+        audioMixerGroup: {fileID: 0}
+        minPitch: 0
+        maxPitch: 0
+        playbackMode: 0
+      index: 0
+      isKeyRepeated: 0
+    - Key: 
+      Value:
+        audioClips: []
+        audioMixerGroup: {fileID: 0}
+        minPitch: -3
+        maxPitch: 0
+        playbackMode: 0
+      index: 1
+      isKeyRepeated: 1
+    dividerPos: 0.33
