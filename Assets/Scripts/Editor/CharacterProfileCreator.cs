@@ -39,14 +39,14 @@ public class CharacterProfileCreator : EditorWindow
     {
         OperateWindow();
 
-        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, false, false);
+        scrollPosition = EGL.BeginScrollView(scrollPosition, false, false);
         GL.BeginHorizontal();     //
         GL.Space(WINDOW_PADDING); //Pad the entire window;
         GL.BeginVertical();       //
         GL.Space(10);
 
         CharacterProfile prevCharacter = _characterProfile;
-        _characterProfile = (CharacterProfile)EditorGUILayout.ObjectField("Current character:", _characterProfile, typeof(CharacterProfile), false, GL.MaxWidth(FIELD_WIDTH + 100));
+        _characterProfile = (CharacterProfile)EGL.ObjectField("Current character:", _characterProfile, typeof(CharacterProfile), false, GL.MaxWidth(FIELD_WIDTH + 100));
         if(_characterProfile != prevCharacter)
         {
             EditorUtility.SetDirty(_characterProfile);
@@ -57,7 +57,7 @@ public class CharacterProfileCreator : EditorWindow
 
         GL.EndVertical();
         GL.EndHorizontal();
-        EditorGUILayout.EndScrollView();
+        EGL.EndScrollView();
     }
     private void OperateWindow()
     {
@@ -72,11 +72,35 @@ public class CharacterProfileCreator : EditorWindow
     }
     private void DrawCharacterPresentGUI()
     {
+        if(GL.Button("Save", GL.MaxWidth(BUTTON_WIDTH), GL.MaxHeight(BUTTON_HEIGHT)))
+        {
+            if (!AssetDatabase.Contains(_characterProfile))
+            {
+                string path = System.IO.Path.Combine(Application.dataPath, "Resources/CharacterProfiles");
+                if (!System.IO.Directory.Exists(path))
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                }
+                path = EditorUtility.SaveFilePanelInProject("Save Character Profile", "NewCharacterProfile", "asset", "Save Character Profile", path);
+                if (path != "" && path != null)
+                {
+                    AssetDatabase.CreateAsset(_characterProfile, path);
+                    AssetDatabase.SaveAssets();
+                }
+            }
+            else Debug.LogWarning("Asset database already has this asset saved. If you want to create a copy, just duplicate the scriptable object in unity.");
+        }
+        GL.Space(10);
+
+
+
         DrawDivider();
         string prevName = _characterProfile.Name;
+        GL.BeginHorizontal();
+        GL.Label("Name" ,GL.MaxWidth(LABEL_MEDIUM_WIDTH));
         _characterProfile.Name = GL.TextField(prevName, GL.MaxWidth(FIELD_WIDTH));
+        GL.EndHorizontal();
         if(_characterProfile.Name != prevName) EditorUtility.SetDirty(_characterProfile);
-
 
         DrawStats();
         DrawAbilities();
@@ -85,26 +109,27 @@ public class CharacterProfileCreator : EditorWindow
     }
 
 
-
-    private void DrawEnums()
-    {
-        //CharacterProfile.CharacterArmorClass prevArmorClass = _character.ArmorClass;
-        //_character.ArmorClass = (CharacterProfile.CharacterArmorClass)EditorGUILayout.EnumPopup(_character.ArmorClass, GL.MaxWidth(BUTTON_WIDTH));
-        //if(_character.ArmorClass != prevArmorClass) EditorUtility.SetDirty(_character);
-    }
     private void DrawStats()
     {
-        DrawDivider();
         DrawPrimaryStats();
         DrawSecondaryStats();
         DrawTertiaryStats();
     }
     private void DrawPrimaryStats()
     {
-
+        DrawDivider();
+        GL.Label("Primary Stats");
+        GL.Space(8);
+        DrawFieldCharacterProfilePropertyWithName("Vitality");
+        DrawFieldCharacterProfilePropertyWithName("Strength");
+        DrawFieldCharacterProfilePropertyWithName("Power");
+        DrawFieldCharacterProfilePropertyWithName("Agility");
+        DrawFieldCharacterProfilePropertyWithName("Focus");
+        DrawFieldCharacterProfilePropertyWithName("Reflex");
     }
     private void DrawSecondaryStats()
     {
+        DrawDivider();
         GL.Label("Secondary Stats");
         GL.Space(8);
 
@@ -156,6 +181,28 @@ public class CharacterProfileCreator : EditorWindow
         //Total
         DrawCharacterProfilePropertiesWithName("Total");
     }
+    private void DrawTertiaryStats()
+    {
+        DrawDivider();
+        GL.Label("Tertiary Stats");
+        GL.Space(8);
+        DrawFieldCharacterProfilePropertyWithName("ActionPoints");
+        DrawFieldCharacterProfilePropertyWithName("MaxArmor");
+        DrawFieldCharacterProfilePropertyWithName("MaxHealth");
+        DrawFieldCharacterProfilePropertyWithName("MaxShield");
+        GL.Space(4);
+
+        CharacterProfile.CharacterArmorClass prevArmorClass = _characterProfile.ArmorClass;
+        GL.BeginHorizontal();
+        GL.Label("Armor Class" ,GL.MaxWidth(LABEL_MEDIUM_WIDTH));
+        _characterProfile.ArmorClass = (CharacterProfile.CharacterArmorClass)EGL.EnumPopup(_characterProfile.ArmorClass, GL.MaxWidth(BUTTON_WIDTH));
+        GL.EndHorizontal();
+        if (_characterProfile.ArmorClass != prevArmorClass)
+        {
+            EditorUtility.SetDirty(_characterProfile);
+            GUI.FocusControl(null);
+        }
+    }
     private void DrawCharacterProfilePropertiesWithName(string name)
     {
         GL.Label(name);
@@ -174,11 +221,42 @@ public class CharacterProfileCreator : EditorWindow
             DrawPropertyUnderline();
         }
     }
-    private void DrawTertiaryStats()
+    private void DrawFieldCharacterProfilePropertyWithName(string name)
     {
+        PropertyInfo property = _characterProfile.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.Name.Equals(name)).FirstOrDefault();
 
+        if(property.PropertyType == typeof(int))
+        {
+            int value = (int)property.GetValue(_characterProfile);
+            GL.BeginHorizontal();
+            GL.Label(AddSpaceBeforeUppercase(property.Name), GL.MaxWidth(LABEL_MEDIUM_WIDTH));
+            int newValue = EGL.IntField(value, GL.MaxWidth(60));
+            GL.Label("int", GL.MaxWidth(60));
+            GL.EndHorizontal();
+            if(newValue != value)
+            {
+                if(newValue < 0) newValue = 0;
+                property.SetValue(_characterProfile, newValue);
+                EditorUtility.SetDirty(_characterProfile);
+            }
+        }
+        if(property.PropertyType == typeof(float))
+        {
+            float value = (float)property.GetValue(_characterProfile);
+            GL.BeginHorizontal();
+            GL.Label(AddSpaceBeforeUppercase(property.Name), GL.MaxWidth(LABEL_MEDIUM_WIDTH));
+            float newValue = EGL.FloatField(value, GL.MaxWidth(60));
+            GL.Label("float", GL.MaxWidth(60));
+            GL.EndHorizontal();
+            if(newValue != value)
+            {
+                if(newValue < 0) newValue = 0;
+                property.SetValue(_characterProfile, newValue);
+                EditorUtility.SetDirty(_characterProfile);
+            }
+        }
+        DrawPropertyUnderline();
     }
-
 
     private void DrawAbilities()
     {
@@ -208,7 +286,9 @@ public class CharacterProfileCreator : EditorWindow
     private void DrawSettings()
     {
         DrawDivider();
+        
         GL.Label("Character profile setting");
+        
 
         if (_settingsAreOpen)
         {
@@ -228,8 +308,10 @@ public class CharacterProfileCreator : EditorWindow
         }
         if (_settingsAreOpen == false) return;
 
-
+        Color prev = GUI.color;
+        GUI.color = Color.red;
         GL.Label("Changing these changes them for all character profiles.");
+        GUI.color = prev;
         GL.Space(8);
 
         foreach (var property in _characterProfile.Settings.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
