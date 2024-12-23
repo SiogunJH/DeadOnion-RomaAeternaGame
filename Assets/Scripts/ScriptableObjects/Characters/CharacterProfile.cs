@@ -26,62 +26,205 @@ public class CharacterProfile : ScriptableObject
 
     public string Name = "NOT SET";
 
-    //Primary Attributes
-    public int Vitality { get; set; } = 1;
-    public int Strength { get; set; } = 1;
-    public int Power { get; set; } = 1;
-    public int Agility { get; set; } = 1;
-    public int Focus { get; set; } = 1;
-    public int Reflex { get; set; } = 1;
+
+    #region >>> Primary Attributes <<<
+
+    [SerializeField] [HideInInspector]
+    private int _vitality = 1;
+    public int Vitality
+    {
+        get => _vitality;
+        set => _vitality = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _strength = 1;
+    public int Strength
+    {
+        get => _strength;
+        set => _strength = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _power = 1;
+    public int Power
+    {
+        get => _power;
+        set => _power = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _agility = 1;
+    public int Agility
+    {
+        get => _agility;
+        set => _agility = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _focus = 1;
+    public int Focus
+    {
+        get => _focus;
+        set => _focus = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _reflex = 1;
+    public int Reflex
+    {
+        get => _reflex;
+        set => _reflex = Mathf.Max(1, value);
+    }
+
+    #endregion
 
 
     #region >>> Secondary Attributes <<<
 
     public int BaseHealth => Mathf.Max(Vitality * Settings.HealthPerVitalityPoint, Settings.MinimalHealthPoints);
-    public int AdditionalHealth { get; set; }
+    [SerializeField] [HideInInspector]
+    private int _additionalHealth;
+    public int AdditionalHealth
+    {
+        get => _additionalHealth;
+        set => _additionalHealth = Mathf.Max(0, value);
+    }
     public int TotalHealth => Mathf.Min(BaseHealth + AdditionalHealth, MaxHealth);
+
     public float BaseEndurancePercentage => Mathf.Max(Vitality * Settings.EndurancePercentsPerVitalityPoint, Settings.MinimalEndurancePercents);
-    public float AdditionalEndurancePercentage { get; set; }
+    [SerializeField] [HideInInspector]
+    private float _additionalEndurancePercentage;
+    public float AdditionalEndurancePercentage
+    {
+        get => _additionalEndurancePercentage;
+        set => _additionalEndurancePercentage = Mathf.Max(0, value);
+    }
     public float TotalEndurance => BaseEndurancePercentage + AdditionalEndurancePercentage;
 
+
     public int BaseWeaponDamage => Mathf.Max(Strength * Settings.WeaponDamagePerStrengthPoint, Settings.MinimalWeaponDamage);
-    public int AdditionalWeaponDamage { get; set; }
+    [SerializeField] [HideInInspector]
+    private int _additionalWeaponDamage;
+    public int AdditionalWeaponDamage
+    {
+        get => _additionalWeaponDamage;
+        set => _additionalWeaponDamage = Mathf.Max(0, value);
+    }
     public int TotalWeaponDamage => BaseWeaponDamage + AdditionalWeaponDamage;
 
+
     public int BaseAbilityDamage => Mathf.Max(Power * Settings.AbilityDamagePerPowerPoint, Settings.MinimalAbilityDamage);
-    public int AdditionalAbilityDamage { get; set; }
+    [SerializeField] [HideInInspector]
+    private int _additionalAbilityDamage;
+    public int AdditionalAbilityDamage
+    {
+        get => _additionalAbilityDamage;
+        set => _additionalAbilityDamage = Mathf.Max(0, value);
+    }
     public int TotalAbilityDamage => BaseAbilityDamage + AdditionalAbilityDamage;
 
+
     public int BaseEvasion => Mathf.Max(Agility * Settings.EvasionPerAgilityPoint, Settings.MinimalEvasion);
-    public int AdditionalEvasion { get; set; }
+    [SerializeField] [HideInInspector]
+    private int _additionalEvasion;
+    public int AdditionalEvasion
+    {
+        get => _additionalEvasion;
+        set => _additionalEvasion = Mathf.Max(0, value);
+    }
     public int TotalEvasion => BaseEvasion + AdditionalEvasion;
+
     public int BaseMoveSpeed => Mathf.Max(Agility / Settings.AgilityPointsPerMoveSpeed, Settings.MinimalMoveSpeed);
-    public int AdditionalMoveSpeed { get; set; }
+    [SerializeField] [HideInInspector]
+    private int _additionalMoveSpeed;
+    public int AdditionalMoveSpeed
+    {
+        get => _additionalMoveSpeed;
+        set => _additionalMoveSpeed = Mathf.Max(0, value);
+    }
     public int TotalMoveSpeed => BaseMoveSpeed + AdditionalMoveSpeed;
 
+
     public int BaseAccuracy => Mathf.Max(Focus * Settings.AccuracyPerFocusPoints, Settings.MinimalAccuracy);
-    public int AdditionalAccuracy { get; set; }
+    [SerializeField] [HideInInspector]
+    private int _additionalAccuracy;
+    public int AdditionalAccuracy
+    {
+        get => _additionalAccuracy;
+        set => _additionalAccuracy = Mathf.Max(0, value);
+    }
     public int TotalAccuracy => BaseAccuracy + AdditionalAccuracy;
+
     public float BaseCritDamagePercentage => Mathf.Max(Focus * Settings.CritDamagePercentsPerFocusPoint, Settings.MinimalCritDamagePercents);
-    public float AdditionalCritDamagePercentage { get; set; }
+    [SerializeField] [HideInInspector]
+    private float _additionalCritDamagePercentage;
+    public float AdditionalCritDamagePercentage
+    {
+        get => _additionalCritDamagePercentage;
+        set => _additionalCritDamagePercentage = Mathf.Max(0, value);
+    }
     public float TotalCritDamagePercentage => BaseCritDamagePercentage + AdditionalCritDamagePercentage;
 
+
     public int BaseInitiative => Mathf.Max(Reflex * Settings.InitiativePerReflexPoint, Settings.MinimalInitiative);
-    public int AdditionalInitiative { get; set; }
+    [SerializeField] [HideInInspector]
+    private int _additionalInitiative;
+    public int AdditionalInitiative
+    {
+        get => _additionalInitiative;
+        set => _additionalInitiative = Mathf.Max(0, value);
+    }
     public int TotalInitiative => BaseInitiative + AdditionalInitiative;
+
     public float BaseCritChancePercentage => Mathf.Max(Reflex * Settings.CritChancePercentsPerReflexPoint, Settings.MinimalCritChancePercents);
-    public float AdditionalCritChancePercentage { get; set; }
+    [SerializeField] [HideInInspector]
+    private float _additionalCritChancePercentage;
+    public float AdditionalCritChancePercentage
+    {
+        get => _additionalCritChancePercentage;
+        set => _additionalCritChancePercentage = Mathf.Max(0, value);
+    }
     public float TotalCritChancePercentage => BaseCritChancePercentage + AdditionalCritChancePercentage;
 
     #endregion
 
 
-    //Tertiary Attributes
-    public int ActionPoints = 4;
-    public int MaxArmor = 1;
-    public int MaxHealth = 1;
-    public int MaxShield = 1;
+    #region >>> Tertiary Attributes <<<
 
+    [SerializeField] [HideInInspector]
+    private int _actionPoints = 4;
+    public int ActionPoints
+    {
+        get => _actionPoints;
+        set => _actionPoints = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _maxArmor = 99999;
+    public int MaxArmor
+    {
+        get => _maxArmor;
+        set => _maxArmor = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _maxHealth = 99999;
+    public int MaxHealth
+    {
+        get => _maxHealth;
+        set => _maxHealth = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _maxShield = 99999;
+    public int MaxShield
+    {
+        get => _maxShield;
+        set => _maxShield = Mathf.Max(1, value);
+    }
+
+    [SerializeField] [HideInInspector]
     public CharacterArmorClass ArmorClass;
 
 
@@ -92,5 +235,9 @@ public class CharacterProfile : ScriptableObject
         Heavy = 2
     }
 
+    #endregion
+
+
+    [HideInInspector]
     public List<CombatAbility> CombatAbilities = new();
 }
