@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a37b0112846db32438e00b92efbeb6dc, type: 3}
+  m_Name: CharacterProfileSettings
+  m_EditorClassIdentifier: 
+  _healthPerVitalityPoint: 5
+  _minimalHealthPoints: 1
+  _endurancePercentsPerVitalityPoint: 0.02
+  _minimalEndurancePercents: 0
+  _weaponDamagePerStrengthPoint: 2
+  _minimalWeaponDamage: 0
+  _abilityDamagePerPowerPoint: 2
+  _minimalAbilityDamage: 0
+  _evasionPerAgilityPoint: 5
+  _minimalEvasion: 0
+  _agilityPointsPerMoveSpeed: 5
+  _minimalMoveSpeed: 1
+  _accuracyPerFocusPoints: 5
+  _minimalAccuracy: 0
+  _critDamagePercentsPerFocusPoint: 0.02
+  _minimalCritDamagePercents: 0
+  _initiativePerReflexPoint: 1
+  _minimalInitiative: 0
+  _critChancePercentsPerReflexPoint: 0.02
+  _minimalCritChancePercents: 0
