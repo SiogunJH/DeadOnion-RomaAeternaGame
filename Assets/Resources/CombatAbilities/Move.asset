@@ -15,6 +15,8 @@ MonoBehaviour:
   Name: Move
   Width: 15
   Height: 15
+  ActionPointCost: 1
+  HasCastTime: 0
   AbilityEffects:
   - Type: 1
     Amount: 0

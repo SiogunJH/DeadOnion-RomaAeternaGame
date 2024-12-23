@@ -15,6 +15,8 @@ MonoBehaviour:
   Name: Interact
   Width: 15
   Height: 15
+  ActionPointCost: 1
+  HasCastTime: 1
   AbilityEffects:
   - Type: 3
     Amount: 0

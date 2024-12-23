@@ -256,6 +256,23 @@ public class CombatAbilityCreator : EditorWindow
         GL.Label($"{heightSliderValue * 2 + 1}");
 
 
+        GL.Space(8);
+        GL.BeginHorizontal();
+        bool prevCastTime = _combatAbility.HasCastTime;
+        GL.Label("Has Cast Time", GL.MaxWidth(120));
+        _combatAbility.HasCastTime = EditorGUILayout.Toggle(_combatAbility.HasCastTime);
+        if (prevCastTime != _combatAbility.HasCastTime) EditorUtility.SetDirty(_combatAbility);
+        GL.EndHorizontal();
+
+        GL.BeginHorizontal();
+        int prevCost = _combatAbility.ActionPointCost;
+        GL.Label("Action Point Cost", GL.MaxWidth(120));
+        _combatAbility.ActionPointCost = EditorGUILayout.IntField(_combatAbility.ActionPointCost, GL.MaxWidth(30));
+        if (prevCost != _combatAbility.ActionPointCost) EditorUtility.SetDirty(_combatAbility);
+        GL.EndHorizontal();
+
+
+
         _combatAbility.Width = (Mathf.RoundToInt(rawWidth) * 2) + 1;
         _combatAbility.Height = (Mathf.RoundToInt(rawHeight) * 2) + 1;
         if (_combatAbility.Width != prevWidth || _combatAbility.Height != prevHeight || _combatAbility.Name != prevName) EditorUtility.SetDirty(_combatAbility);
