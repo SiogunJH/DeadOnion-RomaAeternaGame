@@ -10,11 +10,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5657959850804328302, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
       propertyPath: UserFriendlyName
-      value: Alien Vanguard
+      value: Alien Rogue
       objectReference: {fileID: 0}
     - target: {fileID: 4188062137734071572, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
       propertyPath: m_Name
-      value: Enemy Solider (Chonky)
+      value: Enemy Solider (Speedy)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4636059800182575962, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
+      propertyPath: m_Color.b
+      value: 0.87401557
+      objectReference: {fileID: 0}
+    - target: {fileID: 4636059800182575962, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4636059800182575962, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5029854460934400298, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
       propertyPath: m_LocalPosition.x
