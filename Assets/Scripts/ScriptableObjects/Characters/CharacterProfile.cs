@@ -7,19 +7,10 @@ using UnityEngine;
 public class CharacterProfile : ScriptableObject
 {
     public CharacterProfileSettings Settings { get; private set; }
-    private void OnEnable()
+    public void SetCharacterProfileSettings(CharacterProfileSettings settings)
     {
-        if (Settings == null)
-        {
-            var set = Resources.LoadAll<CharacterProfileSettings>("Settings");
-            if (set.Length > 1) Debug.LogError("More than one CharacterProfileSettings asset found");
-            if(set.Length <= 0)
-            {
-                Debug.LogError("No CharacterProfileSettings asset found");
-                return;
-            }
-            Settings = set.FirstOrDefault();
-        }
+        if (settings == null) return;
+        Settings = settings;
     }
 
 

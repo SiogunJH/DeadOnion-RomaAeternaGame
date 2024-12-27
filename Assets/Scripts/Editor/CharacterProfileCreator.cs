@@ -49,6 +49,7 @@ public class CharacterProfileCreator : EditorWindow
         _characterProfile = (CharacterProfile)EGL.ObjectField("Current character:", _characterProfile, typeof(CharacterProfile), false, GL.MaxWidth(FIELD_WIDTH + 100));
         if(_characterProfile != prevCharacter)
         {
+            LoadCharacterProfileSettings();
             EditorUtility.SetDirty(_characterProfile);
             Repaint();
         }
@@ -63,11 +64,24 @@ public class CharacterProfileCreator : EditorWindow
     {
         _windowWidth = EditorGUIUtility.currentViewWidth;
     }
+    private void LoadCharacterProfileSettings()
+    {
+        if (_characterProfile == null) return;
+        var set = Resources.LoadAll<CharacterProfileSettings>("Settings");
+        if (set.Length > 1) Debug.LogError("More than one CharacterProfileSettings asset found");
+        if(set.Length <= 0)
+        {
+            Debug.LogError("No CharacterProfileSettings asset found");
+            return;
+        }
+        _characterProfile.SetCharacterProfileSettings(set.FirstOrDefault());
+    }
     private void DrawCharacterEmptyGUI()
     {
         if(GL.Button("Create new character", GL.MaxWidth(BUTTON_WIDTH), GL.MaxHeight(BUTTON_HEIGHT)))
         {
             _characterProfile = CreateInstance<CharacterProfile>();
+            LoadCharacterProfileSettings();
         }
     }
     private void DrawCharacterPresentGUI()
