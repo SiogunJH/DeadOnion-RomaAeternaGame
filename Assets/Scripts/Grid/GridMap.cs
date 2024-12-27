@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using VInspector;
 
 #if UNITY_EDITOR
+using VInspector;
 using UnityEditor;
 #endif
 
@@ -12,33 +12,26 @@ public class GridMap : ScriptableObject
 {
     [Header("Dimensions")]
     [SerializeField, Range(2, 20), Tooltip("Width of the grid")] private int _gridWidth = 5;
-    public int GridWidth => _gridWidth;
+    public int Width => _gridWidth;
 
     [SerializeField, Range(1, 10), Tooltip("Height of the grid")] private int _gridHeight = 5;
-    public int GridHeight => _gridHeight;
+    public int Height => _gridHeight;
 
-    public Dictionary<Vector2, GameObject> InitialOccupants { get; private set; } = new();
+    [SerializeField, HideInInspector] public List<GridTile> Tiles = new();
 
-    [HideInInspector] public List<GridTile> Tiles;
-
-    public GridTile GetTile(int x, int y) => GetTile(new(x, y));
-    public GridTile GetTile(Vector2 coordinates)
-    {
-        return Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates);
-    }
+    public GridTile this[int x, int y] { get => this[new(x, y)]; }
+    public GridTile this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
 
     public void InitializeGrid()
     {
-        if (Tiles == null) Tiles = new();
-
-        for (int x = 0; x < GridWidth; x++)
+        for (int x = 0; x < Width; x++)
         {
-            for (int y = 0; y < GridHeight; y++)
+            for (int y = 0; y < Height; y++)
             {
                 Vector2 index = new(x, y);
 
                 // Check if tile already exists
-                if (Tiles.Any(tile => tile.Coordinates == index)) continue;
+                if (this[index] != null) continue;
 
                 // Add a new tile if it doesn't exist
                 Tiles.Add(new GridTile(x, y));
@@ -53,7 +46,7 @@ public class GridMap : ScriptableObject
 public class GridMapEditor : Editor
 {
     private const float TILE_SIZE = 40f;
-    private Dictionary<string, Color> _tileColor = new()
+    private readonly Dictionary<string, Color> _tileColor = new()
     {
         {"Selected",Color.yellow},
         {"Empty", Color.white},
@@ -85,19 +78,19 @@ public class GridMapEditor : Editor
         EditorGUILayout.LabelField("Grid Visualization", EditorStyles.boldLabel);
 
         // Ensure the grid is initialized
-        if (gridObject.Tiles == null || gridObject.Tiles.Count != gridObject.GridWidth * gridObject.GridHeight)
+        if (gridObject.Tiles == null || gridObject.Tiles.Count != gridObject.Width * gridObject.Height)
         {
             gridObject.InitializeGrid();
         }
 
         // Draw the grid
-        for (int y = gridObject.GridHeight - 1; y >= 0; y--)
+        for (int y = gridObject.Height - 1; y >= 0; y--)
         {
             EditorGUILayout.BeginHorizontal();
-            for (int x = 0; x < gridObject.GridWidth; x++)
+            for (int x = 0; x < gridObject.Width; x++)
             {
                 // Tile visualization
-                GridTile currentTile = gridObject.GetTile(x, y);
+                GridTile currentTile = gridObject[x, y];
                 Color previousColor = GUI.color;
                 GUI.color = GetTileColor(currentTile);
 
