@@ -8,8 +8,3 @@ public class GridEntity : MonoBehaviour
     [HideInInspector] public GridTile Location;
     public GridEntityCategory Category;
 }
-
-public enum GridEntityCategory
-{
-    Ally, Enemy, Object
-}
