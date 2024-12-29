@@ -73,12 +73,18 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
                 newTile.transform.localPosition = new(x * TILE_SPACING, 0, z * TILE_SPACING);
 
                 // Handle occupants
-                foreach (var occupant in Grid[x, z].Occupants)
+                for (int i = 0; i < tile.Occupants.Count; i++)
                 {
-                    Debug.Assert(occupant != null, "Occupant cannot be null!", this);
+                    // Validate
+                    Debug.Assert(tile.Occupants[i] != null, "Occupant cannot be null!", this);
 
-                    GameObject newOccupant = Instantiate(occupant.gameObject, newTile.transform);
-                    newOccupant.transform.localPosition = Vector3.zero;
+                    // Create visual representation and clone
+                    tile.Occupants[i] = Instantiate(tile.Occupants[i].gameObject, newTile.transform).GetComponent<GridEntity>();
+                    tile.Occupants[i].transform.localPosition = Vector3.zero;
+
+                    // Assign data
+                    tile.Occupants[i].Location = Grid[x, z];
+                    AssignEntityID(tile.Occupants[i]);
                 }
             }
         }
