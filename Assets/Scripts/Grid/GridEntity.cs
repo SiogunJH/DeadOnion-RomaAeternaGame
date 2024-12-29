@@ -94,4 +94,31 @@ public class GridEntity : MonoBehaviour
 
     #endregion
 
+#if UNITY_EDITOR
+
+    #region DEBUG
+
+    [Button]
+    private void MoveAtRandom()
+    {
+        // Validate
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning("MoveAtRandom can only be activated at runtime!");
+            return;
+        }
+        Debug.Assert(Location != null, "GridEntity Location cannot be null!", this);
+
+        var pool = Map.Tiles.Where(tile => tile.IsEnabled && !tile.IsOccupied && tile != Location).ToArray();
+
+        GridTileData end = pool[Random.Range(0, pool.Length)];
+
+        // Debug.Log($"Move from ({Location.X},{Location.Y}) to ({end.X},{end.Y})");
+
+        MoveTo(end);
+    }
+
+    #endregion
+
+#endif
 }
