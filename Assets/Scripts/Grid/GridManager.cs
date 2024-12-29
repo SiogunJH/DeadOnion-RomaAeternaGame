@@ -57,12 +57,17 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
         {
             for (int z = 0; z < Grid.Height; z++)
             {
+                GridTileData tile = Grid[x, z];
+
                 // Validate
-                if (!Grid[x, z].IsEnabled) continue;
+                if (!tile.IsEnabled) continue;
 
                 // Create
-                GameObject newTile = Instantiate(_tileVisualization, _gridContainer);
-                newTile.name = $"Tile ({x},{z})";
+                GridTileController newTile = Instantiate(_tileVisualization, _gridContainer).GetComponent<GridTileController>();
+                newTile.gameObject.name = $"Tile ({x},{z})";
+
+                newTile.Data = tile;
+                tile.Controller = newTile;
 
                 // Position
                 newTile.transform.localPosition = new(x * TILE_SPACING, 0, z * TILE_SPACING);
