@@ -90,4 +90,16 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
 #endif
 
     #endregion
+
+    #region Occupant Management
+
+    private static int _lastEntityID = 0;
+
+    public static void AssignEntityID(GridEntity entity)
+    {
+        _lastEntityID++;
+        entity.ID = _lastEntityID;
+    }
+
+    #endregion
 }
