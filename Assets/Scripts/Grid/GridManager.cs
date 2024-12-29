@@ -79,5 +79,15 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
         }
     }
 
+#if UNITY_EDITOR
+    [Button]
+    private void LogGridInfo()
+    {
+        string result = "";
+        foreach (var tile in Grid.Tiles) result += $"{tile}\n";
+        Debug.Log(result);
+    }
+#endif
+
     #endregion
 }
