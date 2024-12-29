@@ -35,8 +35,9 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
         Debug.Assert(Grid != null, "[Grid] is not assigned!", this);
         Debug.Assert(_gridContainer != null, "[Grid Container] is not assigned!", this);
 
-        // Clone Grid
+        // Initialize Grid
         Grid = Instantiate(Grid);
+        Grid.OptimizeGrid();
     }
 
     #endregion
