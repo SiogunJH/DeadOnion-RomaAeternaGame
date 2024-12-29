@@ -22,6 +22,8 @@ public class GridMap : ScriptableObject
     public GridTileData this[int x, int y] { get => this[new(x, y)]; }
     public GridTileData this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
 
+    #region Initialization
+
     public void InitializeGrid()
     {
         for (int x = 0; x < Width; x++)
@@ -40,6 +42,15 @@ public class GridMap : ScriptableObject
             }
         }
     }
+
+    public void OptimizeGrid()
+    {
+        // Remove unused GridTiles
+        Tiles = Tiles.Where(tile => tile.X < Width && tile.Y < Height).ToList();
+    }
+
+    #endregion
+
 }
 
 #if UNITY_EDITOR
