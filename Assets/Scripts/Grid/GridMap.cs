@@ -51,6 +51,63 @@ public class GridMap : ScriptableObject
 
     #endregion
 
+    #region Pathfinding
+
+    public bool FindPathBetween(GridTileData start, GridTileData end, out IEnumerable<GridTileData> path)
+    {
+        // Validate
+        foreach (var tile in new List<GridTileData>() { start, end })
+        {
+            if (tile.IsEnabled) continue;
+
+            Debug.LogWarning($"Tile ({tile.X},{tile.Y}) needs to be enabled!", this);
+            path = null;
+            return false;
+        }
+
+        // Initialize data structures for BFS
+        Queue<GridTileData> queue = new();
+        Dictionary<GridTileData, GridTileData> cameFrom = new(); // Keeps track of the path
+
+        queue.Enqueue(start);
+        cameFrom[start] = null;
+
+        while (queue.Count > 0)
+        {
+            GridTileData current = queue.Dequeue();
+
+            // Check if we've reached the end
+            if (current == end)
+            {
+                // Reconstruct the path
+                List<GridTileData> shortestPath = new();
+                for (GridTileData tile = end; tile != null; tile = cameFrom[tile])
+                {
+                    shortestPath.Add(tile);
+                }
+                shortestPath.Reverse();
+                path = shortestPath;
+                return true;
+            }
+
+            // Add neighbors to the queue
+            foreach (GridTileData neighbour in current.Neighbours) // Assumes a GetNeighbors() method exists
+            {
+                if (neighbour.IsEnabled && !neighbour.IsOccupied && !cameFrom.ContainsKey(neighbour)) // Ensure the neighbor is valid and not visited
+                {
+                    queue.Enqueue(neighbour);
+                    cameFrom[neighbour] = current;
+                }
+            }
+        }
+
+        // No path found
+        path = null;
+        return false;
+    }
+
+
+    #endregion
 }
 
 #if UNITY_EDITOR
