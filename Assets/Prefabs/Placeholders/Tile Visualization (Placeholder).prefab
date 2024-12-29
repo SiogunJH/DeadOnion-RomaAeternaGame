@@ -115,6 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5894536937952522795}
+  - component: {fileID: 5738110375788092550}
   m_Layer: 0
   m_Name: Tile Visualization (Placeholder)
   m_TagString: Untagged
@@ -138,3 +139,19 @@ Transform:
   - {fileID: 5708414640694830692}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5738110375788092550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6793272184895295473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f7d4344a5c7ee45bbb7494e560eff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TileData:
+    Coordinates: {x: 0, y: 0}
+    IsEnabled: 0
+    _occupants: []
