@@ -18,4 +18,11 @@ public class GridEntity : MonoBehaviour
 
     public CharacterProfile CharacterProfile;
     public GridEntityCategory Category;
+
+    #region MonoBehaviour
+
+    //
+
+    #endregion
+
 }
