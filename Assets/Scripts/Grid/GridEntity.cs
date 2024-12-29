@@ -5,9 +5,10 @@ using UnityEngine;
 [System.Serializable]
 public class GridEntity : MonoBehaviour
 {
-    public string UserFriendlyName;
     [HideInInspector] public GridTile Location;
     [HideInInspector] public int ID = -1;
 
+    public string UserFriendlyName { get => CharacterProfile.Name; }
+    public CharacterProfile CharacterProfile;
     public GridEntityCategory Category;
 }
