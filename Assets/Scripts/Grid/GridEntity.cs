@@ -14,6 +14,8 @@ public class GridEntity : MonoBehaviour
     [HideInInspector] public int ID = -1;
 
     public string UserFriendlyName { get => CharacterProfile.Name; }
+    public GridMap Map { get => GridManager.Instance.Grid; }
+
     public CharacterProfile CharacterProfile;
     public GridEntityCategory Category;
 }
