@@ -6,7 +6,7 @@ using UnityEngine;
 using VInspector;
 #endif
 
-public class GridManager : MonoBehaviour
+public class GridManager : MonoBehaviourSingleton<GridManager>
 {
 #if UNITY_EDITOR
     [Tab("Grid Manager/External References")]
