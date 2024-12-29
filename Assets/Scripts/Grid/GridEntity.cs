@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using VInspector;
+#endif
 
 [System.Serializable]
 public class GridEntity : MonoBehaviour
