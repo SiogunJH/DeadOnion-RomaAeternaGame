@@ -17,10 +17,10 @@ public class GridMap : ScriptableObject
     [SerializeField, Range(1, 10), Tooltip("Height of the grid")] private int _gridHeight = 5;
     public int Height => _gridHeight;
 
-    [SerializeField, HideInInspector] public List<GridTile> Tiles = new();
+    [SerializeField, HideInInspector] public List<GridTileData> Tiles = new();
 
-    public GridTile this[int x, int y] { get => this[new(x, y)]; }
-    public GridTile this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
+    public GridTileData this[int x, int y] { get => this[new(x, y)]; }
+    public GridTileData this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
 
     public void InitializeGrid()
     {
@@ -31,10 +31,12 @@ public class GridMap : ScriptableObject
                 Vector2 index = new(x, y);
 
                 // Check if tile already exists
-                if (this[index] != null) continue;
+                GridTileData existingTile = this[index];
+                if (existingTile != null) continue;
 
                 // Add a new tile if it doesn't exist
-                Tiles.Add(new GridTile(x, y));
+                GridTileData newTile = new(x, y);
+                Tiles.Add(newTile);
             }
         }
     }
@@ -56,9 +58,9 @@ public class GridMapEditor : Editor
         {"Missing", Color.black}
     };
 
-    private GridTile _selectedTile; // Currently selected tile
+    private GridTileData _selectedTile; // Currently selected tile
 
-    private Color GetTileColor(GridTile tile)
+    private Color GetTileColor(GridTileData tile)
     {
         if (tile == _selectedTile) return _tileColor["Selected"];
         if (!tile.IsEnabled) return _tileColor["Disabled"];
@@ -90,7 +92,7 @@ public class GridMapEditor : Editor
             for (int x = 0; x < gridObject.Width; x++)
             {
                 // Tile visualization
-                GridTile currentTile = gridObject[x, y];
+                GridTileData currentTile = gridObject[x, y];
                 Color previousColor = GUI.color;
                 GUI.color = GetTileColor(currentTile);
 
