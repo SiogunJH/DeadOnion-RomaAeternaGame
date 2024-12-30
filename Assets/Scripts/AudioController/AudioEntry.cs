@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
@@ -15,39 +16,39 @@ public struct AudioEntry
         UseAllSamplesBeforeRepeat
     }
 
-    [SerializeField] private AudioClip[] audioClips;
-    [SerializeField] public AudioMixerGroup audioMixerGroup;
-    [SerializeField, Range(-3f, 3f)] public float minPitch;
-    [SerializeField, Range(-3f, 3f)] public float maxPitch;
-    [SerializeField] private PlaybackMode playbackMode;
+    [SerializeField] private AudioClip[] _audioClips;
+    [SerializeField] public AudioMixerGroup AudioMixerGroup;
+    [SerializeField, Range(-3f, 3f)] public float MinPitch;
+    [SerializeField, Range(-3f, 3f)] public float MaxPitch;
+    [SerializeField] private PlaybackMode _playbackMode;
 
-    private int lastIndex;
+    private int _lastIndex;
 
     public AudioEntry(AudioClip[] clips, AudioMixerGroup mixer, float minPitch, float maxPitch, PlaybackMode mode)
     {
-        audioClips = clips;
-        audioMixerGroup = mixer;
-        this.minPitch = minPitch;
-        this.maxPitch = maxPitch;
-        playbackMode = mode;
+        _audioClips = clips;
+        AudioMixerGroup = mixer;
+        this.MinPitch = minPitch;
+        this.MaxPitch = maxPitch;
+        _playbackMode = mode;
 
 
-        lastIndex = -1;
+        _lastIndex = -1;
 
-        // dla UseAllBeforeRepeat
-        availableIndices = new int[clips.Length];
-        for (int i = 0; i < availableIndices.Length; i++)
+        // init for UseAllBeforeRepeat
+        _availableIndices = new int[clips.Length];
+        for (int i = 0; i < _availableIndices.Length; i++)
         {
-            availableIndices[i] = i;
+            _availableIndices[i] = i;
         }
     }
 
     public AudioClip GetAudioClip()
     {
-        if (audioClips == null || audioClips.Length == 0)
+        if (_audioClips == null || _audioClips.Length == 0)
             return null;
 
-        switch (playbackMode)
+        switch (_playbackMode)
         {
             case PlaybackMode.InOrder:
                 return GetInOrder();
@@ -65,46 +66,46 @@ public struct AudioEntry
 
     private AudioClip GetInOrder()
     {
-        lastIndex = (lastIndex + 1) % audioClips.Length;
-        return audioClips[lastIndex];
+        _lastIndex = (_lastIndex + 1) % _audioClips.Length;
+        return _audioClips[_lastIndex];
     }
 
     private AudioClip GetRandom()
     {
-        return audioClips[Random.Range(0, audioClips.Length)];
+        return _audioClips[Random.Range(0, _audioClips.Length)];
     }
 
     private AudioClip GetNoConsecutiveRepeat()
     {
 
-        int newIndex = Random.Range(0, audioClips.Length);
+        int newIndex = Random.Range(0, _audioClips.Length);
 
-        if (newIndex == lastIndex)
+        if (newIndex == _lastIndex)
             return GetInOrder();
 
-        lastIndex = newIndex;
-        return audioClips[newIndex];
+        _lastIndex = newIndex;
+        return _audioClips[newIndex];
     }
 
-    private int[] availableIndices;
+    private int[] _availableIndices;
 
-    // miesza kolejność algorytmem Fisher-Yates
+    // shuffles with Fisher-Yates algorithm
     private void ShuffleOrder()
     {
-        for (int i = availableIndices.Length - 1; i > 0; i--)
+        for (int i = _availableIndices.Length - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);
-            (availableIndices[i], availableIndices[j]) = (availableIndices[j], availableIndices[i]);
+            (_availableIndices[i], _availableIndices[j]) = (_availableIndices[j], _availableIndices[i]);
         }
     }
 
     private AudioClip GetAllBeforeRepeat()
     {
-        lastIndex = (lastIndex + 1) % audioClips.Length;
-        if (lastIndex == 0)
+        _lastIndex = (_lastIndex + 1) % _audioClips.Length;
+        if (_lastIndex == 0)
         {
             ShuffleOrder();
         }
-        return audioClips[availableIndices[lastIndex]];
+        return _audioClips[_availableIndices[_lastIndex]];
     }
 }
