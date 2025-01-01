@@ -372,8 +372,14 @@ public class CombatAbilityCreator : EditorWindow
 
                 GL.Label("Amount:", GL.MaxWidth(50));
                 int prevAmount = _selectedEffect.Amount;
-                _selectedEffect.Amount = EditorGUILayout.IntField(_selectedEffect.Amount, GL.MaxWidth(BUTTON_WIDTH));
+                _selectedEffect.Amount = EditorGUILayout.IntField(_selectedEffect.Amount, GL.MaxWidth(50));
                 if(_selectedEffect.Amount != prevAmount) EditorUtility.SetDirty(_combatAbility);
+
+                GL.Space(8);
+                GL.Label("For turns:", GL.MaxWidth(60));
+                int prevForTurns = _selectedEffect.ForTurns;
+                _selectedEffect.ForTurns = EditorGUILayout.IntField(_selectedEffect.ForTurns, GL.MaxWidth(50));
+                if(_selectedEffect.ForTurns != prevForTurns) EditorUtility.SetDirty(_combatAbility);
             }
 
             GL.EndHorizontal();

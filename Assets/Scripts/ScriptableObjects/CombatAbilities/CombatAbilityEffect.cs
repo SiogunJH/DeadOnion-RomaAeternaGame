@@ -7,6 +7,7 @@ public class CombatAbilityEffect
 {
     public EffectType Type;
     public int Amount;
+    public int ForTurns; //For how many turns the effect will last, 0 is executed once, 1 is executed twice (now and next turn)
 
     public List<Vector2Int> RelativeAffectedPositions = new();
 
