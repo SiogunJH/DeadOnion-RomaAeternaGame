@@ -384,6 +384,7 @@ public class CharacterProfileCreator : EditorWindow
 
     private void OnDestroy()
     {
+        if (_characterProfile == null) return;
         RemoveEmptyCombatAbilities();
     }
     private void RemoveEmptyCombatAbilities()
