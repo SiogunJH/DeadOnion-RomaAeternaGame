@@ -34,7 +34,11 @@ public class CombatAbilityExecutor : MonoBehaviour
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Static).Where(m => m.Name.Contains("EffectType"));
 
             //There should be two public static methods and one property, unless you add more types of handler methods
-            if (methods.Count() > 2 || properties.Count() > 1) Debug.LogWarning($"To many handlers or types found in {type.Name}");
+            if (methods.Count() > 2 || properties.Count() > 1)
+            {
+                Debug.LogWarning($"To many handlers or types found in {type.Name}");
+                continue;
+            }
 
             //Find the right methods and create delegates
             foreach(var method in methods)
@@ -44,19 +48,31 @@ public class CombatAbilityExecutor : MonoBehaviour
                 if(method == null || property == null)
                 {
                     Debug.LogError($"Something went wrong when trying to load ability handler: {type.Name}");
-                    return;
+                    continue;
                 }
 
                 if (method.Name.Contains("Grid"))
                 {
                     var handler = (GridEffectHandler)System.Delegate.CreateDelegate(typeof(GridEffectHandler), method);
                     CombatAbilityEffect.EffectType effectType = (CombatAbilityEffect.EffectType)property.GetValue(null);
+
+                    if (_gridHandlers.ContainsKey(effectType))
+                    {
+                        Debug.LogError($"To many implementations found for effect: {effectType}");
+                        continue;
+                    }
                     _gridHandlers.Add(effectType, handler);
                 }
                 else if (method.Name.Contains("Character"))
                 {
                     var handler = (CharacterEffectHandler)System.Delegate.CreateDelegate(typeof(CharacterEffectHandler), method);
                     CombatAbilityEffect.EffectType effectType = (CombatAbilityEffect.EffectType)property.GetValue(null);
+
+                    if (_gridHandlers.ContainsKey(effectType))
+                    {
+                        Debug.LogError($"To many implementations found for effect: {effectType}");
+                        continue;
+                    }
                     _characterHandlers.Add(effectType, handler);
                 }
             }
