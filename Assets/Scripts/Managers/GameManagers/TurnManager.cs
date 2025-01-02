@@ -28,7 +28,7 @@ public class TurnManager : MonoBehaviour
                 foreach (var occupant in tile.Occupants)
                 {
                     if (occupant == null) continue;
-                    //_charactersOnMap.Add(occupant.Character);
+                    if(occupant is Character) _charactersOnMap.Add((Character)occupant);
                 }
             }
         }
