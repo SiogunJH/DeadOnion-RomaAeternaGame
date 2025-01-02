@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
+using System.Linq;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : GridEntity
 {
     [SerializeField]
     private CharacterProfile _profile;
@@ -33,9 +33,12 @@ public class Character : MonoBehaviour
     }
     private void ExecuteActiveEffects()
     {
+        _activeEffects = _activeEffects.Where(e => e.ForTurns >= 0).ToList();
         foreach(var effect in _activeEffects)
         {
             CombatAbilityExecutor.Instance.ExecuteEffectOnCharacter(effect, null, this);
+            Debug.Log("Replace null with gridmap reference");
+            if(effect.ForTurns < 0) _activeEffects.Remove(effect);
         }
     }
 
