@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 public class Character : GridEntity
@@ -46,15 +47,17 @@ public class Character : GridEntity
     {
         _hadTurn = true;
     }
-    public void Heal(UInt16 amount)
+    public void Heal(int amount)
     {
+        if(amount < 0) return;
         _currentHealth += amount;
         _currentHealth = Mathf.Min(_currentHealth, CharacterProfile.TotalHealth);
     }
-    public void TakeTrueDamage(UInt16 damage)
+    public void TakeTrueDamage(int damage)
     {
+        if(damage < 0) return;
         uint maxDamageBlocked = (uint)Mathf.RoundToInt( damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
-        uint damageToHealth = damage - maxDamageBlocked;
+        uint damageToHealth = (uint)damage - maxDamageBlocked;
         _currentHealth -= (int)damageToHealth;
         _currentArmor -= (int)maxDamageBlocked;
         if(_currentArmor < 0)
@@ -64,8 +67,9 @@ public class Character : GridEntity
         }
         Die();
     }
-    public void TakeElementalDamage(UInt16 amount, CombatAbilityEffect.EffectType damageType)
+    public void TakeElementalDamage(int amount, CombatAbilityEffect.EffectType damageType)
     {
+        if(amount < 0) return;
         switch (damageType)
         {
             case CombatAbilityEffect.EffectType.DamageAcid:
@@ -83,13 +87,15 @@ public class Character : GridEntity
         Debug.Log("Do damage here"); //don't forget about armor
         //die
     }
-    public void GainArmor(UInt16 amount)
+    public void GainArmor(int amount)
     {
+        if(amount < 0) return;
         _currentArmor += amount;
         _currentHealth = Mathf.Min(_currentArmor, CharacterProfile.MaxArmor);
     }
-    public void GainShield(UInt16 amount)
+    public void GainShield(int amount)
     {
+        if(amount < 0) return;
         _currentShield += amount;
         _currentShield = Mathf.Min(_currentShield, CharacterProfile.MaxShield);
     }
