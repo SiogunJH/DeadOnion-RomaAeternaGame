@@ -37,30 +37,30 @@ public class TurnManager : MonoBehaviour
         _charactersOnMap = _charactersOnMap.OrderBy( c => c.CharacterProfile.TotalInitiative ).ToList();
     }
 
-    void Update()
+    private void Update()
     {
-        if(_currentTurn == null) Round();
+        if (_currentTurn == null) Round();
         Turn();
-        if(_endRound) EndRound();
+        if (_endRound) EndRound();
     }
 
     private bool _endRound = false;
     private Character _currentTurn = null;
-    void Round()
+    private void Round()
     {
         _currentTurn = _charactersOnMap.Where(c => c.HadTurn == false).FirstOrDefault();
-        if( _currentTurn == null ) _endRound = true;
+        if (_currentTurn == null) _endRound = true;
     }
-    void Turn()
+    private void Turn()
     {
         if (_currentTurn == null) return;
-        if(_currentTurn.HadTurn) _currentTurn = null;
+        if (_currentTurn.HadTurn) _currentTurn = null;
     }
-    void EndRound()
+    private void EndRound()
     {
-        _charactersOnMap = _charactersOnMap.OrderBy( c => c.CharacterProfile.TotalInitiative ).ToList();
+        _charactersOnMap = _charactersOnMap.OrderBy(c => c.CharacterProfile.TotalInitiative).ToList();
         _endRound = false;
-        foreach(var c in _charactersOnMap)
+        foreach (var c in _charactersOnMap)
         {
             c.ResetTurn();
         }
