@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DamageAcidHandler : ICombatAbilityEffectHandler
 {
-    public static CombatAbilityEffect.EffectType EffectType => CombatAbilityEffect.EffectType.;
+    public static CombatAbilityEffect.EffectType EffectType => CombatAbilityEffect.EffectType.DamageAcid;
 
 
     public static void GridEffectHandler(Vector2 target, CombatAbilityEffect effect, GridMap map, Character caster)
