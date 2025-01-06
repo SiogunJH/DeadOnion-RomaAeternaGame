@@ -13,23 +13,44 @@ MonoBehaviour:
   m_Name: SampleAudioDatabase
   m_EditorClassIdentifier: 
   AudioGroups:
-    serializedKvps:
-    - Key: 
+    Pairs:
+    - Key: Footsteps
       Value:
-        audioClips: []
-        audioMixerGroup: {fileID: 0}
-        minPitch: 0
-        maxPitch: 0
-        playbackMode: 0
-      index: 0
-      isKeyRepeated: 0
-    - Key: 
+        _audioClips:
+        - {fileID: 8300000, guid: 96f2a344fec074640bc75b688743d7c5, type: 3}
+        - {fileID: 8300000, guid: 9634e04746331d84fb627d68c42e8da1, type: 3}
+        - {fileID: 8300000, guid: d2b0cd9a7eb549546908ce88c639ba00, type: 3}
+        AudioMixerGroup: {fileID: 0}
+        MinPitch: 0.9
+        MaxPitch: 1.1
+        _playbackMode: 0
+    - Key: Breathing
       Value:
-        audioClips: []
-        audioMixerGroup: {fileID: 0}
-        minPitch: -3
-        maxPitch: 0
-        playbackMode: 0
-      index: 1
-      isKeyRepeated: 1
-    dividerPos: 0.33
+        _audioClips:
+        - {fileID: 8300000, guid: 9d0d61c139634364589c8278d54825d7, type: 3}
+        - {fileID: 8300000, guid: 5380b4dd7d85f0e4eb19e3346c48c109, type: 3}
+        AudioMixerGroup: {fileID: 0}
+        MinPitch: 0.9
+        MaxPitch: 1.1
+        _playbackMode: 0
+    - Key: Karl's Breathing
+      Value:
+        _audioClips:
+        - {fileID: 8300000, guid: 9d0d61c139634364589c8278d54825d7, type: 3}
+        - {fileID: 8300000, guid: 5380b4dd7d85f0e4eb19e3346c48c109, type: 3}
+        AudioMixerGroup: {fileID: 0}
+        MinPitch: 0.9
+        MaxPitch: 1.1
+        _playbackMode: 0
+    - Key: Test
+      Value:
+        _audioClips:
+        - {fileID: 8300000, guid: 96f2a344fec074640bc75b688743d7c5, type: 3}
+        - {fileID: 8300000, guid: 9634e04746331d84fb627d68c42e8da1, type: 3}
+        - {fileID: 8300000, guid: d2b0cd9a7eb549546908ce88c639ba00, type: 3}
+        - {fileID: 8300000, guid: 9d0d61c139634364589c8278d54825d7, type: 3}
+        - {fileID: 8300000, guid: 5380b4dd7d85f0e4eb19e3346c48c109, type: 3}
+        AudioMixerGroup: {fileID: 0}
+        MinPitch: 0.9
+        MaxPitch: 1.49
+        _playbackMode: 3
