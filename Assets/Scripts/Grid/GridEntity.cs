@@ -20,6 +20,8 @@ public class GridEntity : MonoBehaviour
     public GridEntityCategory Category;
     public bool OccupiesTheWholeTile;
 
+    private bool _isMoving = false;
+
     #region MonoBehaviour
 
     //
@@ -31,6 +33,11 @@ public class GridEntity : MonoBehaviour
     public Coroutine MoveTo(GridTileData targetTile)
     {
         // Validate
+        if (_isMoving)
+        {
+            Debug.LogWarning("Cannot move - the entity is already moving!", this);
+            return null;
+        }
         if (!targetTile.IsEnabled)
         {
             Debug.LogWarning("Cannot move to a tile that is Disabled!", this);
@@ -55,12 +62,20 @@ public class GridEntity : MonoBehaviour
 
     private IEnumerator MoveThrough(IEnumerable<GridTileData> path)
     {
+        // Get path
         GridTileData[] pathArray = path.ToArray();
 
+        // Flag movement
+        _isMoving = true;
+
+        // Move through
         for (int i = 1; i < pathArray.Length; i++) // Skip the first path tile, because it's the current tile
         {
             yield return StartCoroutine(StepTo(pathArray[i]));
         }
+
+        // Unflag movement
+        _isMoving = false;
     }
 
     private IEnumerator StepTo(GridTileData tile)
