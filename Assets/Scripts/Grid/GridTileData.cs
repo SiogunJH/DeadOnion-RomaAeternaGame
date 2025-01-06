@@ -80,12 +80,12 @@ public class GridTileData
     public List<GridEntity> Occupants { get => _occupants == null ? new() : _occupants; }
 
     //
-    public bool IsOccupied { get => _occupants != null && _occupants.Any(); } // this logic might need to be expanded in the future, as some GridEntities may be allowed to co-exist on the same tile (or not, idk)
+    public bool IsOccupied { get => _occupants != null && _occupants.Any(occ => occ.OccupiesTheWholeTile); }
 
     //
     public bool AddOccupant(GridEntity occupant)
     {
-        if (IsOccupied)
+        if (IsOccupied && occupant.OccupiesTheWholeTile)
         {
             Debug.Log($"Cannot add '{occupant.UserFriendlyName}' to Tile ({X},{Y}) - the tile is occupied!");
             return false;

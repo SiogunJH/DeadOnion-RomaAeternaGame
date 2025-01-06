@@ -129,10 +129,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9b8b52b033ca647ac16a5fad180317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterProfile: {fileID: 11400000, guid: 5788d4befc50424458973c508020d087, type: 2}
-  Category: 1
   Location:
     Controller: {fileID: 0}
     Coordinates: {x: 0, y: 0}
     IsEnabled: 0
     _occupants: []
+  ID: -1
+  CharacterProfile: {fileID: 11400000, guid: 5788d4befc50424458973c508020d087, type: 2}
+  Category: 1
+  OccupiesTheWholeTile: 1

@@ -53,7 +53,7 @@ public class GridMap : ScriptableObject
 
     #region Pathfinding
 
-    public bool FindPathBetween(GridTileData start, GridTileData end, out IEnumerable<GridTileData> path)
+    public bool FindPathBetween(GridEntity traveler, GridTileData start, GridTileData end, out IEnumerable<GridTileData> path)
     {
         // Validate
         foreach (var tile in new List<GridTileData>() { start, end })
@@ -76,7 +76,7 @@ public class GridMap : ScriptableObject
         {
             GridTileData current = queue.Dequeue();
 
-            // Check if we've reached the end
+            // Check if the end was reached
             if (current == end)
             {
                 // Reconstruct the path
@@ -91,9 +91,9 @@ public class GridMap : ScriptableObject
             }
 
             // Add neighbors to the queue
-            foreach (GridTileData neighbour in current.Neighbours) // Assumes a GetNeighbors() method exists
+            foreach (GridTileData neighbour in current.Neighbours)
             {
-                if (neighbour.IsEnabled && !neighbour.IsOccupied && !cameFrom.ContainsKey(neighbour)) // Ensure the neighbor is valid and not visited
+                if (neighbour.IsEnabled && (!neighbour.IsOccupied || !traveler.OccupiesTheWholeTile) && !cameFrom.ContainsKey(neighbour)) // Ensure the neighbor is valid and not visited
                 {
                     queue.Enqueue(neighbour);
                     cameFrom[neighbour] = current;
@@ -132,7 +132,7 @@ public class GridMapEditor : Editor
     {
         if (tile == _selectedTile) return _tileColor["Selected"];
         if (!tile.IsEnabled) return _tileColor["Disabled"];
-        if (!tile.IsOccupied) return _tileColor["Empty"];
+        if (!tile.Occupants.Any()) return _tileColor["Empty"];
         if (tile.Occupants.Where(occupant => occupant == null).Any()) return _tileColor["Invalid Occupants"];
         return _tileColor["Occupied"];
     }

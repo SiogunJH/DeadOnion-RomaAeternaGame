@@ -18,6 +18,7 @@ public class GridEntity : MonoBehaviour
 
     public CharacterProfile CharacterProfile;
     public GridEntityCategory Category;
+    public bool OccupiesTheWholeTile;
 
     #region MonoBehaviour
 
@@ -30,14 +31,19 @@ public class GridEntity : MonoBehaviour
     public Coroutine MoveTo(GridTileData targetTile)
     {
         // Validate
-        if (!targetTile.IsEnabled || targetTile.IsOccupied)
+        if (!targetTile.IsEnabled)
         {
-            Debug.LogWarning("Cannot move to a tile that is Disabled or Occupied!", this);
+            Debug.LogWarning("Cannot move to a tile that is Disabled!", this);
+            return null;
+        }
+        if (OccupiesTheWholeTile && targetTile.IsOccupied)
+        {
+            Debug.LogWarning("Cannot move to a tile that is Occupied!", this);
             return null;
         }
 
         // Get path
-        if (!Location.Map.FindPathBetween(Location, targetTile, out IEnumerable<GridTileData> path))
+        if (!Location.Map.FindPathBetween(this, Location, targetTile, out IEnumerable<GridTileData> path))
         {
             Debug.LogWarning($"Cannot find path to Tile ({targetTile.X},{targetTile.Y})!", this);
             return null;
