@@ -85,14 +85,22 @@ public class GridTileData
     //
     public bool AddOccupant(GridEntity occupant)
     {
+        // Validate
         if (IsOccupied && occupant.OccupiesTheWholeTile)
         {
-            Debug.Log($"Cannot add '{occupant.UserFriendlyName}' to Tile ({X},{Y}) - the tile is occupied!");
+            Debug.LogWarning($"Cannot add '{occupant.UserFriendlyName}' to Tile ({X},{Y}) - the tile is occupied!");
             return false;
         }
-        if (_occupants == null) _occupants = new();
 
+        // Add
+        if (_occupants == null) _occupants = new();
         _occupants.Add(occupant);
+
+        // Adopt
+        Debug.Assert(Controller != null, "GridTile is missing a Controller!");
+        occupant.transform.parent = Controller.transform;
+
+        //Results
         return true;
 
     }
@@ -100,24 +108,30 @@ public class GridTileData
     //
     public bool RemoveOccupant(GridEntity occupant)
     {
+        // Validate
         Debug.Assert(Occupants.Any(occ => occ.ID == occupant.ID), $"GridEntity '{occupant.UserFriendlyName}' is not an occupant of GridTile ({X},{Y})");
 
+        // Remove
         int removedCount = _occupants.RemoveAll(occ => occ.ID == occupant.ID);
         Debug.Assert(removedCount == 0 || removedCount == 1, $"More than one occupant was removed!");
 
+        // Orphan
+        occupant.transform.parent = null;
+
+        // Results
         return removedCount != 0;
     }
 
     //
     public void SetOccupants(IEnumerable<GridEntity> occupants)
     {
-        if (occupants == null)
-        {
-            _occupants = new();
-            return;
-        }
+        // Assign
+        _occupants = occupants?.ToList() ?? new();
 
-        _occupants = occupants.ToList();
+        // Reparent
+        if (Controller != null)
+            foreach (var occupant in _occupants)
+                occupant.transform.parent = Controller.transform;
     }
 
     #endregion
