@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using VInspector;
 
 #if UNITY_EDITOR
+using VInspector;
 using UnityEditor;
 #endif
 
@@ -12,39 +12,102 @@ public class GridMap : ScriptableObject
 {
     [Header("Dimensions")]
     [SerializeField, Range(2, 20), Tooltip("Width of the grid")] private int _gridWidth = 5;
-    public int GridWidth => _gridWidth;
+    public int Width => _gridWidth;
 
     [SerializeField, Range(1, 10), Tooltip("Height of the grid")] private int _gridHeight = 5;
-    public int GridHeight => _gridHeight;
+    public int Height => _gridHeight;
 
-    public Dictionary<Vector2, GameObject> InitialOccupants { get; private set; } = new();
+    [SerializeField, HideInInspector] public List<GridTileData> Tiles = new();
 
-    [HideInInspector] public List<GridTile> Tiles;
+    public GridTileData this[int x, int y] { get => this[new(x, y)]; }
+    public GridTileData this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
 
-    public GridTile GetTile(int x, int y) => GetTile(new(x, y));
-    public GridTile GetTile(Vector2 coordinates)
-    {
-        return Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates);
-    }
+    #region Initialization
 
     public void InitializeGrid()
     {
-        if (Tiles == null) Tiles = new();
-
-        for (int x = 0; x < GridWidth; x++)
+        for (int x = 0; x < Width; x++)
         {
-            for (int y = 0; y < GridHeight; y++)
+            for (int y = 0; y < Height; y++)
             {
                 Vector2 index = new(x, y);
 
                 // Check if tile already exists
-                if (Tiles.Any(tile => tile.Coordinates == index)) continue;
+                GridTileData existingTile = this[index];
+                if (existingTile != null) continue;
 
                 // Add a new tile if it doesn't exist
-                Tiles.Add(new GridTile(x, y));
+                GridTileData newTile = new(x, y);
+                Tiles.Add(newTile);
             }
         }
     }
+
+    public void OptimizeGrid()
+    {
+        // Remove unused GridTiles
+        Tiles = Tiles.Where(tile => tile.X < Width && tile.Y < Height).ToList();
+    }
+
+    #endregion
+
+    #region Pathfinding
+
+    public bool FindPathBetween(GridEntity traveler, GridTileData start, GridTileData end, out IEnumerable<GridTileData> path)
+    {
+        // Validate
+        foreach (var tile in new List<GridTileData>() { start, end })
+        {
+            if (tile.IsEnabled) continue;
+
+            Debug.LogWarning($"Tile ({tile.X},{tile.Y}) needs to be enabled!", this);
+            path = null;
+            return false;
+        }
+
+        // Initialize data structures for BFS
+        Queue<GridTileData> queue = new();
+        Dictionary<GridTileData, GridTileData> cameFrom = new(); // Keeps track of the path
+
+        queue.Enqueue(start);
+        cameFrom[start] = null;
+
+        while (queue.Count > 0)
+        {
+            GridTileData current = queue.Dequeue();
+
+            // Check if the end was reached
+            if (current == end)
+            {
+                // Reconstruct the path
+                List<GridTileData> shortestPath = new();
+                for (GridTileData tile = end; tile != null; tile = cameFrom[tile])
+                {
+                    shortestPath.Add(tile);
+                }
+                shortestPath.Reverse();
+                path = shortestPath;
+                return true;
+            }
+
+            // Add neighbors to the queue
+            foreach (GridTileData neighbour in current.Neighbours)
+            {
+                if (neighbour.IsEnabled && (!neighbour.IsOccupied || !traveler.OccupiesTheWholeTile) && !cameFrom.ContainsKey(neighbour)) // Ensure the neighbor is valid and not visited
+                {
+                    queue.Enqueue(neighbour);
+                    cameFrom[neighbour] = current;
+                }
+            }
+        }
+
+        // No path found
+        path = null;
+        return false;
+    }
+
+
+    #endregion
 }
 
 #if UNITY_EDITOR
@@ -53,7 +116,7 @@ public class GridMap : ScriptableObject
 public class GridMapEditor : Editor
 {
     private const float TILE_SIZE = 40f;
-    private Dictionary<string, Color> _tileColor = new()
+    private readonly Dictionary<string, Color> _tileColor = new()
     {
         {"Selected",Color.yellow},
         {"Empty", Color.white},
@@ -63,13 +126,13 @@ public class GridMapEditor : Editor
         {"Missing", Color.black}
     };
 
-    private GridTile _selectedTile; // Currently selected tile
+    private GridTileData _selectedTile; // Currently selected tile
 
-    private Color GetTileColor(GridTile tile)
+    private Color GetTileColor(GridTileData tile)
     {
         if (tile == _selectedTile) return _tileColor["Selected"];
         if (!tile.IsEnabled) return _tileColor["Disabled"];
-        if (!tile.IsOccupied) return _tileColor["Empty"];
+        if (!tile.Occupants.Any()) return _tileColor["Empty"];
         if (tile.Occupants.Where(occupant => occupant == null).Any()) return _tileColor["Invalid Occupants"];
         return _tileColor["Occupied"];
     }
@@ -85,19 +148,19 @@ public class GridMapEditor : Editor
         EditorGUILayout.LabelField("Grid Visualization", EditorStyles.boldLabel);
 
         // Ensure the grid is initialized
-        if (gridObject.Tiles == null || gridObject.Tiles.Count != gridObject.GridWidth * gridObject.GridHeight)
+        if (gridObject.Tiles == null || gridObject.Tiles.Count != gridObject.Width * gridObject.Height)
         {
             gridObject.InitializeGrid();
         }
 
         // Draw the grid
-        for (int y = gridObject.GridHeight - 1; y >= 0; y--)
+        for (int y = gridObject.Height - 1; y >= 0; y--)
         {
             EditorGUILayout.BeginHorizontal();
-            for (int x = 0; x < gridObject.GridWidth; x++)
+            for (int x = 0; x < gridObject.Width; x++)
             {
                 // Tile visualization
-                GridTile currentTile = gridObject.GetTile(x, y);
+                GridTileData currentTile = gridObject[x, y];
                 Color previousColor = GUI.color;
                 GUI.color = GetTileColor(currentTile);
 
