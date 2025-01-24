@@ -5,62 +5,61 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    private static TurnManager instance;
+    public static TurnManager Instance;
     private List<Character> _charactersOnMap = new();
 
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
 
-    private void Start()
+    private void LoadCharactersOnMap()
     {
-        Debug.LogError("NOT FINISHED CODE");
-        //fix after changing Character to Character : GridEntity
+        _charactersOnMap.Clear();
+        ///////////////////////////////////
+        Debug.LogError("Code not finished");
+        GridMap gm = new();
+        //GridMap gm = GameManager.CurrentGridMap;
+        ///////////////////////////////////
 
-        try
+        foreach (var tile in gm.Tiles)
         {
-            GridMap gm = new();
-            foreach (var tile in gm.Tiles)
+            foreach (var occupant in tile.Occupants)
             {
-                foreach (var occupant in tile.Occupants)
-                {
-                    if (occupant == null) continue;
-                    if(occupant is Character) _charactersOnMap.Add((Character)occupant);
-                }
+                if (occupant == null) continue;
+                if (occupant is Character) _charactersOnMap.Add((Character)occupant);
             }
         }
-        catch (System.Exception) { }
 
-        _charactersOnMap = _charactersOnMap.OrderBy( c => c.CharacterProfile.TotalInitiative ).ToList();
+        SortCharacters();
+    }
+    private void SortCharacters()
+    {
+        _charactersOnMap = _charactersOnMap.OrderBy(c => c.CharacterProfile.TotalInitiative).ToList();
+    }
+    public void AddCharacter(Character c)
+    {
+        _charactersOnMap.Add(c);
+    }
+    public void RemoveCharacter(Character c)
+    {
+        if (!_charactersOnMap.Contains(c)) return;
+        _charactersOnMap.Remove(c);
     }
 
-    private void Update()
-    {
-        if (_currentTurn == null) Round();
-        Turn();
-        if (_endRound) EndRound();
-    }
 
-    private bool _endRound = false;
-    private Character _currentTurn = null;
-    private void Round()
+    
+    public void ContinueTurn()
     {
-        _currentTurn = _charactersOnMap.Where(c => c.HadTurn == false).FirstOrDefault();
-        if (_currentTurn == null) _endRound = true;
-    }
-    private void Turn()
-    {
-        if (_currentTurn == null) return;
-        if (_currentTurn.HadTurn) _currentTurn = null;
+        if(_charactersOnMap.Where(c => c.HadTurn == false).Count() == 0) EndRound();
+        SortCharacters();
+        _charactersOnMap.Where(c => c.HadTurn == false).FirstOrDefault().BeginTurn();
     }
     private void EndRound()
     {
-        _charactersOnMap = _charactersOnMap.OrderBy(c => c.CharacterProfile.TotalInitiative).ToList();
-        _endRound = false;
-        foreach (var c in _charactersOnMap)
+        foreach(var c in _charactersOnMap)
         {
             c.ResetTurn();
         }

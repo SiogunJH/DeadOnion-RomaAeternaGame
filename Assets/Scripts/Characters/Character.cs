@@ -25,6 +25,7 @@ public class Character : GridEntity
 
 
     #region >>> Effect <<<
+
     private List<CombatAbilityEffect> _activeEffects;
 
     public void AddEffect(CombatAbilityEffect effect)
@@ -121,6 +122,7 @@ public class Character : GridEntity
     private bool _hadTurn = false;
     public bool HadTurn => _hadTurn;
 
+
     public void BeginTurn()
     {
         ExecuteActiveEffects();
@@ -130,6 +132,7 @@ public class Character : GridEntity
     private void EndTurn()
     {
         _hadTurn = true;
+        TurnManager.Instance.ContinueTurn();
     }
 
     public void ResetTurn()
