@@ -3,26 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TurnManager : MonoBehaviour
+public class TurnManager : MonoBehaviourSingleton<TurnManager>
 {
-    public static TurnManager Instance;
     private List<Character> _charactersOnMap = new();
 
 
-    private void Awake()
-    {
-        Instance = this;
-    }
 
-
-    private void LoadCharactersOnMap()
+    private bool LoadCharactersOnMap()
     {
         _charactersOnMap.Clear();
-        ///////////////////////////////////
-        Debug.LogError("Code not finished");
-        GridMap gm = new();
-        //GridMap gm = GameManager.CurrentGridMap;
-        ///////////////////////////////////
+        GridMap gm = GridManager.Instance.Grid;
+        if(gm == null) return false;
 
         foreach (var tile in gm.Tiles)
         {
@@ -34,6 +25,7 @@ public class TurnManager : MonoBehaviour
         }
 
         SortCharacters();
+        return true;
     }
     private void SortCharacters()
     {
