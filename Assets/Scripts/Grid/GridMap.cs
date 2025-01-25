@@ -15,41 +15,27 @@ public class GridMap : ScriptableObject
     public int WidthL
     {
         get => _gridWidthL;
-        set
-        {
-            Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
-            _gridWidthL = value;
-        }
+        set => _gridWidthL = value;
     }
 
     [SerializeField] private int _gridWidthR = 3;
     public int WidthR
     {
         get => _gridWidthR;
-        set
-        {
-            Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
-            _gridWidthR = value;
-        }
+        set => _gridWidthR = value;
     }
 
     [SerializeField] private int _gridHeight = 3;
     public int Height
     {
         get => _gridHeight;
-        set
-        {
-            Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
-            _gridHeight = value;
-        }
+        set => _gridHeight = value;
     }
 
     [SerializeField, HideInInspector] public List<GridTileData> Tiles = new();
 
     public GridTileData this[int x, int y] { get => this[new(x, y)]; }
     public GridTileData this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
-
-    private const string GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING = "Attempted to modify GridMap's dimensions during runtime. This may have unexpected results!";
 
     #region Initialization
 
