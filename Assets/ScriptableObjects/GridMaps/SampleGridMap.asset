@@ -81,7 +81,7 @@ MonoBehaviour:
     Coordinates: {x: -1, y: 3}
     IsEnabled: 1
     _occupants:
-    - {fileID: 7644224293185759868, guid: 2be73b83d65f53d4289a9f3710673572, type: 3}
+    - {fileID: -5657959850804328302, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
   - Controller: {fileID: 0}
     Coordinates: {x: -2, y: 3}
     IsEnabled: 1
