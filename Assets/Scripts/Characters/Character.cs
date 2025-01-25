@@ -70,7 +70,13 @@ public class Character : GridEntity
     }
     public void TakeElementalDamage(int amount, CombatAbilityEffect.EffectType damageType)
     {
-        if(amount < 0) return;
+        TakeTrueDamage(amount);
+        Debug.LogWarning("Elemental damage not yet implemented");
+        return;
+
+        #pragma warning disable CS0162 // Unreachable code detected
+        #pragma warning disable IDE0035 // Unreachable code detected
+        if (amount < 0) return;
         switch (damageType)
         {
             case CombatAbilityEffect.EffectType.DamageAcid:
@@ -87,6 +93,8 @@ public class Character : GridEntity
 
         Debug.Log("Do damage here"); //don't forget about armor
         //die
+        #pragma warning restore CS0162 // Unreachable code detected
+        #pragma warning restore IDE0035 // Unreachable code detected
     }
     public void GainArmor(int amount)
     {

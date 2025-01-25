@@ -9,22 +9,20 @@ public class CombatAbilityExecutor : MonoBehaviourSingleton<CombatAbilityExecuto
 {
     private Dictionary<CombatAbilityEffect.EffectType, CombatAbilityEffectHandler> _handlers = new()
     {
-        {new HealHandler().EffectType , new HealHandler()}
+        {new HealHandler().EffectType, new HealHandler()},
+        {new DamageAcidHandler().EffectType, new DamageAcidHandler()},
+        {new DamageEnergyHandler().EffectType, new DamageEnergyHandler()},
+        {new DamageFireHandler().EffectType, new DamageFireHandler()},
+        {new DamageKineticHandler().EffectType, new DamageKineticHandler()},
+        {new DamagePlasmaHandler().EffectType, new DamagePlasmaHandler()},
+        {new SkipTurnHandler().EffectType, new SkipTurnHandler()}
     };
-
-    public delegate void GridEffectHandler(Vector2 target, CombatAbilityEffect effect, GridMap map, Character caster);
-    private Dictionary<CombatAbilityEffect.EffectType, GridEffectHandler> _gridHandlers = new();
-
-    public delegate void CharacterEffectHandler(CombatAbilityEffect effect, GridMap map, Character affected);
-    private Dictionary<CombatAbilityEffect.EffectType, CharacterEffectHandler> _characterHandlers = new();
-
-
 
     public void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
     {
         foreach(var effect in ability.AbilityEffects)
         {
-            if (!_gridHandlers.ContainsKey(effect.Type))
+            if (!_handlers.ContainsKey(effect.Type))
             {
                 Debug.LogError($"No handler of type: {effect.Type} was found when trying to execute: {ability.name} from: {caster.name}");
                 return;
@@ -33,11 +31,11 @@ public class CombatAbilityExecutor : MonoBehaviourSingleton<CombatAbilityExecuto
 
         foreach(var effect in ability.AbilityEffects)
         {
-            _gridHandlers[effect.Type]?.Invoke(target, effect, map, caster);
+            _handlers[effect.Type].GridEffectHandler(target, effect, map, caster);
         }
     }
     public void ExecuteEffectOnCharacter(CombatAbilityEffect effect, GridMap map, Character affected)
     {
-        _characterHandlers[effect.Type]?.Invoke(effect, map, affected);
+        _handlers[effect.Type].CharacterEffectHandler(effect, map, affected);
     }
 }
