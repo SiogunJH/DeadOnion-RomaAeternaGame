@@ -11,42 +11,86 @@ using UnityEditor;
 public class GridMap : ScriptableObject
 {
     [Header("Dimensions")]
-    [SerializeField, Range(2, 20), Tooltip("Width of the grid")] private int _gridWidth = 5;
-    public int Width => _gridWidth;
+    [SerializeField] private int _gridWidthL = 3;
+    public int WidthL
+    {
+        get => _gridWidthL;
+        set
+        {
+            Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+            _gridWidthL = value;
+        }
+    }
 
-    [SerializeField, Range(1, 10), Tooltip("Height of the grid")] private int _gridHeight = 5;
-    public int Height => _gridHeight;
+    [SerializeField] private int _gridWidthR = 3;
+    public int WidthR
+    {
+        get => _gridWidthR;
+        set
+        {
+            Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+            _gridWidthR = value;
+        }
+    }
+
+    [SerializeField] private int _gridHeight = 3;
+    public int Height
+    {
+        get => _gridHeight;
+        set
+        {
+            Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+            _gridHeight = value;
+        }
+    }
 
     [SerializeField, HideInInspector] public List<GridTileData> Tiles = new();
 
     public GridTileData this[int x, int y] { get => this[new(x, y)]; }
     public GridTileData this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
 
+    private const string GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING = "Attempted to modify GridMap's dimensions during runtime. This may have unexpected results!";
+
     #region Initialization
 
-    public void InitializeGrid()
+    public void InitializeGrid(bool removeUnusedTiles = false)
     {
-        for (int x = 0; x < Width; x++)
+        for (int y = 1; y <= Height; y++)
         {
-            for (int y = 0; y < Height; y++)
+            for (int x = 1; x <= WidthL; x++)
             {
-                Vector2 index = new(x, y);
+                InitializeTile(x, y);
+            }
 
-                // Check if tile already exists
-                GridTileData existingTile = this[index];
-                if (existingTile != null) continue;
-
-                // Add a new tile if it doesn't exist
-                GridTileData newTile = new(x, y);
-                Tiles.Add(newTile);
+            for (int x = 1; x <= WidthR; x++)
+            {
+                InitializeTile(-x, y);
             }
         }
+
+        if (removeUnusedTiles) OptimizeGrid();
+    }
+
+    private void InitializeTile(int x, int y)
+    {
+        Vector2 index = new(x, y);
+
+        // Check if tile already exists
+        GridTileData existingTile = this[index];
+        if (existingTile != null) return;
+
+        // Add a new tile if it doesn't exist
+        GridTileData newTile = new(x, y);
+        Tiles.Add(newTile);
     }
 
     public void OptimizeGrid()
     {
         // Remove unused GridTiles
-        Tiles = Tiles.Where(tile => tile.X < Width && tile.Y < Height).ToList();
+        Tiles = Tiles
+            .Where(tile => tile.Y <= Height && tile.Y > 0)
+            .Where(tile => (tile.X < 0 && Mathf.Abs(tile.X) <= WidthR) || (tile.X > 0 && Mathf.Abs(tile.X) <= WidthL))
+            .ToList();
     }
 
     #endregion
