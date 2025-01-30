@@ -13,7 +13,8 @@ public class GridEntity : MonoBehaviour
     [HideInInspector] public GridTileData Location = null;
     [HideInInspector] public int ID = -1;
 
-    public string UserFriendlyName { get => CharacterProfile.Name; }
+    private string _userFriendlyName = "NAME NOT SET";
+    public string UserFriendlyName { get => _userFriendlyName; }
     public GridMap Map { get => GridManager.Instance.Grid; }
 
     public GridEntityCategory Category;
