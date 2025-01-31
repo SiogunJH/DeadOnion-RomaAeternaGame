@@ -49,6 +49,13 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
 #endif
     private void DisplayGrid()
     {
+        // Validate
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning("GridMap cannot be displayed outside of play mode!");
+            return;
+        }
+
         // Clear
         _gridContainer.transform.RemoveChildren();
 
