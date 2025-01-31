@@ -17,9 +17,13 @@ public class GridMap : ScriptableObject
         get => _gridWidthL;
         set
         {
+            // Validate
             if (_gridWidthL == value) return;
-            if (!EditorUtility.IsPersistent(this)) Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
 
+            // Assert
+            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+
+            // Apply
             _gridWidthL = value;
         }
     }
@@ -30,9 +34,13 @@ public class GridMap : ScriptableObject
         get => _gridWidthR;
         set
         {
+            // Validate
             if (_gridWidthR == value) return;
-            if (!EditorUtility.IsPersistent(this)) Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
 
+            // Assert
+            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+
+            // Apply
             _gridWidthR = value;
         }
     }
@@ -43,9 +51,13 @@ public class GridMap : ScriptableObject
         get => _gridHeight;
         set
         {
+            // Validate
             if (_gridHeight == value) return;
-            if (!EditorUtility.IsPersistent(this)) Debug.Assert(!Application.isPlaying, GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
 
+            // Assert
+            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+
+            // Apply
             _gridHeight = value;
         }
     }
