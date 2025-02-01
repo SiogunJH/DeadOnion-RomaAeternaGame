@@ -37,7 +37,7 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
 
         // Initialize Grid
         Grid = Instantiate(Grid);
-        Grid.OptimizeGrid();
+        Grid.InitializeGrid(true);
     }
 
     #endregion
@@ -49,56 +49,64 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
 #endif
     private void DisplayGrid()
     {
+        // Validate
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning("GridMap cannot be displayed outside of play mode!");
+            return;
+        }
+
         // Clear
         _gridContainer.transform.RemoveChildren();
 
         // Generate
-        for (int x = 0; x < Grid.Width; x++)
+        for (int y = 1; y <= Grid.Height; y++)
         {
-            for (int z = 0; z < Grid.Height; z++)
+            for (int x = 1; x <= Grid.WidthL; x++)
             {
-                GridTileData tile = Grid[x, z];
+                DisplayTile(x, y);
+            }
 
-                // Validate
-                if (!tile.IsEnabled) continue;
-
-                // Create
-                GridTileController newTile = Instantiate(_tileVisualization, _gridContainer).GetComponent<GridTileController>();
-                newTile.gameObject.name = $"Tile ({x},{z})";
-
-                newTile.Data = tile;
-                tile.Controller = newTile;
-
-                // Position
-                newTile.transform.localPosition = new(x * TILE_SPACING, 0, z * TILE_SPACING);
-
-                // Handle occupants
-                for (int i = 0; i < tile.Occupants.Count; i++)
-                {
-                    // Validate
-                    Debug.Assert(tile.Occupants[i] != null, "Occupant cannot be null!", this);
-
-                    // Create visual representation and clone
-                    tile.Occupants[i] = Instantiate(tile.Occupants[i].gameObject, newTile.transform).GetComponent<GridEntity>();
-                    tile.Occupants[i].transform.localPosition = Vector3.zero;
-
-                    // Assign data
-                    tile.Occupants[i].Location = Grid[x, z];
-                    AssignEntityID(tile.Occupants[i]);
-                }
+            for (int x = 1; x <= Grid.WidthR; x++)
+            {
+                DisplayTile(-x, y);
             }
         }
     }
 
-#if UNITY_EDITOR
-    [Button]
-    private void LogGridInfo()
+    private void DisplayTile(int x, int y)
     {
-        string result = "";
-        foreach (var tile in Grid.Tiles) result += $"{tile}\n";
-        Debug.Log(result);
+        // Get ref
+        GridTileData tile = Grid[x, y];
+
+        // Validate
+        if (!tile.IsEnabled) return;
+
+        // Create
+        GridTileController newTile = Instantiate(_tileVisualization, _gridContainer).GetComponent<GridTileController>();
+        newTile.gameObject.name = $"Tile ({x},{y})";
+
+        newTile.Data = tile;
+        tile.Controller = newTile;
+
+        // Position
+        newTile.transform.localPosition = new(x * TILE_SPACING, 0, y * TILE_SPACING);
+
+        // Handle occupants
+        for (int i = 0; i < tile.Occupants.Count; i++)
+        {
+            // Validate
+            Debug.Assert(tile.Occupants[i] != null, "Occupant cannot be null!", this);
+
+            // Create visual representation and clone
+            tile.Occupants[i] = Instantiate(tile.Occupants[i].gameObject, newTile.transform).GetComponent<GridEntity>();
+            tile.Occupants[i].transform.localPosition = Vector3.zero;
+
+            // Assign data
+            tile.Occupants[i].Location = Grid[x, y];
+            AssignEntityID(tile.Occupants[i]);
+        }
     }
-#endif
 
     #endregion
 
@@ -111,6 +119,20 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
         _lastEntityID++;
         entity.ID = _lastEntityID;
     }
+
+    #endregion
+
+    #region Debug
+
+#if UNITY_EDITOR
+    [Button]
+    private void LogGridInfo()
+    {
+        string result = "";
+        foreach (var tile in Grid.Tiles) result += $"{tile}\n";
+        Debug.Log(result);
+    }
+#endif
 
     #endregion
 }

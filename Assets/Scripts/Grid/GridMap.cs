@@ -11,42 +11,104 @@ using UnityEditor;
 public class GridMap : ScriptableObject
 {
     [Header("Dimensions")]
-    [SerializeField, Range(2, 20), Tooltip("Width of the grid")] private int _gridWidth = 5;
-    public int Width => _gridWidth;
+    [SerializeField] private int _gridWidthL = 3;
+    public int WidthL
+    {
+        get => _gridWidthL;
+        set
+        {
+            // Validate
+            if (_gridWidthL == value) return;
 
-    [SerializeField, Range(1, 10), Tooltip("Height of the grid")] private int _gridHeight = 5;
-    public int Height => _gridHeight;
+            // Assert
+            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+
+            // Apply
+            _gridWidthL = value;
+        }
+    }
+
+    [SerializeField] private int _gridWidthR = 3;
+    public int WidthR
+    {
+        get => _gridWidthR;
+        set
+        {
+            // Validate
+            if (_gridWidthR == value) return;
+
+            // Assert
+            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+
+            // Apply
+            _gridWidthR = value;
+        }
+    }
+
+    [SerializeField] private int _gridHeight = 3;
+    public int Height
+    {
+        get => _gridHeight;
+        set
+        {
+            // Validate
+            if (_gridHeight == value) return;
+
+            // Assert
+            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+
+            // Apply
+            _gridHeight = value;
+        }
+    }
 
     [SerializeField, HideInInspector] public List<GridTileData> Tiles = new();
 
     public GridTileData this[int x, int y] { get => this[new(x, y)]; }
     public GridTileData this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
 
+    private const string GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING = "Attempted to modify GridMap's dimensions during runtime. This may have unexpected results!";
+
     #region Initialization
 
-    public void InitializeGrid()
+    public void InitializeGrid(bool removeUnusedTiles = false)
     {
-        for (int x = 0; x < Width; x++)
+        for (int y = 1; y <= Height; y++)
         {
-            for (int y = 0; y < Height; y++)
+            for (int x = 1; x <= WidthL; x++)
             {
-                Vector2 index = new(x, y);
+                InitializeTile(x, y);
+            }
 
-                // Check if tile already exists
-                GridTileData existingTile = this[index];
-                if (existingTile != null) continue;
-
-                // Add a new tile if it doesn't exist
-                GridTileData newTile = new(x, y);
-                Tiles.Add(newTile);
+            for (int x = 1; x <= WidthR; x++)
+            {
+                InitializeTile(-x, y);
             }
         }
+
+        if (removeUnusedTiles) OptimizeGrid();
+    }
+
+    private void InitializeTile(int x, int y)
+    {
+        Vector2 index = new(x, y);
+
+        // Check if tile already exists
+        GridTileData existingTile = this[index];
+        if (existingTile != null) return;
+
+        // Add a new tile if it doesn't exist
+        GridTileData newTile = new(x, y);
+        Tiles.Add(newTile);
     }
 
     public void OptimizeGrid()
     {
         // Remove unused GridTiles
-        Tiles = Tiles.Where(tile => tile.X < Width && tile.Y < Height).ToList();
+        Tiles = Tiles
+            .Where(tile => tile.Y <= Height && tile.Y > 0)
+            .Where(tile => (tile.X < 0 && Mathf.Abs(tile.X) <= WidthR) || (tile.X > 0 && Mathf.Abs(tile.X) <= WidthL))
+            .ToList();
     }
 
     #endregion
@@ -106,141 +168,6 @@ public class GridMap : ScriptableObject
         return false;
     }
 
-
     #endregion
+
 }
-
-#if UNITY_EDITOR
-
-[CustomEditor(typeof(GridMap))]
-public class GridMapEditor : Editor
-{
-    private const float TILE_SIZE = 40f;
-    private readonly Dictionary<string, Color> _tileColor = new()
-    {
-        {"Selected",Color.yellow},
-        {"Empty", Color.white},
-        {"Disabled", Color.gray},
-        {"Occupied", Color.cyan},
-        {"Invalid Occupants", Color.red},
-        {"Missing", Color.black}
-    };
-
-    private GridTileData _selectedTile; // Currently selected tile
-
-    private Color GetTileColor(GridTileData tile)
-    {
-        if (tile == _selectedTile) return _tileColor["Selected"];
-        if (!tile.IsEnabled) return _tileColor["Disabled"];
-        if (!tile.Occupants.Any()) return _tileColor["Empty"];
-        if (tile.Occupants.Where(occupant => occupant == null).Any()) return _tileColor["Invalid Occupants"];
-        return _tileColor["Occupied"];
-    }
-
-    public override void OnInspectorGUI()
-    {
-        GridMap gridObject = (GridMap)target;
-
-        // Draw default Inspector for other fields
-        DrawDefaultInspector();
-
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Grid Visualization", EditorStyles.boldLabel);
-
-        // Ensure the grid is initialized
-        if (gridObject.Tiles == null || gridObject.Tiles.Count != gridObject.Width * gridObject.Height)
-        {
-            gridObject.InitializeGrid();
-        }
-
-        // Draw the grid
-        for (int y = gridObject.Height - 1; y >= 0; y--)
-        {
-            EditorGUILayout.BeginHorizontal();
-            for (int x = 0; x < gridObject.Width; x++)
-            {
-                // Tile visualization
-                GridTileData currentTile = gridObject[x, y];
-                Color previousColor = GUI.color;
-                GUI.color = GetTileColor(currentTile);
-
-                // Draw button for the tile
-                if (GUILayout.Button($"{x}:{y}", GUILayout.Width(TILE_SIZE), GUILayout.Height(TILE_SIZE)))
-                {
-                    if (_selectedTile == currentTile) _selectedTile = null; // Unselect tile if clicked again
-                    else _selectedTile = currentTile; // Select this tile
-                }
-
-                GUI.color = previousColor;
-            }
-            EditorGUILayout.EndHorizontal();
-        }
-
-        // Display selected tile information
-        if (_selectedTile != null)
-        {
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Selected Tile Info", EditorStyles.boldLabel);
-
-            EditorGUILayout.LabelField("Coordinates", $"({_selectedTile.Coordinates.x}, {_selectedTile.Coordinates.y})");
-
-            // Toggle for enabling/disabling the tile
-            _selectedTile.IsEnabled = EditorGUILayout.Toggle("Is Enabled", _selectedTile.IsEnabled);
-
-            // Disallow further edits if thile is not enabled
-            if (_selectedTile.IsEnabled)
-            {
-                EditorGUILayout.Space();
-
-                // Occupants field with drag-and-drop support for multiple entities
-                List<GridEntity> occupants = _selectedTile.Occupants;
-                if (occupants == null) occupants = new();
-
-                for (int i = 0; i < occupants.Count; i++)
-                {
-                    EditorGUILayout.BeginHorizontal();
-
-                    // Validate occupant and get its name
-                    bool occupantExists = occupants[i] != null;
-                    string occupantName = occupantExists ? occupants[i].UserFriendlyName : "Missing occupant reference";
-
-                    // Mark red, if an occupant is missing
-                    Color previousColor = GUI.color;
-                    if (occupants[i] == null) GUI.color = Color.red;
-
-                    // Name label
-                    GUILayout.Label(occupantName, GUILayout.Width(250));
-
-                    // Revert color
-                    GUI.color = previousColor;
-
-                    // Create occupant field
-                    occupants[i] = (GridEntity)EditorGUILayout.ObjectField(occupants[i], typeof(GridEntity), false);
-
-                    if (GUILayout.Button("Remove", GUILayout.Width(60)))
-                    {
-                        occupants.RemoveAt(i);
-                        i--; // Adjust index to reflect removed item
-                    }
-                    EditorGUILayout.EndHorizontal();
-                }
-
-                if (GUILayout.Button("Add Occupant"))
-                {
-                    occupants.Add(null);
-                }
-
-                _selectedTile.SetOccupants(occupants);
-            }
-        }
-
-        // Save changes to ScriptableObject
-        if (GUI.changed)
-        {
-            EditorUtility.SetDirty(gridObject);
-        }
-    }
-}
-
-
-#endif
