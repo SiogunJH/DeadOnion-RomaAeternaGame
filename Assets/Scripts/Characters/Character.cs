@@ -8,19 +8,20 @@ public class Character : GridEntity
 {
     [SerializeField]
     private CharacterProfile _profile;
-    public CharacterProfile CharacterProfile { get { return _profile; } }
-
-    private void Awake()
-    {
-        _currentHealth = CharacterProfile.TotalHealth;
-        _currentArmor = CharacterProfile.MaxArmor;
-    }
+    public CharacterProfile CharacterProfile => _profile;
 
     private int _currentHealth;
     private int _currentShield = 0;
     private int _currentArmor;
 
     private int _currentMovePoints;
+
+
+    private void Awake()
+    {
+        _currentHealth = CharacterProfile.TotalHealth;
+        _currentArmor = CharacterProfile.MaxArmor;
+    }
 
 
     #region >>> Effect <<<
@@ -161,7 +162,7 @@ public class Character : GridEntity
 
 
 
-    private static Dictionary<CharacterProfile.CharacterArmorClass, float> _damageReduction = new()
+    private readonly static Dictionary<CharacterProfile.CharacterArmorClass, float> _damageReduction = new()
     {
         { CharacterProfile.CharacterArmorClass.Light, 0.4f },
         { CharacterProfile.CharacterArmorClass.Medium, 0.6f },

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CombatAbilityExecutor : MonoBehaviourSingleton<CombatAbilityExecutor>
 {
-    private Dictionary<CombatAbilityEffect.EffectType, CombatAbilityEffectHandler> _handlers = new()
+    private readonly Dictionary<CombatAbilityEffect.EffectType, CombatAbilityEffectHandler> _handlers = new()
     {
         {new HealHandler().EffectType, new HealHandler()},
         {new DamageAcidHandler().EffectType, new DamageAcidHandler()},
