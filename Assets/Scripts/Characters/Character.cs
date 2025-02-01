@@ -38,7 +38,7 @@ public class Character : GridEntity
         _activeEffects = _activeEffects.Where(e => e.ForTurns >= 0).ToList();
         foreach(var effect in _activeEffects)
         {
-            CombatAbilityExecutor.Instance.ExecuteEffectOnCharacter(effect, GridManager.Instance.Grid, this);
+            CombatAbilityExecutor.ExecuteEffectOnCharacter(effect, GridManager.Instance.Grid, this);
             Debug.Log("Replace null with gridmap reference");
             if(effect.ForTurns <= 0) _activeEffects.Remove(effect);
         }

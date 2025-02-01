@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatAbilityExecutor : MonoBehaviourSingleton<CombatAbilityExecutor>
+public static class CombatAbilityExecutor
 {
-    private readonly Dictionary<CombatAbilityEffect.EffectType, CombatAbilityEffectHandler> _handlers = new()
+    private static readonly Dictionary<CombatAbilityEffect.EffectType, CombatAbilityEffectHandler> _handlers = new()
     {
         {new HealHandler().EffectType, new HealHandler()},
         {new DamageAcidHandler().EffectType, new DamageAcidHandler()},
@@ -15,23 +15,21 @@ public class CombatAbilityExecutor : MonoBehaviourSingleton<CombatAbilityExecuto
         {new SkipTurnHandler().EffectType, new SkipTurnHandler()}
     };
 
-    public void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
+    public static void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
     {
         foreach(var effect in ability.AbilityEffects)
         {
-            if (!_handlers.ContainsKey(effect.Type))
+            if(_handlers.TryGetValue(effect.Type, out var handler))
+            {
+                handler.GridEffectHandler(target, effect, map, caster);
+            }
+            else
             {
                 Debug.LogError($"No handler of type: {effect.Type} was found when trying to execute: {ability.name} from: {caster.name}");
-                return;
             }
         }
-
-        foreach(var effect in ability.AbilityEffects)
-        {
-            _handlers[effect.Type].GridEffectHandler(target, effect, map, caster);
-        }
     }
-    public void ExecuteEffectOnCharacter(CombatAbilityEffect effect, GridMap map, Character affected)
+    public static void ExecuteEffectOnCharacter(CombatAbilityEffect effect, GridMap map, Character affected)
     {
         _handlers[effect.Type].CharacterEffectHandler(effect, map, affected);
     }
