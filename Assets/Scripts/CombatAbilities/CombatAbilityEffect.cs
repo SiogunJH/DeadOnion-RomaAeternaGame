@@ -35,7 +35,7 @@ public class CombatAbilityEffect
         copy.ForTurns = original.ForTurns;
         foreach (var pos in original.RelativeAffectedPositions)
         {
-            copy.RelativeAffectedPositions.Add(pos);
+            copy.RelativeAffectedPositions.Add(new Vector2Int(pos.x, pos.y));
         }
         return copy;
     }
