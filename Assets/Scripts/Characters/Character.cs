@@ -133,21 +133,27 @@ public class Character : GridEntity
         Dex = 2,
         Evasion = 3
     }
+    private Dictionary<Attribute, Tuple<Func<int>, Action<int>>> _attributes = new(); //Stores all attrib modification properties
+    public Character()
+    {
+        _attributes[Attribute.Strength] = new Tuple<Func<int>, Action<int>>(() => _evasionModification, value => _evasionModification = value);
+    }
     public void ChangeAttribute(Attribute attribute, int value) //called by handlers
     {
-        switch(attribute) //Switch for now but it would be messy with all attributes added, maybe dict with methods would be better?
+        if (_attributes.TryGetValue(attribute, out var property))
         {
-            case Attribute.Evasion:
-                _evasionModification += value;
-                break;
-            //case...
-            //case...
-
-            default:
-                break;
+            property.Item2(value);
+        }
+        else Debug.LogError($"{attribute.ToString()} Not found on {_profile.Name}");
+    }
+    private void ResetAttributes() //Do this at the end or beggining of every turn?
+    {
+        foreach(var attribute in _attributes.Values)
+        {
+            attribute.Item2(0);
         }
     }
-    private int _evasionModification;
+    private int _evasionModification { get; set; }
     public int Evasion => _profile.TotalEvasion + _evasionModification;
 
     //To clear the stat modification:
