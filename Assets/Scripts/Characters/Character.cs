@@ -124,6 +124,42 @@ public class Character : GridEntity
     #endregion
 
 
+    #region >>> Attributes <<<
+
+    public enum Attribute //Enum to have a neat attribute name dropdown in tool and avoid using reflection or writing a 100 methods
+    {
+        None = 0,
+        Strength = 1,
+        Dex = 2,
+        Evasion = 3
+    }
+    public void ChangeAttribute(Attribute attribute, int value) //called by handlers
+    {
+        switch(attribute) //Switch for now but it would be messy with all attributes added, maybe dict with methods would be better?
+        {
+            case Attribute.Evasion:
+                _evasionModification += value;
+                break;
+            //case...
+            //case...
+
+            default:
+                break;
+        }
+    }
+    private int _evasionModification;
+    public int Evasion => _profile.TotalEvasion + _evasionModification;
+
+    //To clear the stat modification:
+    //Add some sort of OnDeath to handlers done when overtime effect expires.
+    //Or maybe clear and calculate the stat modification each turn????
+
+    //
+    //Either do all this or just write a method for each attribute or something like that
+
+    #endregion
+
+
     #region >>> Turn <<<
 
     [SerializeField][HideInInspector]
