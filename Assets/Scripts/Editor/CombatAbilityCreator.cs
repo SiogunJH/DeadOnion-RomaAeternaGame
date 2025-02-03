@@ -20,6 +20,23 @@ public class CombatAbilityCreator : EditorWindow
     private Color _gridSquareCenterPositionColor = new Color(0.5f, 0.5f, 0.5f);
     private Color _gridSquareRangeColor = new Color(0.2f, 0.2f, 0);
 
+    private readonly static Dictionary<CombatAbilityEffect.EffectType, Color> _effectColors = new()
+    {
+        { CombatAbilityEffect.EffectType.Move, new Color(0.1f, 0.3f, 0.3f) },
+        { CombatAbilityEffect.EffectType.SkipTurn, new Color(0.2f, 0.4f, 0.2f) },
+        { CombatAbilityEffect.EffectType.Interact, new Color(0.2f, 0.4f, 0.2f) },
+        { CombatAbilityEffect.EffectType.Reload, new Color(0.2f, 0.4f, 0.2f) },
+        { CombatAbilityEffect.EffectType.DamageKinetic, new Color(0.3f, 0.3f, 0.4f) },
+        { CombatAbilityEffect.EffectType.DamageEnergy, new Color(0.1f, 0.2f, 0.4f) },
+        { CombatAbilityEffect.EffectType.DamageFire, new Color(0.4f, 0.1f, 0.1f) },
+        { CombatAbilityEffect.EffectType.DamagePlasma, new Color(0.3f, 0.0f, 0.4f) },
+        { CombatAbilityEffect.EffectType.DamageAcid, new Color(0.4f, 0.3f, 0.0f) },
+        { CombatAbilityEffect.EffectType.Heal, new Color(0.0f, 0.4f, 0.0f) },
+        { CombatAbilityEffect.EffectType.Shield, new Color(0.0f, 0.4f, 0.4f) },
+
+        { CombatAbilityEffect.EffectType.None, new Color(0.3f, 0.3f, 0.3f) } //Don't remove
+    };
+
 
     private const int ABILITY_MAX_SIZE = 15; //keep this odd
 
@@ -183,10 +200,22 @@ public class CombatAbilityCreator : EditorWindow
         Color color = _gridSquareEmptyColor;
         if (isCenter) color = _gridSquareCenterPositionColor;
 
-        if (isAffected && _selectedEffect != null) color += CombatAbilityEffect.EffectTypeToColor(_selectedEffect.Type);
+        if (isAffected && _selectedEffect != null) color += EffectTypeToColor(_selectedEffect.Type);
         if (isAffected && _selectedEffect == null) color += _gridSquareRangeColor;
 
         return color;
+    }
+    private static Color EffectTypeToColor(CombatAbilityEffect.EffectType effectType)
+    {
+        try
+        {
+            if(_effectColors.ContainsKey(effectType)) return _effectColors[effectType];
+            else return _effectColors[CombatAbilityEffect.EffectType.None];
+        }
+        catch (KeyNotFoundException)
+        {
+            return new Color(0.3f, 0.3f, 0.3f);
+        }
     }
     private void PaintTile(int x, int y, Rect rec, ref List<Vector2Int> affectedTiles)
     {
@@ -402,8 +431,6 @@ public class CombatAbilityCreator : EditorWindow
         GL.Space(2);
     }
 }
-
-
 
 //TODO: Save button allowing saving when assed is already saved in database.
 //TODO: Make it so that the tool doesn't overwrite the edited object, instead work on a copy and save using save button when finished
