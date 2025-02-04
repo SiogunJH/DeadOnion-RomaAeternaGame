@@ -22,6 +22,10 @@ public class Character : GridEntity
         _currentHealth = CharacterProfile.TotalHealth;
         _currentArmor = CharacterProfile.MaxArmor;
     }
+    public Character()
+    {
+        LoadAttributes();
+    }
 
 
     #region >>> Effect <<<
@@ -35,12 +39,12 @@ public class Character : GridEntity
     }
     private void ExecuteActiveEffects()
     {
-        _activeEffects = _activeEffects.Where(e => e.ForTurns >= 0).ToList();
+        _activeEffects = _activeEffects.Where(e => e.ForAdditionalTurns >= 0).ToList();
         foreach(var effect in _activeEffects)
         {
             CombatAbilityExecutor.ExecuteEffectOnCharacter(effect, GridManager.Instance.Grid, this);
             Debug.Log("Replace null with gridmap reference");
-            if(effect.ForTurns <= 0) _activeEffects.Remove(effect);
+            if(effect.ForAdditionalTurns <= 0) _activeEffects.Remove(effect);
         }
     }
 
@@ -124,6 +128,48 @@ public class Character : GridEntity
     #endregion
 
 
+    #region >>> Attributes <<<
+
+    public enum Attribute //Enum to have a neat attribute name dropdown in tool and avoid using reflection or writing a 100 methods
+    {
+        None = 0,
+        Strength = 1,
+        Dex = 2,
+        Evasion = 3
+    }
+    private Dictionary<Attribute, Property<int>> _attributes = new();
+
+    public void ChangeAttribute(Attribute attribute, int value) //Called by handlers
+    {
+        if(attribute == Attribute.None) return;
+
+        if (_attributes.TryGetValue(attribute, out var property))
+        {
+            property.Value = value;
+        }
+        else Debug.LogError($"{attribute.ToString()} Not found on {_profile.Name}");
+    }
+    public void ChangeAttribute(Attribute attribute, float value) { throw new NotImplementedException(); } //Implement if attributes other than int needed
+
+    private void LoadAttributes() //Load all attributes (after they get designed)
+    {
+        _attributes[Attribute.Dex] = new Property<int>(() => _evasionModification, value => _evasionModification = value);
+    }
+    private void ResetAttributeChanges()
+    {
+        foreach(var attribute in _attributes.Values)
+        {
+            attribute.Value = 0;
+        }
+    }
+
+    //Do this for each attribute (after they get designed)
+    private int _evasionModification { get; set; }
+    public int Evasion => _profile.TotalEvasion + _evasionModification;
+
+    #endregion
+
+
     #region >>> Turn <<<
 
     [SerializeField][HideInInspector]
@@ -133,6 +179,7 @@ public class Character : GridEntity
 
     public void BeginTurn()
     {
+        ResetAttributeChanges();
         ExecuteActiveEffects();
         //Do turn here
         EndTurn();
