@@ -23,7 +23,7 @@ public abstract class CombatAbilityEffectHandler
         foreach(var character in affected)
         {
             DoEffect(effect, character);
-            if(effect.ForTurns > 0)
+            if(effect.ForAdditionalTurns > 0)
             {
                 character.AddEffect(effect);
             }
@@ -39,7 +39,7 @@ public abstract class CombatAbilityEffectHandler
     public virtual void CharacterEffectHandler(CombatAbilityEffect effect, GridMap map, Character affected)
     {
         DoEffect(effect, affected);
-        effect.ForTurns--;
+        effect.ForAdditionalTurns--;
     }
 
 

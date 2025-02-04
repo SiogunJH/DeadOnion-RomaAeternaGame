@@ -35,12 +35,12 @@ public class Character : GridEntity
     }
     private void ExecuteActiveEffects()
     {
-        _activeEffects = _activeEffects.Where(e => e.ForTurns >= 0).ToList();
+        _activeEffects = _activeEffects.Where(e => e.ForAdditionalTurns >= 0).ToList();
         foreach(var effect in _activeEffects)
         {
             CombatAbilityExecutor.ExecuteEffectOnCharacter(effect, GridManager.Instance.Grid, this);
             Debug.Log("Replace null with gridmap reference");
-            if(effect.ForTurns <= 0) _activeEffects.Remove(effect);
+            if(effect.ForAdditionalTurns <= 0) _activeEffects.Remove(effect);
         }
     }
 
