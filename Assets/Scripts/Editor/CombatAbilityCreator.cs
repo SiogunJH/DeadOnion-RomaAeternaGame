@@ -405,10 +405,19 @@ public class CombatAbilityCreator : EditorWindow
                 if(_selectedEffect.Amount != prevAmount) EditorUtility.SetDirty(_combatAbility);
 
                 GL.Space(8);
-                GL.Label("For additional turns:", GL.MaxWidth(120));
+                GL.Label("For additional turns:", GL.MaxWidth(115));
                 int prevForTurns = _selectedEffect.ForAdditionalTurns;
                 _selectedEffect.ForAdditionalTurns = EditorGUILayout.IntField(_selectedEffect.ForAdditionalTurns, GL.MaxWidth(50));
                 if(_selectedEffect.ForAdditionalTurns != prevForTurns) EditorUtility.SetDirty(_combatAbility);
+
+                if(_selectedEffect.Type == (CombatAbilityEffect.EffectType.ChangeAttribute))
+                {
+                    GL.Space(8);
+                    GL.Label("Changed Attribute:", GL.MaxWidth(110));
+                    Character.Attribute attribute = _selectedEffect.ChangedAttribute;
+                    _selectedEffect.ChangedAttribute = (Character.Attribute)EditorGUILayout.EnumPopup(_selectedEffect.ChangedAttribute, GL.MaxWidth(BUTTON_WIDTH));
+                    if(_selectedEffect.ChangedAttribute != attribute) EditorUtility.SetDirty(_combatAbility);
+                }
             }
 
             GL.EndHorizontal();

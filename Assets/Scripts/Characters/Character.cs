@@ -22,6 +22,10 @@ public class Character : GridEntity
         _currentHealth = CharacterProfile.TotalHealth;
         _currentArmor = CharacterProfile.MaxArmor;
     }
+    public Character()
+    {
+        LoadAttributes();
+    }
 
 
     #region >>> Effect <<<
@@ -133,35 +137,35 @@ public class Character : GridEntity
         Dex = 2,
         Evasion = 3
     }
-    private Dictionary<Attribute, Tuple<Func<int>, Action<int>>> _attributes = new(); //Stores all attrib modification properties
-    public Character()
+    private Dictionary<Attribute, Property<int>> _attributes = new();
+
+    public void ChangeAttribute(Attribute attribute, int value) //Called by handlers
     {
-        _attributes[Attribute.Strength] = new Tuple<Func<int>, Action<int>>(() => _evasionModification, value => _evasionModification = value);
-    }
-    public void ChangeAttribute(Attribute attribute, int value) //called by handlers
-    {
+        if(attribute == Attribute.None) return;
+
         if (_attributes.TryGetValue(attribute, out var property))
         {
-            property.Item2(value);
+            property.Value = value;
         }
         else Debug.LogError($"{attribute.ToString()} Not found on {_profile.Name}");
     }
-    private void ResetAttributes() //Do this at the end or beggining of every turn?
+    public void ChangeAttribute(Attribute attribute, float value) { throw new NotImplementedException(); } //Implement if attributes other than int needed
+
+    private void LoadAttributes() //Load all attributes (after they get designed)
+    {
+        _attributes[Attribute.Dex] = new Property<int>(() => _evasionModification, value => _evasionModification = value);
+    }
+    private void ResetAttributeChanges()
     {
         foreach(var attribute in _attributes.Values)
         {
-            attribute.Item2(0);
+            attribute.Value = 0;
         }
     }
+
+    //Do this for each attribute (after they get designed)
     private int _evasionModification { get; set; }
     public int Evasion => _profile.TotalEvasion + _evasionModification;
-
-    //To clear the stat modification:
-    //Add some sort of OnDeath to handlers done when overtime effect expires.
-    //Or maybe clear and calculate the stat modification each turn????
-
-    //
-    //Either do all this or just write a method for each attribute or something like that
 
     #endregion
 
@@ -175,6 +179,7 @@ public class Character : GridEntity
 
     public void BeginTurn()
     {
+        ResetAttributeChanges();
         ExecuteActiveEffects();
         //Do turn here
         EndTurn();
