@@ -6,7 +6,7 @@ using System.Linq;
 public class DataPersistanceManager : MonoBehaviourSingleton<DataPersistanceManager>
 {
     [SerializeField]
-    private string _fileName;
+    private string _fileName = "save.json";
 
 
     private GameData _gameData;
