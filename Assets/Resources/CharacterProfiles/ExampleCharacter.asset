@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dfe4ed35f2494e438c6e504aafbe89c, type: 3}
   m_Name: ExampleCharacter
   m_EditorClassIdentifier: 
+  _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
   Name: Cannon Fodder
   _vitality: 1
   _strength: 1

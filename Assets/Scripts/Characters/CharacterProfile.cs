@@ -6,11 +6,12 @@ using UnityEngine;
 //damage over time, skip/add turn, change stats, add action point
 public class CharacterProfile : ScriptableObject
 {
-    public CharacterProfileSettings Settings { get; private set; }
+    [SerializeField, HideInInspector] private CharacterProfileSettings _settings = null;
+    public CharacterProfileSettings Settings { get => _settings; }
     public void SetCharacterProfileSettings(CharacterProfileSettings settings)
     {
         if (settings == null) return;
-        Settings = settings;
+        _settings = settings;
     }
 
 
