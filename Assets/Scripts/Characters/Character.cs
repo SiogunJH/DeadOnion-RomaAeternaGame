@@ -4,11 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using VInspector;
+#endif
+
 public class Character : GridEntity
 {
-    [SerializeField]
-    private CharacterProfile _profile;
     public CharacterProfile CharacterProfile => _profile;
+
+#if UNITY_EDITOR
+    [Tab("Character")]
+#endif
+
+    [SerializeField] private CharacterProfile _profile;
+
+#if UNITY_EDITOR
+    [EndTab]
+#endif
 
     private int _currentHealth;
     private int _currentShield = 0;
@@ -16,21 +28,29 @@ public class Character : GridEntity
 
     private int _currentMovePoints;
 
+    #region MonoBehaviour
 
     private void Awake()
     {
         _currentHealth = CharacterProfile.TotalHealth;
         _currentArmor = CharacterProfile.MaxArmor;
+        UserFriendlyName = CharacterProfile.Name;
     }
+
+    #endregion
+
+    #region Constructors
+
     public Character()
     {
         LoadAttributes();
     }
 
+    #endregion
 
     #region >>> Effect <<<
 
-    private List<CombatAbilityEffect> _activeEffects;
+    private List<CombatAbilityEffect> _activeEffects = new();
 
     public void AddEffect(CombatAbilityEffect effect)
     {
@@ -40,11 +60,11 @@ public class Character : GridEntity
     private void ExecuteActiveEffects()
     {
         _activeEffects = _activeEffects.Where(e => e.ForAdditionalTurns >= 0).ToList();
-        foreach(var effect in _activeEffects)
+        foreach (var effect in _activeEffects)
         {
             CombatAbilityExecutor.ExecuteEffectOnCharacter(effect, GridManager.Instance.Grid, this);
             Debug.Log("Replace null with gridmap reference");
-            if(effect.ForAdditionalTurns <= 0) _activeEffects.Remove(effect);
+            if (effect.ForAdditionalTurns <= 0) _activeEffects.Remove(effect);
         }
     }
 
@@ -54,18 +74,18 @@ public class Character : GridEntity
     }
     public void Heal(int amount)
     {
-        if(amount < 0) return;
+        if (amount < 0) return;
         _currentHealth += amount;
         _currentHealth = Mathf.Min(_currentHealth, CharacterProfile.TotalHealth);
     }
     public void TakeTrueDamage(int damage)
     {
-        if(damage < 0) return;
-        uint maxDamageBlocked = (uint)Mathf.RoundToInt( damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
+        if (damage < 0) return;
+        uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
         uint damageToHealth = (uint)damage - maxDamageBlocked;
         _currentHealth -= (int)damageToHealth;
         _currentArmor -= (int)maxDamageBlocked;
-        if(_currentArmor < 0)
+        if (_currentArmor < 0)
         {
             _currentHealth += _currentArmor;
             _currentArmor = 0;
@@ -78,8 +98,7 @@ public class Character : GridEntity
         Debug.LogWarning("Elemental damage not yet implemented");
         return;
 
-        #pragma warning disable CS0162 // Unreachable code detected
-        #pragma warning disable IDE0035 // Unreachable code detected
+#pragma warning disable CS0162 // Unreachable code detected
         if (amount < 0) return;
         switch (damageType)
         {
@@ -96,19 +115,18 @@ public class Character : GridEntity
         }
 
         Debug.Log("Do damage here"); //don't forget about armor
-        //die
-        #pragma warning restore CS0162 // Unreachable code detected
-        #pragma warning restore IDE0035 // Unreachable code detected
+                                     //die
+#pragma warning restore CS0162 // Unreachable code detected
     }
     public void GainArmor(int amount)
     {
-        if(amount < 0) return;
+        if (amount < 0) return;
         _currentArmor += amount;
         _currentHealth = Mathf.Min(_currentArmor, CharacterProfile.MaxArmor);
     }
     public void GainShield(int amount)
     {
-        if(amount < 0) return;
+        if (amount < 0) return;
         _currentShield += amount;
         _currentShield = Mathf.Min(_currentShield, CharacterProfile.MaxShield);
     }
@@ -141,13 +159,13 @@ public class Character : GridEntity
 
     public void ChangeAttribute(Attribute attribute, int value) //Called by handlers
     {
-        if(attribute == Attribute.None) return;
+        if (attribute == Attribute.None) return;
 
         if (_attributes.TryGetValue(attribute, out var property))
         {
             property.Value = value;
         }
-        else Debug.LogError($"{attribute.ToString()} Not found on {_profile.Name}");
+        else Debug.LogError($"{attribute} Not found on {_profile.Name}");
     }
     public void ChangeAttribute(Attribute attribute, float value) { throw new NotImplementedException(); } //Implement if attributes other than int needed
 
@@ -157,7 +175,7 @@ public class Character : GridEntity
     }
     private void ResetAttributeChanges()
     {
-        foreach(var attribute in _attributes.Values)
+        foreach (var attribute in _attributes.Values)
         {
             attribute.Value = 0;
         }
@@ -172,22 +190,35 @@ public class Character : GridEntity
 
     #region >>> Turn <<<
 
-    [SerializeField][HideInInspector]
-    private bool _hadTurn = false;
+    [SerializeField, HideInInspector] private bool _hadTurn = false;
     public bool HadTurn => _hadTurn;
-
 
     public void BeginTurn()
     {
         ResetAttributeChanges();
         ExecuteActiveEffects();
-        //Do turn here
+
+        Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has started their turn!");
+
+        StartCoroutine(PerformTurn());
+    }
+
+    private IEnumerator PerformTurn()
+    {
+        Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' is now performing!");
+
+        yield return new WaitForSeconds(1);
+
         EndTurn();
     }
+
     private void EndTurn()
     {
         _hadTurn = true;
-        TurnManager.Instance.ContinueTurn();
+
+        Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has finished their turn!");
+
+        TurnManager.Instance.NextTurn();
     }
 
     public void ResetTurn()
@@ -201,10 +232,9 @@ public class Character : GridEntity
 
     private void Die()
     {
-        if (_currentHealth > 0)
-            return;
+        if (_currentHealth > 0) return;
         TurnManager.Instance.RemoveCharacter(this);
-        Debug.Log("Character died");
+        Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has died");
     }
 
 

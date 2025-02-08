@@ -10,15 +10,22 @@ using VInspector;
 [System.Serializable]
 public class GridEntity : MonoBehaviour
 {
-    [HideInInspector] public GridTileData Location = null;
-    [HideInInspector] public int ID = -1;
-
-    private string _userFriendlyName = "NAME NOT SET";
-    public string UserFriendlyName { get => _userFriendlyName; }
+    public string UserFriendlyName { get; set; } = "<UserFriendlyName>";
     public GridMap Map { get => GridManager.Instance.Grid; }
+
+#if UNITY_EDITOR
+    [Tab("Grid Entity")]
+#endif
 
     public GridEntityCategory Category;
     public bool OccupiesTheWholeTile;
+
+#if UNITY_EDITOR
+    [EndTab]
+#endif
+
+    [HideInInspector] public GridTileData Location = null;
+    [HideInInspector] public int ID = -1;
 
     private bool _isMoving = false;
 

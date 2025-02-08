@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5029854460934400298}
-  - component: {fileID: -5657959850804328302}
+  - component: {fileID: 365454816790848774}
   m_Layer: 0
   m_Name: Enemy Solider
   m_TagString: Untagged
@@ -117,7 +117,7 @@ Transform:
   - {fileID: 7704776528019693364}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5657959850804328302
+--- !u!114 &365454816790848774
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,15 +126,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4188062137734071572}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee9b8b52b033ca647ac16a5fad180317, type: 3}
+  m_Script: {fileID: 11500000, guid: 9638e16abf483cf4bb7011a8ad495afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Category: 2
+  OccupiesTheWholeTile: 1
   Location:
     Controller: {fileID: 0}
     Coordinates: {x: 0, y: 0}
     IsEnabled: 0
     _occupants: []
   ID: -1
-  CharacterProfile: {fileID: 11400000, guid: 5788d4befc50424458973c508020d087, type: 2}
-  Category: 1
-  OccupiesTheWholeTile: 1
+  _profile: {fileID: 11400000, guid: 5788d4befc50424458973c508020d087, type: 2}
+  _hadTurn: 0
