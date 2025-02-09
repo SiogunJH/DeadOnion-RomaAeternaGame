@@ -194,7 +194,7 @@ public class GridMapEditor : Editor
     private void DrawTileDetails(GridTileData tile)
     {
         // Validate
-        if (tile == null || (tile.X == 0 && tile.Y == 0))
+        if (tile == null || !((GridMap)target).Tiles.Contains(tile))
         {
             EditorGUILayout.LabelField("No tile selected");
             return;
