@@ -77,19 +77,19 @@ public class GridMap : ScriptableObject
         {
             for (int x = 1; x <= WidthL; x++)
             {
-                InitializeTile(x, y);
+                InitializeTile(x, y, GridEntityCategory.Ally | GridEntityCategory.Object);
             }
 
             for (int x = 1; x <= WidthR; x++)
             {
-                InitializeTile(-x, y);
+                InitializeTile(-x, y, GridEntityCategory.Enemy | GridEntityCategory.Object);
             }
         }
 
         if (removeUnusedTiles) OptimizeGrid();
     }
 
-    private void InitializeTile(int x, int y)
+    private void InitializeTile(int x, int y, GridEntityCategory entityFilter)
     {
         Vector2 index = new(x, y);
 
@@ -97,8 +97,8 @@ public class GridMap : ScriptableObject
         GridTileData existingTile = this[index];
         if (existingTile != null) return;
 
-        // Add a new tile if it doesn't exist
-        GridTileData newTile = new(x, y);
+        // Add a new tile if it doesn't exist or is invalid
+        GridTileData newTile = new(x, y, entityFilter);
         Tiles.Add(newTile);
     }
 
