@@ -194,7 +194,7 @@ public class GridMapEditor : Editor
     private void DrawTileDetails(GridTileData tile)
     {
         // Validate
-        if (tile == null || (tile.X == 0 && tile.Y == 0))
+        if (tile == null || !((GridMap)target).Tiles.Contains(tile))
         {
             EditorGUILayout.LabelField("No tile selected");
             return;
@@ -202,7 +202,10 @@ public class GridMapEditor : Editor
 
         // Display Basic Data
         EditorGUILayout.LabelField("Coordinates", $"X: {tile.X}, Y: {tile.Y}");
-        EditorGUILayout.LabelField("Type", tile.X > 0 ? "Ally Tile" : "Enemy Tile");
+
+        IEnumerable<string> entityFilter = EnumExtensions.GetMatchingFlags<GridEntityCategory>((int)tile.AllowedOccupanTypes).Select(flag => flag.ToString());
+        EditorGUILayout.LabelField("Entity Types Allowed", $"[{string.Join(", ", entityFilter)}]");
+
         tile.IsEnabled = EditorGUILayout.Toggle("Enabled", tile.IsEnabled);
 
         if (!tile.IsEnabled) return;
@@ -224,9 +227,13 @@ public class GridMapEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
 
-            // Validate occupant and get its name
+            // Validate occupant
             bool occupantExists = occupants[i] != null;
-            string occupantName = occupantExists ? occupants[i].UserFriendlyName : "Missing occupant reference";
+
+            // Get occupant's name
+            string occupantName = "<UserFriendlyName>";
+            if (!occupantExists) occupantName = "Missing occupant reference";
+            else if (occupants[i] is Character character) occupantName = character.CharacterProfile.Name;
 
             // Mark red, if an occupant is missing
             Color previousColor = GUI.color;

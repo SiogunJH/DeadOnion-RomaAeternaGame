@@ -9,12 +9,14 @@ public class GridTileData
 {
     public GridMap Map { get => GridManager.Instance.Grid; }
 
+    public int X { get => Coordinates.x; }
+    public int Y { get => Coordinates.y; }
+
     public GridTileController Controller;
 
     public Vector2Int Coordinates;
-    public int X { get => Coordinates.x; }
-    public int Y { get => Coordinates.y; }
     public bool IsEnabled;
+    public GridEntityCategory AllowedOccupanTypes;
 
     #region Neighbours
 
@@ -46,11 +48,12 @@ public class GridTileData
 
     #region Constructor
 
-    public GridTileData(Vector2Int coordinates) : this(coordinates.x, coordinates.y) { }
-    public GridTileData(int x, int y)
+    public GridTileData(Vector2Int coordinates, GridEntityCategory allowedOccupanTypes) : this(coordinates.x, coordinates.y, allowedOccupanTypes) { }
+    public GridTileData(int x, int y, GridEntityCategory allowedOccupanTypes)
     {
         Coordinates = new(x, y);
         IsEnabled = true;
+        AllowedOccupanTypes = allowedOccupanTypes;
     }
 
     #endregion
