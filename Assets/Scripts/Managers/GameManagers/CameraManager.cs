@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager : MonoBehaviourSingleton<CameraManager>
 {
     [SerializeField]
     private Camera _cam;
@@ -13,7 +13,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private Vector3 _position;
 
-    private void Awake()
+    protected override void DoAwake()
     {
         if (CameraIsNull)
         {

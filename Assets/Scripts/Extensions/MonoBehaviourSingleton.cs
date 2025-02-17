@@ -43,5 +43,7 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        DoAwake();
     }
+    protected virtual void DoAwake() { }
 }
