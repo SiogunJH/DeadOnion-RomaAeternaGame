@@ -20,7 +20,8 @@ MonoBehaviour:
   AbilityEffects:
   - Type: 1
     Amount: 0
-    ForTurns: 0
+    ForAdditionalTurns: 0
+    ChangedAttribute: 0
     RelativeAffectedPositions:
     - {x: 0, y: 0}
   Range:
