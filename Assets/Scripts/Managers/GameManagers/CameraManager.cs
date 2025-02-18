@@ -13,8 +13,9 @@ public class CameraManager : MonoBehaviourSingleton<CameraManager>
     [SerializeField]
     private Vector3 _position;
 
-    protected override void DoAwake()
+    protected override void Awake()
     {
+        base.Awake();
         if (CameraIsNull)
         {
             _cam = Camera.main;
