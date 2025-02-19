@@ -20,8 +20,8 @@ public class CameraManager : MonoBehaviourSingleton<CameraManager>
         {
             _cam = Camera.main;
         }
-        _position = _cam.transform.position;
         PositionCamera(_position);
+        _position = _cam.transform.position;
     }
 
     public void CameraLookAt(Transform target)
