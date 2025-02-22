@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VInspector;
 
 public class CameraManager : MonoBehaviourSingleton<CameraManager>
 {
+#if UNITY_EDITOR
+    [Tab("Camera Manager")]
+#endif
     [SerializeField]
     private Camera _cam;
     public bool CameraIsNull => (_cam == null);
@@ -12,6 +16,9 @@ public class CameraManager : MonoBehaviourSingleton<CameraManager>
     private Transform _target;
     [SerializeField]
     private Vector3 _position;
+#if UNITY_EDITOR
+    [EndTab]
+#endif
 
     protected override void Awake()
     {
