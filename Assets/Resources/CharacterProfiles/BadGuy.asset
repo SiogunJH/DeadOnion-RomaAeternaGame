@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dfe4ed35f2494e438c6e504aafbe89c, type: 3}
+  m_Name: BadGuy
+  m_EditorClassIdentifier: 
+  _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
+  Name: BadGuy
+  _vitality: 1
+  _strength: 1
+  _power: 1
+  _agility: 1
+  _focus: 1
+  _reflex: 1
+  _additionalHealth: 10
+  _additionalEndurancePercentage: 0
+  _additionalWeaponDamage: 0
+  _additionalAbilityDamage: 0
+  _additionalEvasion: 0
+  _additionalMoveSpeed: 0
+  _additionalAccuracy: 0
+  _additionalCritDamagePercentage: 0
+  _additionalInitiative: 0
+  _additionalCritChancePercentage: 0
+  _actionPoints: 4
+  _maxArmor: 99999
+  _maxHealth: 99999
+  _maxShield: 99999
+  ArmorClass: 0
+  CombatAbilities:
+  - {fileID: 11400000, guid: 51cbfe6cb1c408141b2c4a814c3f3cdd, type: 2}
+  - {fileID: 11400000, guid: 8f4370dcbeb37af4b8ec62c79a4e8e01, type: 2}
