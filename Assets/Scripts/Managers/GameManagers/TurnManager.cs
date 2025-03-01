@@ -46,7 +46,7 @@ public class TurnManager : MonoBehaviourSingleton<TurnManager>
 
         foreach (var tile in gm.Tiles)
         {
-            foreach (var occupant in tile.Occupants)
+            foreach (var occupant in tile.Value.Occupants)
             {
                 if (occupant == null) continue;
                 if (occupant is Character character) _charactersOnMap.Add(character);
