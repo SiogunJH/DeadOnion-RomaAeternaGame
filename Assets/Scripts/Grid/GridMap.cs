@@ -2,114 +2,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using VInspector;
-using UnityEditor;
-#endif
-
 [CreateAssetMenu(fileName = "NewGridMap", menuName = "Grid/Grid Map")]
 public class GridMap : ScriptableObject
 {
-    [Header("Dimensions")]
-    [SerializeField] private int _gridWidthL = 3;
-    public int WidthL
-    {
-        get => _gridWidthL;
-        set
-        {
-            // Validate
-            if (_gridWidthL == value) return;
+    public int Width => _gridBase.Width;
+    public int Height => _gridBase.Height;
+    public Dictionary<Vector2, GridTileData> Tiles => _gridBase.Tiles;
 
-            // Assert
-            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
+    public List<Character> Enemies;
 
-            // Apply
-            _gridWidthL = value;
-        }
-    }
+    [SerializeField] private GridBase _gridBase;
 
-    [SerializeField] private int _gridWidthR = 3;
-    public int WidthR
-    {
-        get => _gridWidthR;
-        set
-        {
-            // Validate
-            if (_gridWidthR == value) return;
+    #region Indexer
 
-            // Assert
-            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
-
-            // Apply
-            _gridWidthR = value;
-        }
-    }
-
-    [SerializeField] private int _gridHeight = 3;
-    public int Height
-    {
-        get => _gridHeight;
-        set
-        {
-            // Validate
-            if (_gridHeight == value) return;
-
-            // Assert
-            Debug.Assert(!Application.isPlaying || EditorUtility.IsPersistent(this), GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING);
-
-            // Apply
-            _gridHeight = value;
-        }
-    }
-
-    [SerializeField, HideInInspector] public List<GridTileData> Tiles = new();
-
-    public GridTileData this[int x, int y] { get => this[new(x, y)]; }
-    public GridTileData this[Vector2 coordinates] { get => Tiles.FirstOrDefault(tile => tile.Coordinates == coordinates); }
-
-    private const string GRIDMAP_DIMENSIONS_EDITED_DURING_RUNTIME_WARNING = "Attempted to modify GridMap's dimensions during runtime. This may have unexpected results!";
-
-    #region Initialization
-
-    public void InitializeGrid(bool removeUnusedTiles = false)
-    {
-        for (int y = 1; y <= Height; y++)
-        {
-            for (int x = 1; x <= WidthL; x++)
-            {
-                InitializeTile(x, y, GridEntityCategory.Ally | GridEntityCategory.Object);
-            }
-
-            for (int x = 1; x <= WidthR; x++)
-            {
-                InitializeTile(-x, y, GridEntityCategory.Enemy | GridEntityCategory.Object);
-            }
-        }
-
-        if (removeUnusedTiles) OptimizeGrid();
-    }
-
-    private void InitializeTile(int x, int y, GridEntityCategory entityFilter)
-    {
-        Vector2 index = new(x, y);
-
-        // Check if tile already exists
-        GridTileData existingTile = this[index];
-        if (existingTile != null) return;
-
-        // Add a new tile if it doesn't exist or is invalid
-        GridTileData newTile = new(x, y, entityFilter);
-        Tiles.Add(newTile);
-    }
-
-    public void OptimizeGrid()
-    {
-        // Remove unused GridTiles
-        Tiles = Tiles
-            .Where(tile => tile.Y <= Height && tile.Y > 0)
-            .Where(tile => (tile.X < 0 && Mathf.Abs(tile.X) <= WidthR) || (tile.X > 0 && Mathf.Abs(tile.X) <= WidthL))
-            .ToList();
-    }
+    public GridTileData this[int x, int y] => this[new(x, y)];
+    public GridTileData this[Vector2Int coordinates] => _gridBase[coordinates];
 
     #endregion
 
@@ -120,9 +27,9 @@ public class GridMap : ScriptableObject
         // Validate
         foreach (var tile in new List<GridTileData>() { start, end })
         {
-            if (tile.IsEnabled) continue;
+            if (Tiles.ContainsKey(tile.Coordinates)) continue;
 
-            Debug.LogWarning($"Tile ({tile.X},{tile.Y}) needs to be enabled!", this);
+            Debug.LogWarning($"Tile ({tile.X},{tile.Y}) is invalid!", this);
             path = null;
             return false;
         }
@@ -155,7 +62,7 @@ public class GridMap : ScriptableObject
             // Add neighbors to the queue
             foreach (GridTileData neighbour in current.Neighbours)
             {
-                if (neighbour.IsEnabled && (!neighbour.IsOccupied || !traveler.OccupiesTheWholeTile) && !cameFrom.ContainsKey(neighbour)) // Ensure the neighbor is valid and not visited
+                if ((!neighbour.IsOccupied || !traveler.OccupiesTheWholeTile) && !cameFrom.ContainsKey(neighbour)) // Ensure the neighbor is valid and not visited
                 {
                     queue.Enqueue(neighbour);
                     cameFrom[neighbour] = current;
@@ -169,5 +76,4 @@ public class GridMap : ScriptableObject
     }
 
     #endregion
-
 }
