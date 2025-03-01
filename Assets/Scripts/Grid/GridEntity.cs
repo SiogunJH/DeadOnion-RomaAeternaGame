@@ -45,11 +45,6 @@ public class GridEntity : MonoBehaviour
             Debug.LogWarning("Cannot move - the entity is already moving!", this);
             return null;
         }
-        if (!targetTile.IsEnabled)
-        {
-            Debug.LogWarning("Cannot move to a tile that is Disabled!", this);
-            return null;
-        }
         if (OccupiesTheWholeTile && targetTile.IsOccupied)
         {
             Debug.LogWarning("Cannot move to a tile that is Occupied!", this);
@@ -137,7 +132,7 @@ public class GridEntity : MonoBehaviour
         }
         Debug.Assert(Location != null, "GridEntity Location cannot be null!", this);
 
-        var pool = Map.Tiles.Where(tile => tile.IsEnabled && !tile.IsOccupied && tile != Location).ToArray();
+        var pool = Map.Tiles.Where(tile => !tile.Value.IsOccupied && tile.Value != Location).Select(tile => tile.Value).ToArray();
 
         GridTileData end = pool[Random.Range(0, pool.Length)];
 
