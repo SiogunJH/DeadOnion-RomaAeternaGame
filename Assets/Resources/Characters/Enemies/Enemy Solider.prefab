@@ -135,7 +135,7 @@ MonoBehaviour:
     Controller: {fileID: 0}
     Coordinates: {x: 0, y: 0}
     IsEnabled: 0
-    _occupants: []
+    Tags: 0
   ID: -1
-  _profile: {fileID: 11400000, guid: 5788d4befc50424458973c508020d087, type: 2}
+  _profile: {fileID: 11400000, guid: b27c424d4f8be98438ae09860477a5d0, type: 2}
   _hadTurn: 0
