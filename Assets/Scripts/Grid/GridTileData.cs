@@ -15,8 +15,6 @@ public class GridTileData
     public GridTileController Controller;
 
     public Vector2Int Coordinates;
-    public bool IsEnabled;
-    public GridEntityCategory AllowedOccupanTypes;
 
     #region Neighbours
 
@@ -48,12 +46,10 @@ public class GridTileData
 
     #region Constructor
 
-    public GridTileData(Vector2Int coordinates, GridEntityCategory allowedOccupanTypes) : this(coordinates.x, coordinates.y, allowedOccupanTypes) { }
-    public GridTileData(int x, int y, GridEntityCategory allowedOccupanTypes)
+    public GridTileData(Vector2Int coordinates) : this(coordinates.x, coordinates.y) { }
+    public GridTileData(int x, int y)
     {
         Coordinates = new(x, y);
-        IsEnabled = true;
-        AllowedOccupanTypes = allowedOccupanTypes;
     }
 
     #endregion
@@ -63,12 +59,13 @@ public class GridTileData
     public override string ToString()
     {
         string tileString = $"Tile ({X},{Y})";
-        if (!IsEnabled) tileString += " [Disabled]";
         if (Occupants.Any())
         {
+            int index = 0;
+
             tileString += " {";
-            for (int i = 0; i < Occupants.Count; i++) tileString += $" {i}: {Occupants[i].UserFriendlyName} (ID: {Occupants[i].ID}), ";
-            tileString = tileString.Substring(0, tileString.Length - 2);
+            foreach (var occupant in Occupants) tileString += $" {index++}: {occupant.UserFriendlyName} (ID: {occupant.ID}), ";
+            tileString = tileString[..^2];
             tileString += " }";
         }
         return tileString;
@@ -79,8 +76,8 @@ public class GridTileData
     #region Occupants
 
     //
-    [SerializeField, HideInInspector] private List<GridEntity> _occupants = new();
-    public List<GridEntity> Occupants { get => _occupants == null ? new() : _occupants; }
+    [SerializeField, HideInInspector] private HashSet<GridEntity> _occupants = new();
+    public HashSet<GridEntity> Occupants { get => _occupants == null ? new() : _occupants; }
 
     //
     public bool IsOccupied { get => _occupants != null && _occupants.Any(occ => occ.OccupiesTheWholeTile); }
@@ -115,7 +112,7 @@ public class GridTileData
         Debug.Assert(Occupants.Any(occ => occ.ID == occupant.ID), $"GridEntity '{occupant.UserFriendlyName}' is not an occupant of GridTile ({X},{Y})");
 
         // Remove
-        int removedCount = _occupants.RemoveAll(occ => occ.ID == occupant.ID);
+        int removedCount = _occupants.RemoveWhere(occ => occ.ID == occupant.ID);
         Debug.Assert(removedCount == 0 || removedCount == 1, $"More than one occupant was removed!");
 
         // Orphan
@@ -129,12 +126,31 @@ public class GridTileData
     public void SetOccupants(IEnumerable<GridEntity> occupants)
     {
         // Assign
-        _occupants = occupants?.ToList() ?? new();
+        _occupants = occupants?.ToHashSet() ?? new();
 
         // Reparent
         if (Controller != null)
             foreach (var occupant in _occupants)
                 occupant.transform.parent = Controller.transform;
+    }
+
+    #endregion
+
+    #region Tags
+
+    public TileTag Tags = 0;
+
+    public enum TileTag
+    {
+        None = 0,
+        AllySpawn = 1 << 0,
+        EnemySpawn = 1 << 1,
+    }
+
+    public bool HasTag(TileTag searchedTag)
+    {
+        TileTag[] matchingTags = EnumExtensions.GetMatchingFlags<TileTag>((int)Tags);
+        return matchingTags.Contains(searchedTag);
     }
 
     #endregion
