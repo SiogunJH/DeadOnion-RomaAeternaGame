@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -37,7 +38,6 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
 
         // Initialize Grid
         Grid = Instantiate(Grid);
-        Grid.InitializeGrid(true);
     }
 
     #endregion
@@ -59,28 +59,22 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
         // Clear
         _gridContainer.transform.RemoveChildren();
 
-        // Generate
+        // Generate tiles
         for (int y = 1; y <= Grid.Height; y++)
         {
-            for (int x = 1; x <= Grid.WidthL; x++)
+            for (int x = 1; x <= Grid.Width; x++)
             {
                 DisplayTile(x, y);
             }
-
-            for (int x = 1; x <= Grid.WidthR; x++)
-            {
-                DisplayTile(-x, y);
-            }
         }
+
+        DisplayEnemies();
     }
 
     private void DisplayTile(int x, int y)
     {
         // Get ref
         GridTileData tile = Grid[x, y];
-
-        // Validate
-        if (!tile.IsEnabled) return;
 
         // Create
         GridTileController newTile = Instantiate(_tileVisualization, _gridContainer).GetComponent<GridTileController>();
@@ -92,19 +86,38 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
         // Position
         newTile.transform.localPosition = new(x * TILE_SPACING, 0, y * TILE_SPACING);
 
-        // Handle occupants
-        for (int i = 0; i < tile.Occupants.Count; i++)
+        // Clear occupants
+        tile.SetOccupants(null);
+    }
+
+    private void DisplayEnemies()
+    {
+        List<GridTileData> enemySpawnTilePool = Grid.Tiles.Where(tile => tile.Value.HasTag(GridTileData.TileTag.EnemySpawn)).Select(tile => tile.Value).ToList();
+        Debug.Assert(enemySpawnTilePool.Count >= Grid.Enemies.Count, "Amount of enemies to spawn is greater than available spawn tiles!");
+
+        List<GridTileData> enemySpawnTiles = new();
+        for (int i = 0; i < Grid.Enemies.Count; i++)
+        {
+            int randIndex = Random.Range(0, enemySpawnTilePool.Count);
+
+            enemySpawnTiles.Add(enemySpawnTilePool[randIndex]);
+            enemySpawnTilePool.RemoveAt(randIndex);
+        }
+
+        Debug.Assert(enemySpawnTiles.Count == Grid.Enemies.Count);
+        for (int i = 0; i < Grid.Enemies.Count; i++)
         {
             // Validate
-            Debug.Assert(tile.Occupants[i] != null, "Occupant cannot be null!", this);
+            Debug.Assert(Grid.Enemies[i] != null, "Enemy cannot be null!", this);
 
             // Create visual representation and clone
-            tile.Occupants[i] = Instantiate(tile.Occupants[i].gameObject, newTile.transform).GetComponent<GridEntity>();
-            tile.Occupants[i].transform.localPosition = Vector3.zero;
+            var instantiatedEnemy = Instantiate(Grid.Enemies[i].gameObject, enemySpawnTiles[i].Controller.transform).GetComponent<GridEntity>();
+            instantiatedEnemy.transform.localPosition = Vector3.zero;
 
             // Assign data
-            tile.Occupants[i].Location = Grid[x, y];
-            AssignEntityID(tile.Occupants[i]);
+            enemySpawnTiles[i].AddOccupant(instantiatedEnemy);
+            instantiatedEnemy.Location = Grid[enemySpawnTiles[i].Coordinates];
+            AssignEntityID(instantiatedEnemy);
         }
     }
 
@@ -129,7 +142,7 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
     private void LogGridInfo()
     {
         string result = "";
-        foreach (var tile in Grid.Tiles) result += $"{tile}\n";
+        foreach (var tile in Grid.Tiles) result += $"{tile.Value}\n";
         Debug.Log(result);
     }
 #endif

@@ -333,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d72910602cb874d9661bd58187713a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _persistBetweenScenes: 0
   _cam: {fileID: 81032714}
   _target: {fileID: 0}
   _position: {x: 0, y: 4, z: -8}
@@ -489,7 +490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistBetweenScenes: 0
-  Grid: {fileID: 11400000, guid: 0c0c773871272e846a138c23c52ceba5, type: 2}
+  Grid: {fileID: 11400000, guid: 827a0ebc57d9f3848b27d567b0c65c40, type: 2}
   _gridContainer: {fileID: 2109413214}
   _tileVisualization: {fileID: 6793272184895295473, guid: 000b6063e31a48b4e98b84636848ea1d, type: 3}
 --- !u!1 &2109413213
