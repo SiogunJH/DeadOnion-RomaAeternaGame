@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Fix
   Width: 15
   Height: 15
-  ActionPointCost: 0
+  ActionPointCost: 1
   HasCastTime: 0
   AbilityEffects:
   - Type: 10
