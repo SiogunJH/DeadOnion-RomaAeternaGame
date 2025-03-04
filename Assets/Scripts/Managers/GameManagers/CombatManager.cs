@@ -29,18 +29,24 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
 #endif
     public void Initialize()
     {
+        // Validate
         if (!Application.isPlaying)
         {
             Debug.LogWarning("Combat cannot be initialized outside of play mode!");
             return;
         }
 
+        // Handle Combatants
         if (!LoadCharactersOnMap())
         {
             Debug.LogError("Failed to load any Characters from Map!");
             return;
         }
 
+        // Handle UI
+        UI.HideAbilities();
+
+        // Start
         _roundNumber = 0;
         StartCombat();
     }
@@ -162,7 +168,19 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
 
         combatant.BeginTurn();
         CameraManager.Instance.CameraLookAt(combatant.gameObject.transform);
+    }
 
+    #endregion
+
+    #region Ability Handling
+
+    public void HighlightTilesInRange(Character caster, CombatAbility ability)
+    {
+        IEnumerable<GridTileController> tilesToHighlight = GridManager.Instance.Grid.GetTilesInPattern(caster.Location, ability.Range).Select(tile => tile.Controller);
+        foreach (var tile in tilesToHighlight)
+        {
+            tile.Highlight();
+        }
     }
 
     #endregion
