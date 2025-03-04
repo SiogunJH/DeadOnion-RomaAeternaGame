@@ -262,9 +262,9 @@ public class Character : GridEntity
     {
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' is now performing!");
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
 
-        EndTurn();
+        CombatManager.Instance.UI.DisplayAbilities(CharacterProfile.CombatAbilities);
     }
 
     private void EndTurn()
