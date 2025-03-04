@@ -273,7 +273,7 @@ public class Character : GridEntity
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has finished their turn!");
 
-        TurnManager.Instance.NextTurn();
+        CombatManager.Instance.NextTurn();
     }
 
     public void ResetTurn()
@@ -289,7 +289,7 @@ public class Character : GridEntity
     private void Die()
     {
         if (_currentHealth > 0) return;
-        TurnManager.Instance.RemoveCharacter(this);
+        CombatManager.Instance.RemoveCharacter(this);
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has died");
     }
 }

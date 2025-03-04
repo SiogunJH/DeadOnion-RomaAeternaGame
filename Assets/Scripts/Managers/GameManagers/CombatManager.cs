@@ -7,8 +7,11 @@ using UnityEngine;
 using VInspector;
 #endif
 
-public class TurnManager : MonoBehaviourSingleton<TurnManager>
+public class CombatManager : MonoBehaviourSingleton<CombatManager>
 {
+    [Tab("Combat Manager")]
+    public CombatAbilityUIManager UI;
+
     private List<Character> _charactersOnMap = new();
     private int _roundNumber;
 
@@ -26,6 +29,12 @@ public class TurnManager : MonoBehaviourSingleton<TurnManager>
 #endif
     public void Initialize()
     {
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning("Combat cannot be initialized outside of play mode!");
+            return;
+        }
+
         if (!LoadCharactersOnMap())
         {
             Debug.LogError("Failed to load any Characters from Map!");
@@ -95,6 +104,13 @@ public class TurnManager : MonoBehaviourSingleton<TurnManager>
     public bool TryToEndCombat()
     {
 
+        // No combatants left
+        if (_charactersOnMap == null || _charactersOnMap.Count == 0)
+        {
+            EndCombat();
+            return true;
+        }
+
 #pragma warning disable CS0162 // Unreachable code detected
         // TODO: Add logic checking if combat needs to end
         if (false)
@@ -113,16 +129,13 @@ public class TurnManager : MonoBehaviourSingleton<TurnManager>
 
     public void NextTurn()
     {
-        // Validate
-        Debug.Assert(_charactersOnMap != null && _charactersOnMap.Count != 0, "No combatants exist!");
-
         // Check if combat has ended
         if (TryToEndCombat()) return;
 
         var combatant = _combatantNextInTurn;
         if (combatant != null)
         {
-            combatant.BeginTurn();
+            StartTurn(combatant);
         }
         else
         {
@@ -140,7 +153,16 @@ public class TurnManager : MonoBehaviourSingleton<TurnManager>
             c.ResetTurn();
         }
 
-        _combatantNextInTurn.BeginTurn();
+        NextTurn();
+    }
+
+    private void StartTurn(Character combatant)
+    {
+        Debug.Assert(combatant != null, "Combatant is null!");
+
+        combatant.BeginTurn();
+        CameraManager.Instance.CameraLookAt(combatant.gameObject.transform);
+
     }
 
     #endregion
