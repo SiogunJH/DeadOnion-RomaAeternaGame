@@ -53,7 +53,8 @@ MonoBehaviour:
   _combatAbilityObjects:
   - Button: {fileID: 904162789945459206}
     Image: {fileID: 733979914722578033}
-    Name: {fileID: 0}
+    Name: {fileID: 809771261628327173}
+    EventTrigger: {fileID: 5491840363704333737}
   _combatAbilityUIObjectPrefab: {fileID: 2374436281405820106, guid: cc11c196a1198f9449629a06cb21c92f, type: 3}
 --- !u!114 &5305923796156958359
 MonoBehaviour:
@@ -189,6 +190,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &809771261628327173 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1362824923060394013, guid: cc11c196a1198f9449629a06cb21c92f, type: 3}
+  m_PrefabInstance: {fileID: 1861491465352215832}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &904162789945459206 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1538370579993607966, guid: cc11c196a1198f9449629a06cb21c92f, type: 3}
@@ -205,3 +217,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2789672795158818092, guid: cc11c196a1198f9449629a06cb21c92f, type: 3}
   m_PrefabInstance: {fileID: 1861491465352215832}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5491840363704333737 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6188991621024106673, guid: cc11c196a1198f9449629a06cb21c92f, type: 3}
+  m_PrefabInstance: {fileID: 1861491465352215832}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
