@@ -20,14 +20,17 @@ public abstract class CombatAbilityEffectHandler
     {
         List<Character> affected = FindAffectedTargets(target, effect, map, caster);
 
-        foreach(var character in affected)
+        foreach (var character in affected)
         {
             DoEffect(effect, character);
-            if(effect.ForAdditionalTurns > 0)
+            if (effect.ForAdditionalTurns > 0)
             {
                 character.AddEffect(effect);
             }
         }
+
+        caster.RemoveActionPoints(CombatManager.Instance.CurrentAbility.ActionPointCost);
+        caster.TryToEndTurn();
     }
 
     /// <summary>
@@ -49,14 +52,14 @@ public abstract class CombatAbilityEffectHandler
     protected virtual List<Character> FindAffectedTargets(Vector2 target, CombatAbilityEffect effect, GridMap map, Character caster)
     {
         List<Character> affected = new();
-        foreach(var tilePosition in effect.RelativeAffectedPositions)
+        foreach (var tilePosition in effect.RelativeAffectedPositions)
         {
             GridTileData tile = map[tilePosition.x + (int)target.x, tilePosition.y + (int)target.y];
-            if(tile == null) continue;
+            if (tile == null) continue;
 
-            foreach(var occupant in tile.Occupants)
+            foreach (var occupant in tile.Occupants)
             {
-                if(occupant is Character) affected.Add((Character) occupant);
+                if (occupant is Character) affected.Add((Character)occupant);
             }
         }
         return affected; //As of this moment, doesen't exclude allies
