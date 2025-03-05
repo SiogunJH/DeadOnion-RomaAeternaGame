@@ -100,6 +100,9 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
 
         Debug.Log("Combat has started!");
 
+        UI.gameObject.SetActive(true);
+        UI.HideAbilities();
+
         StartNewRound();
     }
 
