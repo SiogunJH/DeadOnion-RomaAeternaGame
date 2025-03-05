@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamagePlasmaHandler : CombatAbilityEffectHandler
 {
-    public override CombatAbilityEffect.EffectType EffectType => CombatAbilityEffect.EffectType.Heal;
+    public override CombatAbilityEffect.EffectType EffectType => CombatAbilityEffect.EffectType.DamagePlasma;
 
     protected override void DoEffect(CombatAbilityEffect effect, Character affectedCharacter)
     {
