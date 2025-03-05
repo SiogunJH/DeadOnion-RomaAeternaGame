@@ -30,7 +30,7 @@ MonoBehaviour:
   _additionalCritDamagePercentage: 0
   _additionalInitiative: 0
   _additionalCritChancePercentage: 0
-  _actionPoints: 4
+  _actionPoints: 2
   _maxArmor: 99999
   _maxHealth: 99999
   _maxShield: 99999
