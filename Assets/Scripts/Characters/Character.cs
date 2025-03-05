@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 #if UNITY_EDITOR
 using VInspector;
@@ -23,6 +25,8 @@ public class Character : GridEntity
 #endif
 
     private int _currentArmor;
+
+    [SerializeField] private int _actionPointsLeft;
 
     private int _currentMovePoints;
 
@@ -248,12 +252,18 @@ public class Character : GridEntity
     [SerializeField, HideInInspector] private bool _hadTurn = false;
     public bool HadTurn => _hadTurn;
 
+    public void RemoveActionPoints(int amount)
+    {
+        _actionPointsLeft = Mathf.Clamp(_actionPointsLeft - amount, 0, int.MaxValue);
+    }
+
     public void BeginTurn()
     {
         ResetAttributeChanges();
         ExecuteActiveEffects();
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has started their turn!");
+        _actionPointsLeft = CharacterProfile.ActionPoints;
 
         StartCoroutine(PerformTurn());
     }
@@ -267,12 +277,23 @@ public class Character : GridEntity
         CombatManager.Instance.UI.DisplayAbilities(CharacterProfile.CombatAbilities);
     }
 
+    public bool TryToEndTurn()
+    {
+        // Validate
+        if (_actionPointsLeft > 0) return false;
+
+        EndTurn();
+        return true;
+    }
+
     private void EndTurn()
     {
         _hadTurn = true;
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has finished their turn!");
 
+        EventSystem.current.SetSelectedGameObject(null);
+        CombatManager.Instance.UI.HideAbilities();
         CombatManager.Instance.NextTurn();
     }
 
