@@ -11,6 +11,7 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
 {
     [Tab("Combat Manager")]
     public CombatAbilityUIManager UI;
+    public Character CurrentCombatant = null;
 
     private List<Character> _charactersOnMap = new();
     private int _roundNumber;
@@ -166,6 +167,7 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
     {
         Debug.Assert(combatant != null, "Combatant is null!");
 
+        CurrentCombatant = combatant;
         combatant.BeginTurn();
         CameraManager.Instance.CameraLookAt(combatant.gameObject.transform);
     }
@@ -174,7 +176,7 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
 
     #region Ability Handling
 
-    public void HighlightTilesInRange(Character caster, CombatAbility ability)
+    public void HighlightTilesInRange(Character caster, CombatAbility ability, bool setHighlight)
     {
         IEnumerable<GridTileController> tilesToHighlight = GridManager.Instance.Grid.GetTilesInPattern(caster.Location, ability.Range).Select(tile => tile.Controller);
         foreach (var tile in tilesToHighlight)
