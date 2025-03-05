@@ -12,6 +12,7 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
     [Tab("Combat Manager")]
     public CombatAbilityUIManager UI;
     public Character CurrentCombatant = null;
+    public CombatAbility CurrentAbility = null;
 
     private List<Character> _charactersOnMap = new();
     private int _roundNumber;
@@ -179,12 +180,15 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
 
     #region Ability Handling
 
-    public void HighlightTilesInRange(Character caster, CombatAbility ability, bool setHighlight)
+    public void HighlightTilesInRange(bool setHighlight)
     {
+        Character caster = CurrentCombatant;
+        CombatAbility ability = CurrentAbility;
         IEnumerable<GridTileController> tilesToHighlight = GridManager.Instance.Grid.GetTilesInPattern(caster.Location, ability.Range).Select(tile => tile.Controller);
+
         foreach (var tile in tilesToHighlight)
         {
-            tile.Highlight();
+            tile.SetHighlight(setHighlight);
         }
     }
 
