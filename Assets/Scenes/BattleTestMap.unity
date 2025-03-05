@@ -358,6 +358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistBetweenScenes: 0
   UI: {fileID: 1337726705}
+  CurrentCombatant: {fileID: 0}
 --- !u!4 &537338828
 Transform:
   m_ObjectHideFlags: 0
@@ -750,6 +751,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1451788614}
     m_Modifications:
+    - target: {fileID: 4567687963072155700, guid: 782004ed7b5eeee4880a3e432706d552, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4567687963072155700, guid: 782004ed7b5eeee4880a3e432706d552, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4567687963072155700, guid: 782004ed7b5eeee4880a3e432706d552, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4567687963072155700, guid: 782004ed7b5eeee4880a3e432706d552, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8454571664406008357, guid: 782004ed7b5eeee4880a3e432706d552, type: 3}
       propertyPath: m_Name
       value: Combat Abilities Panel
