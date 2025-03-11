@@ -14,220 +14,320 @@ public class CharacterProfile : ScriptableObject
         _settings = settings;
     }
 
+    public void SetDefaultValues()
+    {
+        _vitality = Settings.MinVitality;
+        _power = Settings.MinPower;
+        _endurance = Settings.MinEndurance;
+        _armor = Settings.MinArmor;
+        _ammo = Settings.MinAmmo;
+        _initiative = Settings.MinInitiative;
+        _movementSpeed = Settings.MinMovementSpeed;
+        _accuracy = Settings.MinAccuracy;
+        _evasion = Settings.MinEvasion;
+        _critChance = Settings.MinCritChance;
+        _critDamage = Settings.MinCritDamage;
+        _stunResist = Settings.MinStunResist;
+        _energyResist = Settings.MinEnergyResist;
+        _poisonResist = Settings.MinPoisonResist;
+        _burnResist = Settings.MinBurnResist;
+        _bleedResist = Settings.MinBleedResist;
+    }
 
 
     public string Name = "NOT SET";
 
-
     #region >>> Primary Attributes <<<
+
+    #region > Stats <
 
     [SerializeField] [HideInInspector]
     private int _vitality = 1;
-    public int Vitality
+    public int BaseVitality
     {
-        get => _vitality;
-        set => _vitality = Mathf.Max(1, value);
-    }
-
-    [SerializeField] [HideInInspector]
-    private int _strength = 1;
-    public int Strength
-    {
-        get => _strength;
-        set => _strength = Mathf.Max(1, value);
+        get { return _vitality; }
+        set { _vitality = Mathf.Max(Settings.MinVitality, Mathf.Min(Settings.MaxVitality, value)); }
     }
 
     [SerializeField] [HideInInspector]
     private int _power = 1;
-    public int Power
+    public int BasePower
     {
-        get => _power;
-        set => _power = Mathf.Max(1, value);
+        get { return _power; }
+        set { _power = Mathf.Max(Settings.MinPower, Mathf.Min(Settings.MaxPower, value)); }
     }
 
     [SerializeField] [HideInInspector]
-    private int _agility = 1;
-    public int Agility
+    private int _endurance = 1;
+    public int BaseEndurance
     {
-        get => _agility;
-        set => _agility = Mathf.Max(1, value);
+        get { return _endurance; }
+        set { _endurance = Mathf.Max(Settings.MinEndurance, Mathf.Min(Settings.MaxEndurance, value)); }
     }
 
     [SerializeField] [HideInInspector]
-    private int _focus = 1;
-    public int Focus
+    private int _armor = 1;
+    public int BaseArmor
     {
-        get => _focus;
-        set => _focus = Mathf.Max(1, value);
+        get { return _armor; }
+        set { _armor = Mathf.Max(Settings.MinArmor, Mathf.Min(Settings.MaxArmor, value)); }
     }
 
     [SerializeField] [HideInInspector]
-    private int _reflex = 1;
-    public int Reflex
+    private int _ammo = 1;
+    public int BaseAmmo
     {
-        get => _reflex;
-        set => _reflex = Mathf.Max(1, value);
+        get { return _ammo; }
+        set { _ammo = Mathf.Max(Settings.MinAmmo, Mathf.Min(Settings.MaxAmmo, value)); }
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _initiative = 1;
+    public int BaseInitiative
+    {
+        get { return _initiative; }
+        set { _initiative = Mathf.Max(Settings.MinInitiative, Mathf.Min(Settings.MaxInitiative, value)); }
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _movementSpeed = 1;
+    public int BaseMovementSpeed
+    {
+        get { return _movementSpeed; }
+        set { _movementSpeed = Mathf.Max(Settings.MinMovementSpeed, Mathf.Min(Settings.MaxMovementSpeed, value)); }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _accuracy = 1f;
+    public float BaseAccuracy
+    {
+        get { return _accuracy; }
+        set { _accuracy = Mathf.Max(Settings.MinAccuracy, Mathf.Min(Settings.MaxAccuracy, value)); }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _evasion = 1f;
+    public float BaseEvasion
+    {
+        get { return _evasion; }
+        set { _evasion = Mathf.Max(Settings.MinEvasion, Mathf.Min(Settings.MaxEvasion, value)); }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _critChance = 1f;
+    public float BaseCritChance
+    {
+        get { return _critChance; }
+        set { _critChance = Mathf.Max(Settings.MinCritChance, Mathf.Min(Settings.MaxCritChance, value)); }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _critDamage = 1f;
+    public float BaseCritDamage
+    {
+        get { return _critDamage; }
+        set { _critDamage = Mathf.Max(Settings.MinCritDamage, Mathf.Min(Settings.MaxCritDamage, value)); }
     }
 
     #endregion
 
 
-    #region >>> Secondary Attributes <<<
+    #region > Resist <
 
-    public int BaseHealth => Mathf.Max(Vitality * Settings.HealthPerVitalityPoint, Settings.MinimalHealthPoints);
     [SerializeField] [HideInInspector]
-    private int _additionalHealth;
-    public int AdditionalHealth
+    private float _stunResist = 1f;
+    public float BaseStunResist
     {
-        get => _additionalHealth;
-        set => _additionalHealth = Mathf.Max(0, value);
+        get { return _stunResist; }
+        set { _stunResist = Mathf.Max(Settings.MinStunResist, Mathf.Min(Settings.MaxStunResist, value)); }
     }
-    public int TotalHealth => Mathf.Min(BaseHealth + AdditionalHealth, MaxHealth);
 
-    public float BaseEndurancePercentage => Mathf.Max(Vitality * Settings.EndurancePercentsPerVitalityPoint, Settings.MinimalEndurancePercents);
     [SerializeField] [HideInInspector]
-    private float _additionalEndurancePercentage;
-    public float AdditionalEndurancePercentage
+    private float _energyResist = 1f;
+    public float BaseEnergyResist
     {
-        get => _additionalEndurancePercentage;
-        set => _additionalEndurancePercentage = Mathf.Max(0, value);
+        get { return _energyResist; }
+        set { _energyResist = Mathf.Max(Settings.MinEnergyResist, Mathf.Min(Settings.MaxEnergyResist, value)); }
     }
-    public float TotalEndurance => BaseEndurancePercentage + AdditionalEndurancePercentage;
 
-
-    public int BaseWeaponDamage => Mathf.Max(Strength * Settings.WeaponDamagePerStrengthPoint, Settings.MinimalWeaponDamage);
     [SerializeField] [HideInInspector]
-    private int _additionalWeaponDamage;
-    public int AdditionalWeaponDamage
+    private float _poisonResist = 1f;
+    public float BasePoisonResist
     {
-        get => _additionalWeaponDamage;
-        set => _additionalWeaponDamage = Mathf.Max(0, value);
+        get { return _poisonResist; }
+        set { _poisonResist = Mathf.Max(Settings.MinPoisonResist, Mathf.Min(Settings.MaxPoisonResist, value)); }
     }
-    public int TotalWeaponDamage => BaseWeaponDamage + AdditionalWeaponDamage;
 
-
-    public int BaseAbilityDamage => Mathf.Max(Power * Settings.AbilityDamagePerPowerPoint, Settings.MinimalAbilityDamage);
     [SerializeField] [HideInInspector]
-    private int _additionalAbilityDamage;
-    public int AdditionalAbilityDamage
+    private float _burnResist = 1f;
+    public float BaseBurnResist
     {
-        get => _additionalAbilityDamage;
-        set => _additionalAbilityDamage = Mathf.Max(0, value);
+        get { return _burnResist; }
+        set { _burnResist = Mathf.Max(Settings.MinBurnResist, Mathf.Min(Settings.MaxBurnResist, value)); }
     }
-    public int TotalAbilityDamage => BaseAbilityDamage + AdditionalAbilityDamage;
 
-
-    public int BaseEvasion => Mathf.Max(Agility * Settings.EvasionPerAgilityPoint, Settings.MinimalEvasion);
     [SerializeField] [HideInInspector]
-    private int _additionalEvasion;
-    public int AdditionalEvasion
+    private float _bleedResist = 1f;
+    public float BaseBleedResist
     {
-        get => _additionalEvasion;
-        set => _additionalEvasion = Mathf.Max(0, value);
+        get { return _bleedResist; }
+        set { _bleedResist = Mathf.Max(Settings.MinBleedResist, Mathf.Min(Settings.MaxBleedResist, value)); }
     }
-    public int TotalEvasion => BaseEvasion + AdditionalEvasion;
 
-    public int BaseMoveSpeed => Mathf.Max(Agility / Settings.AgilityPointsPerMoveSpeed, Settings.MinimalMoveSpeed);
+    #endregion
+
+    #endregion
+
+
+    #region >>> Modified Attributes <<<
+
     [SerializeField] [HideInInspector]
-    private int _additionalMoveSpeed;
-    public int AdditionalMoveSpeed
+    private int _additionalVitality = 1;
+    public int AdditionalVitality
     {
-        get => _additionalMoveSpeed;
-        set => _additionalMoveSpeed = Mathf.Max(0, value);
+        get { return _additionalVitality; }
+        set { _additionalVitality = value; }
     }
-    public int TotalMoveSpeed => BaseMoveSpeed + AdditionalMoveSpeed;
+    public int TotalVitality => BaseVitality + AdditionalVitality;
 
-
-    public int BaseAccuracy => Mathf.Max(Focus * Settings.AccuracyPerFocusPoints, Settings.MinimalAccuracy);
     [SerializeField] [HideInInspector]
-    private int _additionalAccuracy;
-    public int AdditionalAccuracy
+    private int _additionalPower = 1;
+    public int AdditionalPower
     {
-        get => _additionalAccuracy;
-        set => _additionalAccuracy = Mathf.Max(0, value);
+        get { return _additionalPower; }
+        set { _additionalPower = value; }
     }
-    public int TotalAccuracy => BaseAccuracy + AdditionalAccuracy;
+    public int TotalPower => BasePower + AdditionalPower;
 
-    public float BaseCritDamagePercentage => Mathf.Max(Focus * Settings.CritDamagePercentsPerFocusPoint, Settings.MinimalCritDamagePercents);
     [SerializeField] [HideInInspector]
-    private float _additionalCritDamagePercentage;
-    public float AdditionalCritDamagePercentage
+    private int _additionalEndurance = 1;
+    public int AdditionalEndurance
     {
-        get => _additionalCritDamagePercentage;
-        set => _additionalCritDamagePercentage = Mathf.Max(0, value);
+        get { return _additionalEndurance; }
+        set { _additionalEndurance = value; }
     }
-    public float TotalCritDamagePercentage => BaseCritDamagePercentage + AdditionalCritDamagePercentage;
+    public int TotalEndurance => BaseEndurance + AdditionalEndurance;
 
-
-    public int BaseInitiative => Mathf.Max(Reflex * Settings.InitiativePerReflexPoint, Settings.MinimalInitiative);
     [SerializeField] [HideInInspector]
-    private int _additionalInitiative;
+    private int _additionalArmor = 1;
+    public int AdditionalArmor
+    {
+        get { return _additionalArmor; }
+        set { _additionalArmor = value; }
+    }
+    public int TotalArmor => BaseArmor + AdditionalArmor;
+
+    [SerializeField] [HideInInspector]
+    private int _additionalAmmo = 1;
+    public int AdditionalAmmo
+    {
+        get { return _additionalAmmo; }
+        set { _additionalAmmo = value; }
+    }
+    public int TotalAmmo => BaseAmmo + AdditionalAmmo;
+
+    [SerializeField] [HideInInspector]
+    private int _additionalInitiative = 1;
     public int AdditionalInitiative
     {
-        get => _additionalInitiative;
-        set => _additionalInitiative = Mathf.Max(0, value);
+        get { return _additionalInitiative; }
+        set { _additionalInitiative = value; }
     }
     public int TotalInitiative => BaseInitiative + AdditionalInitiative;
 
-    public float BaseCritChancePercentage => Mathf.Max(Reflex * Settings.CritChancePercentsPerReflexPoint, Settings.MinimalCritChancePercents);
     [SerializeField] [HideInInspector]
-    private float _additionalCritChancePercentage;
-    public float AdditionalCritChancePercentage
+    private int _additionalMovementSpeed = 1;
+    public int AdditionalMovementSpeed
     {
-        get => _additionalCritChancePercentage;
-        set => _additionalCritChancePercentage = Mathf.Max(0, value);
+        get { return _additionalMovementSpeed; }
+        set { _additionalMovementSpeed = value; }
     }
-    public float TotalCritChancePercentage => BaseCritChancePercentage + AdditionalCritChancePercentage;
+    public int TotalMovementSpeed => BaseMovementSpeed + AdditionalMovementSpeed;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalAccuracy = 1f;
+    public float AdditionalAccuracy
+    {
+        get { return _additionalAccuracy; }
+        set { _additionalAccuracy = value; }
+    }
+    public float TotalAccuracy => BaseAccuracy + AdditionalAccuracy;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalEvasion = 1f;
+    public float AdditionalEvasion
+    {
+        get { return _additionalEvasion; }
+        set { _additionalEvasion = value; }
+    }
+    public float TotalEvasion => BaseEvasion + AdditionalEvasion;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalCritChance = 1f;
+    public float AdditionalCritChance
+    {
+        get { return _additionalCritChance; }
+        set { _additionalCritChance = value; }
+    }
+    public float TotalCritChance => BaseCritChance + AdditionalCritChance;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalCritDamage = 1f;
+    public float AdditionalCritDamage
+    {
+        get { return _additionalCritDamage; }
+        set { _additionalCritDamage = value; }
+    }
+    public float TotalCritDamage => BaseCritDamage + AdditionalCritDamage;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalStunResist = 1f;
+    public float AdditionalStunResist
+    {
+        get { return _additionalStunResist; }
+        set { _additionalStunResist = value; }
+    }
+    public float TotalStunResist => BaseStunResist + AdditionalStunResist;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalEnergyResist = 1f;
+    public float AdditionalEnergyResist
+    {
+        get { return _additionalEnergyResist; }
+        set { _additionalEnergyResist = value; }
+    }
+    public float TotalEnergyResist => BaseEnergyResist + AdditionalEnergyResist;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalPoisonResist = 1f;
+    public float AdditionalPoisonResist
+    {
+        get { return _additionalPoisonResist; }
+        set { _additionalPoisonResist = value; }
+    }
+    public float TotalPoisonResist => BasePoisonResist + AdditionalPoisonResist;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalBurnResist = 1f;
+    public float AdditionalBurnResist
+    {
+        get { return _additionalBurnResist; }
+        set { _additionalBurnResist = value; }
+    }
+    public float TotalBurnResist => BaseBurnResist + AdditionalBurnResist;
+
+    [SerializeField] [HideInInspector]
+    private float _additionalBleedResist = 1f;
+    public float AdditionalBleedResist
+    {
+        get { return _additionalBleedResist; }
+        set { _additionalBleedResist = value; }
+    }
+    public float TotalBleedResist => BaseBleedResist + AdditionalBleedResist;
 
     #endregion
 
 
-    #region >>> Tertiary Attributes <<<
-
-    [SerializeField] [HideInInspector]
-    private int _actionPoints = 4;
-    public int ActionPoints
-    {
-        get => _actionPoints;
-        set => _actionPoints = Mathf.Max(1, value);
-    }
-
-    [SerializeField] [HideInInspector]
-    private int _maxArmor = 99999;
-    public int MaxArmor
-    {
-        get => _maxArmor;
-        set => _maxArmor = Mathf.Max(1, value);
-    }
-
-    [SerializeField] [HideInInspector]
-    private int _maxHealth = 99999;
-    public int MaxHealth
-    {
-        get => _maxHealth;
-        set => _maxHealth = Mathf.Max(1, value);
-    }
-
-    [SerializeField] [HideInInspector]
-    private int _maxShield = 99999;
-    public int MaxShield
-    {
-        get => _maxShield;
-        set => _maxShield = Mathf.Max(1, value);
-    }
-
-    [SerializeField] [HideInInspector]
-    public CharacterArmorClass ArmorClass;
-
-
-    public enum CharacterArmorClass
-    {
-        Light = 0,
-        Medium = 1,
-        Heavy = 2
-    }
-
-    #endregion
 
 
     [HideInInspector]

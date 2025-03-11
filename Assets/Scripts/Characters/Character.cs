@@ -23,7 +23,6 @@ public class Character : GridEntity
 #endif
 
     private int _currentHealth;
-    private int _currentShield = 0;
     private int _currentArmor;
 
     private int _currentMovePoints;
@@ -32,8 +31,8 @@ public class Character : GridEntity
 
     private void Awake()
     {
-        _currentHealth = CharacterProfile.TotalHealth;
-        _currentArmor = CharacterProfile.MaxArmor;
+        _currentHealth = 1;
+        _currentArmor = CharacterProfile.TotalArmor;
         UserFriendlyName = CharacterProfile.Name;
     }
 
@@ -76,21 +75,21 @@ public class Character : GridEntity
     {
         if (amount < 0) return;
         _currentHealth += amount;
-        _currentHealth = Mathf.Min(_currentHealth, CharacterProfile.TotalHealth);
+        _currentHealth = Mathf.Min(_currentHealth, 1);
     }
     public void TakeTrueDamage(int damage)
     {
-        if (damage < 0) return;
-        uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
-        uint damageToHealth = (uint)damage - maxDamageBlocked;
-        _currentHealth -= (int)damageToHealth;
-        _currentArmor -= (int)maxDamageBlocked;
-        if (_currentArmor < 0)
-        {
-            _currentHealth += _currentArmor;
-            _currentArmor = 0;
-        }
-        Die();
+        //if (damage < 0) return;
+        //uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
+        //uint damageToHealth = (uint)damage - maxDamageBlocked;
+        //_currentHealth -= (int)damageToHealth;
+        //_currentArmor -= (int)maxDamageBlocked;
+        //if (_currentArmor < 0)
+        //{
+        //    _currentHealth += _currentArmor;
+        //    _currentArmor = 0;
+        //}
+        //Die();
     }
     public void TakeElementalDamage(int amount, CombatAbilityEffect.EffectType damageType)
     {
@@ -120,15 +119,9 @@ public class Character : GridEntity
     }
     public void GainArmor(int amount)
     {
-        if (amount < 0) return;
-        _currentArmor += amount;
-        _currentHealth = Mathf.Min(_currentArmor, CharacterProfile.MaxArmor);
-    }
-    public void GainShield(int amount)
-    {
-        if (amount < 0) return;
-        _currentShield += amount;
-        _currentShield = Mathf.Min(_currentShield, CharacterProfile.MaxShield);
+        //if (amount < 0) return;
+        //_currentArmor += amount;
+        //_currentHealth = Mathf.Min(_currentArmor, CharacterProfile.MaxArmor);
     }
     public void Reload()
     {
@@ -181,9 +174,9 @@ public class Character : GridEntity
         }
     }
 
-    //Do this for each attribute (after they get designed)
+    
     private int _evasionModification { get; set; }
-    public int Evasion => _profile.TotalEvasion + _evasionModification;
+    //public int Evasion => _profile.TotalEvasion + _evasionModification;
 
     #endregion
 
@@ -224,7 +217,8 @@ public class Character : GridEntity
     public void ResetTurn()
     {
         _hadTurn = false;
-        _currentMovePoints = CharacterProfile.TotalMoveSpeed;
+        _currentMovePoints = CharacterProfile.TotalMovementSpeed;
+        _currentMovePoints = 1;
     }
 
     #endregion
@@ -235,18 +229,5 @@ public class Character : GridEntity
         if (_currentHealth > 0) return;
         TurnManager.Instance.RemoveCharacter(this);
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has died");
-    }
-
-
-
-    private readonly static Dictionary<CharacterProfile.CharacterArmorClass, float> _damageReduction = new()
-    {
-        { CharacterProfile.CharacterArmorClass.Light, 0.4f },
-        { CharacterProfile.CharacterArmorClass.Medium, 0.6f },
-        { CharacterProfile.CharacterArmorClass.Heavy, 0.8f }
-    };
-    public static float ArmorClassToDamageReduction(CharacterProfile.CharacterArmorClass armorClass)
-    {
-        return _damageReduction[armorClass];
     }
 }

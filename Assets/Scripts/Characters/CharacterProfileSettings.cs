@@ -5,175 +5,263 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CharacterProfileSettings", menuName = "Settings/CharacterProfileSettings")]
 public class CharacterProfileSettings : ScriptableObject
 {
-    #region Vitality
     [SerializeField]
-    private int _healthPerVitalityPoint;
-    public int HealthPerVitalityPoint
+    private int _minVitality;
+    public int MinVitality
     {
-        get => _healthPerVitalityPoint;
-        set => _healthPerVitalityPoint = Mathf.Max(0, value);
+        get => _minVitality;
+        set => _minVitality = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private int _minimalHealthPoints;
-    public int MinimalHealthPoints
+    private int _maxVitality;
+    public int MaxVitality
     {
-        get => _minimalHealthPoints;
-        set => _minimalHealthPoints = Mathf.Max(0, value);
+        get => _maxVitality;
+        set => _maxVitality = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private float _endurancePercentsPerVitalityPoint;
-    public float EndurancePercentsPerVitalityPoint
+    private int _minPower;
+    public int MinPower
     {
-        get => _endurancePercentsPerVitalityPoint;
-        set => _endurancePercentsPerVitalityPoint = Mathf.Max(0f, value);
+        get => _minPower;
+        set => _minPower = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private float _minimalEndurancePercents;
-    public float MinimalEndurancePercents
+    private int _maxPower;
+    public int MaxPower
     {
-        get => _minimalEndurancePercents;
-        set => _minimalEndurancePercents = Mathf.Max(0f, value);
-    }
-    #endregion
-
-    #region Strength
-    [SerializeField]
-    private int _weaponDamagePerStrengthPoint;
-    public int WeaponDamagePerStrengthPoint
-    {
-        get => _weaponDamagePerStrengthPoint;
-        set => _weaponDamagePerStrengthPoint = Mathf.Max(0, value);
+        get => _maxPower;
+        set => _maxPower = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private int _minimalWeaponDamage;
-    public int MinimalWeaponDamage
+    private int _minEndurance;
+    public int MinEndurance
     {
-        get => _minimalWeaponDamage;
-        set => _minimalWeaponDamage = Mathf.Max(0, value);
-    }
-    #endregion
-
-    #region Power
-    [SerializeField]
-    private int _abilityDamagePerPowerPoint;
-    public int AbilityDamagePerPowerPoint
-    {
-        get => _abilityDamagePerPowerPoint;
-        set => _abilityDamagePerPowerPoint = Mathf.Max(0, value);
+        get => _minEndurance;
+        set => _minEndurance = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private int _minimalAbilityDamage;
-    public int MinimalAbilityDamage
+    private int _maxEndurance;
+    public int MaxEndurance
     {
-        get => _minimalAbilityDamage;
-        set => _minimalAbilityDamage = Mathf.Max(0, value);
-    }
-    #endregion
-
-    #region Agility
-    [SerializeField]
-    private int _evasionPerAgilityPoint;
-    public int EvasionPerAgilityPoint
-    {
-        get => _evasionPerAgilityPoint;
-        set => _evasionPerAgilityPoint = Mathf.Max(0, value);
+        get => _maxEndurance;
+        set => _maxEndurance = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private int _minimalEvasion;
-    public int MinimalEvasion
+    private int _minArmor;
+    public int MinArmor
     {
-        get => _minimalEvasion;
-        set => _minimalEvasion = Mathf.Max(0, value);
+        get => _minArmor;
+        set => _minArmor = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private int _agilityPointsPerMoveSpeed = 1;
-    public int AgilityPointsPerMoveSpeed
+    private int _maxArmor;
+    public int MaxArmor
     {
-        get => _agilityPointsPerMoveSpeed;
-        set => _agilityPointsPerMoveSpeed = Mathf.Max(1, value);
+        get => _maxArmor;
+        set => _maxArmor = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private int _minimalMoveSpeed;
-    public int MinimalMoveSpeed
+    private int _minAmmo;
+    public int MinAmmo
     {
-        get => _minimalMoveSpeed;
-        set => _minimalMoveSpeed = Mathf.Max(0, value);
-    }
-    #endregion
-
-    #region Focus
-    [SerializeField]
-    private int _accuracyPerFocusPoints;
-    public int AccuracyPerFocusPoints
-    {
-        get => _accuracyPerFocusPoints;
-        set => _accuracyPerFocusPoints = Mathf.Max(0, value);
+        get => _minAmmo;
+        set => _minAmmo = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private int _minimalAccuracy;
-    public int MinimalAccuracy
+    private int _maxAmmo;
+    public int MaxAmmo
     {
-        get => _minimalAccuracy;
-        set => _minimalAccuracy = Mathf.Max(0, value);
+        get => _maxAmmo;
+        set => _maxAmmo = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private float _critDamagePercentsPerFocusPoint;
-    public float CritDamagePercentsPerFocusPoint
+    private int _minInitiative;
+    public int MinInitiative
     {
-        get => _critDamagePercentsPerFocusPoint;
-        set => _critDamagePercentsPerFocusPoint = Mathf.Max(0f, value);
+        get => _minInitiative;
+        set => _minInitiative = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private float _minimalCritDamagePercents;
-    public float MinimalCritDamagePercents
+    private int _maxInitiative;
+    public int MaxInitiative
     {
-        get => _minimalCritDamagePercents;
-        set => _minimalCritDamagePercents = Mathf.Max(0f, value);
-    }
-    #endregion
-
-    #region Reflex
-    [SerializeField]
-    private int _initiativePerReflexPoint;
-    public int InitiativePerReflexPoint
-    {
-        get => _initiativePerReflexPoint;
-        set => _initiativePerReflexPoint = Mathf.Max(0, value);
+        get => _maxInitiative;
+        set => _maxInitiative = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private int _minimalInitiative;
-    public int MinimalInitiative
+    private int _minMovementSpeed;
+    public int MinMovementSpeed
     {
-        get => _minimalInitiative;
-        set => _minimalInitiative = Mathf.Max(0, value);
+        get => _minMovementSpeed;
+        set => _minMovementSpeed = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private float _critChancePercentsPerReflexPoint;
-    public float CritChancePercentsPerReflexPoint
+    private int _maxMovementSpeed;
+    public int MaxMovementSpeed
     {
-        get => _critChancePercentsPerReflexPoint;
-        set => _critChancePercentsPerReflexPoint = Mathf.Max(0f, value);
+        get => _maxMovementSpeed;
+        set => _maxMovementSpeed = Mathf.Max(0, value);
     }
 
     [SerializeField]
-    private float _minimalCritChancePercents;
-    public float MinimalCritChancePercents
+    private float _minAccuracy;
+    public float MinAccuracy
     {
-        get => _minimalCritChancePercents;
-        set => _minimalCritChancePercents = Mathf.Max(0f, value);
+        get => _minAccuracy;
+        set => _minAccuracy = Mathf.Max(0, value);
     }
-    #endregion
+
+    [SerializeField]
+    private float _maxAccuracy;
+    public float MaxAccuracy
+    {
+        get => _maxAccuracy;
+        set => _maxAccuracy = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _minEvasion;
+    public float MinEvasion
+    {
+        get => _minEvasion;
+        set => _minEvasion = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxEvasion;
+    public float MaxEvasion
+    {
+        get => _maxEvasion;
+        set => _maxEvasion = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _minCritChance;
+    public float MinCritChance
+    {
+        get => _minCritChance;
+        set => _minCritChance = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxCritChance;
+    public float MaxCritChance
+    {
+        get => _maxCritChance;
+        set => _maxCritChance = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _minCritDamage;
+    public float MinCritDamage
+    {
+        get => _minCritDamage;
+        set => _minCritDamage = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxCritDamage;
+    public float MaxCritDamage
+    {
+        get => _maxCritDamage;
+        set => _maxCritDamage = Mathf.Max(0, value);
+    }
+
+
+
+
+
+    [SerializeField]
+    private float _minStunResist;
+    public float MinStunResist
+    {
+        get => _minStunResist;
+        set => _minStunResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxStunResist;
+    public float MaxStunResist
+    {
+        get => _maxStunResist;
+        set => _maxStunResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _minEnergyResist;
+    public float MinEnergyResist
+    {
+        get => _minEnergyResist;
+        set => _minEnergyResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxEnergyResist;
+    public float MaxEnergyResist
+    {
+        get => _maxEnergyResist;
+        set => _maxEnergyResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _minPoisonResist;
+    public float MinPoisonResist
+    {
+        get => _minPoisonResist;
+        set => _minPoisonResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxPoisonResist;
+    public float MaxPoisonResist
+    {
+        get => _maxPoisonResist;
+        set => _maxPoisonResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _minBurnResist;
+    public float MinBurnResist
+    {
+        get => _minBurnResist;
+        set => _minBurnResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxBurnResist;
+    public float MaxBurnResist
+    {
+        get => _maxBurnResist;
+        set => _maxBurnResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _minBleedResist;
+    public float MinBleedResist
+    {
+        get => _minBleedResist;
+        set => _minBleedResist = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxBleedResist;
+    public float MaxBleedResist
+    {
+        get => _maxBleedResist;
+        set => _maxBleedResist = Mathf.Max(0, value);
+    }
 }
