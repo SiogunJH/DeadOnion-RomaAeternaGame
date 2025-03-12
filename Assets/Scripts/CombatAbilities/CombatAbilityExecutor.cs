@@ -7,6 +7,7 @@ public static class CombatAbilityExecutor
     private static readonly Dictionary<CombatAbilityEffect.EffectType, CombatAbilityEffectHandler> _handlers = new()
     {
         {new HealHandler().EffectType, new HealHandler()},
+        {new MoveHandler().EffectType, new MoveHandler()},
         {new DamageAcidHandler().EffectType, new DamageAcidHandler()},
         {new DamageEnergyHandler().EffectType, new DamageEnergyHandler()},
         {new DamageFireHandler().EffectType, new DamageFireHandler()},
