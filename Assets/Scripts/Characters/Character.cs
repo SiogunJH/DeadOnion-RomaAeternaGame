@@ -34,6 +34,7 @@ public class Character : GridEntity
 
     private void Awake()
     {
+        _currentHealth = CharacterProfile.TotalVitality;
         _currentArmor = CharacterProfile.TotalArmor;
         UserFriendlyName = CharacterProfile.Name;
     }
@@ -81,22 +82,27 @@ public class Character : GridEntity
     }
     public void TakeTrueDamage(int damage)
     {
-        //if (damage < 0) return;
-        //uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
-        //uint damageToHealth = (uint)damage - maxDamageBlocked;
-        //_currentHealth -= (int)damageToHealth;
-        //_currentArmor -= (int)maxDamageBlocked;
-        //if (_currentArmor < 0)
-        //{
+        if (damage < 0) return;
+
+        _currentHealth -= damage;
+
+        // uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
+        // uint damageToHealth = (uint)damage - maxDamageBlocked;
+        // _currentHealth -= (int)damageToHealth;
+        // _currentArmor -= (int)maxDamageBlocked;
+        // if (_currentArmor < 0)
+        // {
         //    _currentHealth += _currentArmor;
         //    _currentArmor = 0;
-        //}
-        //Die();
+        // }
+
+        // Die();
     }
     public void TakeElementalDamage(int amount, CombatAbilityEffect.EffectType damageType)
     {
         TakeTrueDamage(amount);
         Debug.LogWarning("Elemental damage not yet implemented");
+        Die();
         return;
 
 #pragma warning disable CS0162 // Unreachable code detected
@@ -263,7 +269,7 @@ public class Character : GridEntity
         ExecuteActiveEffects();
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has started their turn!");
-        _actionPointsLeft = CharacterProfile.ActionPoints;
+        _actionPointsLeft = 2; // TODO: Assign action points from Character
 
         StartCoroutine(PerformTurn());
     }
@@ -309,8 +315,15 @@ public class Character : GridEntity
 
     private void Die()
     {
+        // TODO: UNREGISTER CHARACTER FROM TILE, FUCKASS
+
         if (CurrentHealth > 0) return;
+
         CombatManager.Instance.RemoveCharacter(this);
+
+        var gridEntity = this as GridEntity;
+        Destroy(gridEntity.gameObject);
+
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has died");
     }
 }
