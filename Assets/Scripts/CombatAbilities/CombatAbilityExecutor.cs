@@ -18,9 +18,11 @@ public static class CombatAbilityExecutor
 
     public static void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
     {
-        foreach(var effect in ability.AbilityEffects)
+        Debug.Log($"Executing ability: [{ability.Name}]");
+        foreach (var effect in ability.AbilityEffects)
         {
-            if(_handlers.TryGetValue(effect.Type, out var handler))
+            Debug.Log($"Executing effect: [{effect.Type}]");
+            if (_handlers.TryGetValue(effect.Type, out var handler))
             {
                 handler.GridEffectHandler(target, effect, map, caster);
             }
