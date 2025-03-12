@@ -70,7 +70,7 @@ public class CombatAbilityUIManager : MonoBehaviour
         void OnDeselect(BaseEventData _)
         {
             // Debug.Log("Deselect event called");
-            CombatManager.Instance.HighlightTilesInRange(false);
+            CombatManager.Instance.ClearTileHighlight();
             CombatManager.Instance.CurrentAbility = null;
         }
         deselectEntry.callback.AddListener(OnDeselect);

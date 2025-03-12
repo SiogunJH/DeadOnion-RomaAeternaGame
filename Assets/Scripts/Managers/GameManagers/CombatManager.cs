@@ -208,5 +208,20 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
         }
     }
 
+    /// <summary>
+    /// Clears all highligh by default, but can be overriden
+    /// </summary>
+    public void ClearTileHighlight(IEnumerable<GridTileController> tilesToClear = null)
+    {
+        // If no tile pool was determined, select all
+        tilesToClear ??= GridManager.Instance.Grid.Tiles.Select(tile => tile.Value.Controller);
+
+        // Clear highlight
+        foreach (var tile in tilesToClear)
+        {
+            tile.SetHighlight(false);
+        }
+    }
+
     #endregion
 }
