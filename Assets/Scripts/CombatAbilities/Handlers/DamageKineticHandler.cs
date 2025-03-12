@@ -8,6 +8,8 @@ public class DamageKineticHandler : CombatAbilityEffectHandler
 
     protected override void DoEffect(CombatAbilityEffect effect, Character caster, Character targetCharacter, GridTileController targetTile)
     {
+        if (targetCharacter == null) return;
+
         targetCharacter.TakeElementalDamage(effect.Amount, effect.Type);
     }
 }
