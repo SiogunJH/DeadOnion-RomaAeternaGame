@@ -182,7 +182,7 @@ public class CharacterProfile : ScriptableObject
     #region >>> Modified Attributes <<<
 
     [SerializeField] [HideInInspector]
-    private int _additionalVitality = 1;
+    private int _additionalVitality = 0;
     public int AdditionalVitality
     {
         get { return _additionalVitality; }
@@ -191,7 +191,7 @@ public class CharacterProfile : ScriptableObject
     public int TotalVitality => BaseVitality + AdditionalVitality;
 
     [SerializeField] [HideInInspector]
-    private int _additionalPower = 1;
+    private int _additionalPower = 0;
     public int AdditionalPower
     {
         get { return _additionalPower; }
@@ -200,7 +200,7 @@ public class CharacterProfile : ScriptableObject
     public int TotalPower => BasePower + AdditionalPower;
 
     [SerializeField] [HideInInspector]
-    private int _additionalEndurance = 1;
+    private int _additionalEndurance = 0;
     public int AdditionalEndurance
     {
         get { return _additionalEndurance; }
@@ -209,7 +209,7 @@ public class CharacterProfile : ScriptableObject
     public int TotalEndurance => BaseEndurance + AdditionalEndurance;
 
     [SerializeField] [HideInInspector]
-    private int _additionalArmor = 1;
+    private int _additionalArmor = 0;
     public int AdditionalArmor
     {
         get { return _additionalArmor; }
@@ -218,7 +218,7 @@ public class CharacterProfile : ScriptableObject
     public int TotalArmor => BaseArmor + AdditionalArmor;
 
     [SerializeField] [HideInInspector]
-    private int _additionalAmmo = 1;
+    private int _additionalAmmo = 0;
     public int AdditionalAmmo
     {
         get { return _additionalAmmo; }
@@ -227,7 +227,7 @@ public class CharacterProfile : ScriptableObject
     public int TotalAmmo => BaseAmmo + AdditionalAmmo;
 
     [SerializeField] [HideInInspector]
-    private int _additionalInitiative = 1;
+    private int _additionalInitiative = 0;
     public int AdditionalInitiative
     {
         get { return _additionalInitiative; }
@@ -236,7 +236,7 @@ public class CharacterProfile : ScriptableObject
     public int TotalInitiative => BaseInitiative + AdditionalInitiative;
 
     [SerializeField] [HideInInspector]
-    private int _additionalMovementSpeed = 1;
+    private int _additionalMovementSpeed = 0;
     public int AdditionalMovementSpeed
     {
         get { return _additionalMovementSpeed; }
@@ -245,7 +245,7 @@ public class CharacterProfile : ScriptableObject
     public int TotalMovementSpeed => BaseMovementSpeed + AdditionalMovementSpeed;
 
     [SerializeField] [HideInInspector]
-    private float _additionalAccuracy = 1f;
+    private float _additionalAccuracy = 0;
     public float AdditionalAccuracy
     {
         get { return _additionalAccuracy; }
@@ -254,7 +254,7 @@ public class CharacterProfile : ScriptableObject
     public float TotalAccuracy => BaseAccuracy + AdditionalAccuracy;
 
     [SerializeField] [HideInInspector]
-    private float _additionalEvasion = 1f;
+    private float _additionalEvasion = 0;
     public float AdditionalEvasion
     {
         get { return _additionalEvasion; }
@@ -263,7 +263,7 @@ public class CharacterProfile : ScriptableObject
     public float TotalEvasion => BaseEvasion + AdditionalEvasion;
 
     [SerializeField] [HideInInspector]
-    private float _additionalCritChance = 1f;
+    private float _additionalCritChance = 0;
     public float AdditionalCritChance
     {
         get { return _additionalCritChance; }
@@ -272,7 +272,7 @@ public class CharacterProfile : ScriptableObject
     public float TotalCritChance => BaseCritChance + AdditionalCritChance;
 
     [SerializeField] [HideInInspector]
-    private float _additionalCritDamage = 1f;
+    private float _additionalCritDamage = 0;
     public float AdditionalCritDamage
     {
         get { return _additionalCritDamage; }
@@ -281,7 +281,7 @@ public class CharacterProfile : ScriptableObject
     public float TotalCritDamage => BaseCritDamage + AdditionalCritDamage;
 
     [SerializeField] [HideInInspector]
-    private float _additionalStunResist = 1f;
+    private float _additionalStunResist = 0;
     public float AdditionalStunResist
     {
         get { return _additionalStunResist; }
@@ -290,7 +290,7 @@ public class CharacterProfile : ScriptableObject
     public float TotalStunResist => BaseStunResist + AdditionalStunResist;
 
     [SerializeField] [HideInInspector]
-    private float _additionalEnergyResist = 1f;
+    private float _additionalEnergyResist = 0;
     public float AdditionalEnergyResist
     {
         get { return _additionalEnergyResist; }
@@ -299,7 +299,7 @@ public class CharacterProfile : ScriptableObject
     public float TotalEnergyResist => BaseEnergyResist + AdditionalEnergyResist;
 
     [SerializeField] [HideInInspector]
-    private float _additionalPoisonResist = 1f;
+    private float _additionalPoisonResist = 0;
     public float AdditionalPoisonResist
     {
         get { return _additionalPoisonResist; }
@@ -308,7 +308,7 @@ public class CharacterProfile : ScriptableObject
     public float TotalPoisonResist => BasePoisonResist + AdditionalPoisonResist;
 
     [SerializeField] [HideInInspector]
-    private float _additionalBurnResist = 1f;
+    private float _additionalBurnResist = 0;
     public float AdditionalBurnResist
     {
         get { return _additionalBurnResist; }
@@ -317,7 +317,7 @@ public class CharacterProfile : ScriptableObject
     public float TotalBurnResist => BaseBurnResist + AdditionalBurnResist;
 
     [SerializeField] [HideInInspector]
-    private float _additionalBleedResist = 1f;
+    private float _additionalBleedResist = 0;
     public float AdditionalBleedResist
     {
         get { return _additionalBleedResist; }
@@ -327,6 +327,86 @@ public class CharacterProfile : ScriptableObject
 
     #endregion
 
+
+    #region >>> Bonus <<<
+
+    [SerializeField] [HideInInspector]
+    private int _bonusDamageModifier = 0;
+    public int BonusDamageModifier
+    {
+        get { return _bonusDamageModifier; }
+        set { _bonusDamageModifier = value; }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _bonusDamageMultiplier = 0;
+    public float BonusDamageMultiplier
+    {
+        get { return _bonusDamageMultiplier; }
+        set { _bonusDamageMultiplier = value; }
+    }
+
+
+
+    [SerializeField] [HideInInspector]
+    private float _bonusStunBuildup = 0;
+    public float BonusStunBuildup
+    {
+        get { return _bonusStunBuildup; }
+        set { _bonusStunBuildup = value; }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _bonusPoisionBuildup = 0;
+    public float BonusPoisionBuildup
+    {
+        get { return _bonusPoisionBuildup; }
+        set { _bonusPoisionBuildup = value; }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _bonusBurnBuildup = 0;
+    public float BonusBurnBuildup
+    {
+        get { return _bonusBurnBuildup; }
+        set { _bonusBurnBuildup = value; }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _bonusBleedBuildup = 0;
+    public float BonusBleedBuildup
+    {
+        get { return _bonusBleedBuildup; }
+        set { _bonusBleedBuildup = value; }
+    }
+
+    [SerializeField] [HideInInspector]
+    private float _bonusEnergyBuildup = 0;
+    public float BonusEnergyBuildup
+    {
+        get { return _bonusEnergyBuildup; }
+        set { _bonusEnergyBuildup = value; }
+    }
+
+
+
+    [SerializeField] [HideInInspector]
+    private int _bonusArmorDamageModifier = 0;
+    public int BonusArmorDamageModifier
+    {
+        get { return _bonusArmorDamageModifier; }
+        set { _bonusArmorDamageModifier = value; }
+    }
+
+    [SerializeField] [HideInInspector]
+    private int _bonusArmorPierce = 0;
+    public int BonusArmorPierce
+    {
+        get { return _bonusArmorPierce; }
+        set { _bonusArmorPierce = value; }
+    }
+
+    #endregion
 
 
 

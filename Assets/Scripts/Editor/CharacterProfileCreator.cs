@@ -127,7 +127,8 @@ public class CharacterProfileCreator : EditorWindow
     private void DrawStats()
     {
         DrawPrimaryStats();
-        DrawSecondaryStats();
+        DrawAdditionalStats();
+        DrawBonusStats();
     }
     private void DrawPrimaryStats()
     {
@@ -136,10 +137,10 @@ public class CharacterProfileCreator : EditorWindow
         GL.Space(8);
         DrawFieldsCharacterProfilePropertiesWithName("Base");
     }
-    private void DrawSecondaryStats()
+    private void DrawAdditionalStats()
     {
         DrawDivider();
-        GL.Label("Secondary Stats");
+        GL.Label("Additional Stats");
         GL.Space(8);
 
         //Base
@@ -152,6 +153,14 @@ public class CharacterProfileCreator : EditorWindow
 
         //Total
         DrawCharacterProfilePropertiesWithName("Total");
+    }
+    private void DrawBonusStats()
+    {
+        DrawDivider();
+        GL.Label("Bonus Stats");
+        GL.Space(8);
+
+        DrawFieldsCharacterProfilePropertiesWithName("Bonus");
     }
     private void DrawCharacterProfilePropertiesWithName(string name)
     {
