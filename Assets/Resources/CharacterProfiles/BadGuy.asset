@@ -15,26 +15,46 @@ MonoBehaviour:
   _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
   Name: BadGuy
   _vitality: 1
-  _strength: 1
   _power: 1
-  _agility: 1
-  _focus: 1
-  _reflex: 1
-  _additionalHealth: 10
-  _additionalEndurancePercentage: 0
-  _additionalWeaponDamage: 0
-  _additionalAbilityDamage: 0
-  _additionalEvasion: 0
-  _additionalMoveSpeed: 0
-  _additionalAccuracy: 0
-  _additionalCritDamagePercentage: 0
+  _endurance: 1
+  _armor: 1
+  _ammo: 1
+  _initiative: 1
+  _movementSpeed: 1
+  _accuracy: 1
+  _evasion: 1
+  _critChance: 1
+  _critDamage: 1
+  _stunResist: 1
+  _energyResist: 1
+  _poisonResist: 1
+  _burnResist: 1
+  _bleedResist: 1
+  _additionalVitality: 0
+  _additionalPower: 0
+  _additionalEndurance: 0
+  _additionalArmor: 0
+  _additionalAmmo: 0
   _additionalInitiative: 0
-  _additionalCritChancePercentage: 0
-  _actionPoints: 2
-  _maxArmor: 99999
-  _maxHealth: 99999
-  _maxShield: 99999
-  ArmorClass: 0
+  _additionalMovementSpeed: 0
+  _additionalAccuracy: 0
+  _additionalEvasion: 0
+  _additionalCritChance: 0
+  _additionalCritDamage: 0
+  _additionalStunResist: 0
+  _additionalEnergyResist: 0
+  _additionalPoisonResist: 0
+  _additionalBurnResist: 0
+  _additionalBleedResist: 0
+  _bonusDamageModifier: 0
+  _bonusDamageMultiplier: 0
+  _bonusStunBuildup: 0
+  _bonusPoisionBuildup: 0
+  _bonusBurnBuildup: 0
+  _bonusBleedBuildup: 0
+  _bonusEnergyBuildup: 0
+  _bonusArmorDamageModifier: 0
+  _bonusArmorPierce: 0
   CombatAbilities:
   - {fileID: 11400000, guid: 51cbfe6cb1c408141b2c4a814c3f3cdd, type: 2}
   - {fileID: 11400000, guid: 8f4370dcbeb37af4b8ec62c79a4e8e01, type: 2}
