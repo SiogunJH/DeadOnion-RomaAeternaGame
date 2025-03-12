@@ -82,6 +82,7 @@ public class CharacterProfileCreator : EditorWindow
         {
             _characterProfile = CreateInstance<CharacterProfile>();
             LoadCharacterProfileSettings();
+            _characterProfile.SetDefaultValues();
         }
     }
     private void DrawCharacterPresentGUI()
@@ -126,96 +127,40 @@ public class CharacterProfileCreator : EditorWindow
     private void DrawStats()
     {
         DrawPrimaryStats();
-        DrawSecondaryStats();
-        DrawTertiaryStats();
+        DrawAdditionalStats();
+        DrawBonusStats();
     }
     private void DrawPrimaryStats()
     {
         DrawDivider();
         GL.Label("Primary Stats");
         GL.Space(8);
-        DrawFieldCharacterProfilePropertyWithName("Vitality");
-        DrawFieldCharacterProfilePropertyWithName("Strength");
-        DrawFieldCharacterProfilePropertyWithName("Power");
-        DrawFieldCharacterProfilePropertyWithName("Agility");
-        DrawFieldCharacterProfilePropertyWithName("Focus");
-        DrawFieldCharacterProfilePropertyWithName("Reflex");
+        DrawFieldsCharacterProfilePropertiesWithName("Base");
     }
-    private void DrawSecondaryStats()
+    private void DrawAdditionalStats()
     {
         DrawDivider();
-        GL.Label("Secondary Stats");
+        GL.Label("Additional Stats");
         GL.Space(8);
 
         //Base
         DrawCharacterProfilePropertiesWithName("Base");
         GL.Space(20);
 
-        //Additional
-        GL.Label("Additional");
-        DrawPropertyUnderline();
-        foreach(var property in _characterProfile.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-        {
-            if (!property.Name.Contains("Additional")) continue;
-
-            if(property.PropertyType == typeof(int))
-            {
-                int value = (int)property.GetValue(_characterProfile);
-                GL.BeginHorizontal();
-                GL.Label(AddSpaceBeforeUppercase(RemoveWordFromStart(property.Name, "Additional")), GL.MaxWidth(LABEL_MEDIUM_WIDTH));
-                int newValue = EGL.IntField(value, GL.MaxWidth(60));
-                GL.Label("int", GL.MaxWidth(60));
-                GL.EndHorizontal();
-                if(newValue != value)
-                {
-                    if(newValue < 0) newValue = 0;
-                    property.SetValue(_characterProfile, newValue);
-                    EditorUtility.SetDirty(_characterProfile);
-                }
-            }
-            if(property.PropertyType == typeof(float))
-            {
-                float value = (float)property.GetValue(_characterProfile);
-                GL.BeginHorizontal();
-                GL.Label(AddSpaceBeforeUppercase(RemoveWordFromStart(property.Name, "Additional")), GL.MaxWidth(LABEL_MEDIUM_WIDTH));
-                float newValue = EGL.FloatField(value, GL.MaxWidth(60));
-                GL.Label("float", GL.MaxWidth(60));
-                GL.EndHorizontal();
-                if(newValue != value)
-                {
-                    if(newValue < 0) newValue = 0;
-                    property.SetValue(_characterProfile, newValue);
-                    EditorUtility.SetDirty(_characterProfile);
-                }
-            }
-            DrawPropertyUnderline();
-        }
+        //Modified
+        DrawFieldsCharacterProfilePropertiesWithName("Additional");
         GL.Space(20);
 
         //Total
         DrawCharacterProfilePropertiesWithName("Total");
     }
-    private void DrawTertiaryStats()
+    private void DrawBonusStats()
     {
         DrawDivider();
-        GL.Label("Tertiary Stats");
+        GL.Label("Bonus Stats");
         GL.Space(8);
-        DrawFieldCharacterProfilePropertyWithName("ActionPoints");
-        DrawFieldCharacterProfilePropertyWithName("MaxArmor");
-        DrawFieldCharacterProfilePropertyWithName("MaxHealth");
-        DrawFieldCharacterProfilePropertyWithName("MaxShield");
-        GL.Space(4);
 
-        CharacterProfile.CharacterArmorClass prevArmorClass = _characterProfile.ArmorClass;
-        GL.BeginHorizontal();
-        GL.Label("Armor Class" ,GL.MaxWidth(LABEL_MEDIUM_WIDTH));
-        _characterProfile.ArmorClass = (CharacterProfile.CharacterArmorClass)EGL.EnumPopup(_characterProfile.ArmorClass, GL.MaxWidth(BUTTON_WIDTH));
-        GL.EndHorizontal();
-        if (_characterProfile.ArmorClass != prevArmorClass)
-        {
-            EditorUtility.SetDirty(_characterProfile);
-            GUI.FocusControl(null);
-        }
+        DrawFieldsCharacterProfilePropertiesWithName("Bonus");
     }
     private void DrawCharacterProfilePropertiesWithName(string name)
     {
@@ -238,6 +183,12 @@ public class CharacterProfileCreator : EditorWindow
     private void DrawFieldCharacterProfilePropertyWithName(string name)
     {
         PropertyInfo property = _characterProfile.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.Name.Equals(name)).FirstOrDefault();
+        if(property == null)
+        {
+            DrawLabelWithColor($"Property with name: ({name}), is missing from CharacterProfile, but editor tried to find it.", Color.yellow);
+            return;
+        }
+
 
         if(property.PropertyType == typeof(int))
         {
@@ -270,6 +221,47 @@ public class CharacterProfileCreator : EditorWindow
             }
         }
         DrawPropertyUnderline();
+    }
+    private void DrawFieldsCharacterProfilePropertiesWithName(string name)
+    {
+        GL.Label(name);
+        DrawPropertyUnderline();
+        foreach(var property in _characterProfile.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            if (!property.Name.Contains(name)) continue;
+
+            if(property.PropertyType == typeof(int))
+            {
+                int value = (int)property.GetValue(_characterProfile);
+                GL.BeginHorizontal();
+                GL.Label(AddSpaceBeforeUppercase(RemoveWordFromStart(property.Name, name)), GL.MaxWidth(LABEL_MEDIUM_WIDTH));
+                int newValue = EGL.IntField(value, GL.MaxWidth(60));
+                GL.Label("int", GL.MaxWidth(60));
+                GL.EndHorizontal();
+                if(newValue != value)
+                {
+                    if(newValue < 0) newValue = 0;
+                    property.SetValue(_characterProfile, newValue);
+                    EditorUtility.SetDirty(_characterProfile);
+                }
+            }
+            if(property.PropertyType == typeof(float))
+            {
+                float value = (float)property.GetValue(_characterProfile);
+                GL.BeginHorizontal();
+                GL.Label(AddSpaceBeforeUppercase(RemoveWordFromStart(property.Name, name)), GL.MaxWidth(LABEL_MEDIUM_WIDTH));
+                float newValue = EGL.FloatField(value, GL.MaxWidth(60));
+                GL.Label("float", GL.MaxWidth(60));
+                GL.EndHorizontal();
+                if(newValue != value)
+                {
+                    if(newValue < 0) newValue = 0;
+                    property.SetValue(_characterProfile, newValue);
+                    EditorUtility.SetDirty(_characterProfile);
+                }
+            }
+            DrawPropertyUnderline();
+        }
     }
 
     private void DrawAbilities()
@@ -322,10 +314,7 @@ public class CharacterProfileCreator : EditorWindow
         }
         if (_settingsAreOpen == false) return;
 
-        Color prev = GUI.color;
-        GUI.color = Color.red;
-        GL.Label("Changing these changes them for all character profiles.");
-        GUI.color = prev;
+        DrawLabelWithColor("Changing these changes them for all character profiles.", Color.red);
         GL.Space(8);
 
         foreach (var property in _characterProfile.Settings.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
@@ -379,6 +368,13 @@ public class CharacterProfileCreator : EditorWindow
     {
         Rect rec = GUILayoutUtility.GetRect(300, 1, GL.ExpandWidth(false));
         EditorGUI.DrawRect(rec, new Color(0.14f, 0.14f, 0.14f, 1));
+    }
+    private void DrawLabelWithColor(string text, Color color)
+    {
+        Color prev = GUI.color;
+        GUI.color = color;
+        GL.Label(text);
+        GUI.color = prev;
     }
 
 
