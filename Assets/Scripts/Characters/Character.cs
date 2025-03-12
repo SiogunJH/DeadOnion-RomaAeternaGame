@@ -309,7 +309,7 @@ public class Character : GridEntity
 
     private void Die()
     {
-        if (_currentHealth > 0) return;
+        if (CurrentHealth > 0) return;
         CombatManager.Instance.RemoveCharacter(this);
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has died");
     }
