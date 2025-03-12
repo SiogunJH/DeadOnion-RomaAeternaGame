@@ -19,7 +19,7 @@ MonoBehaviour:
   HasCastTime: 0
   AbilityEffects:
   - Type: 5
-    Amount: 1
+    Amount: 3
     ForAdditionalTurns: 0
     ChangedAttribute: 0
     RelativeAffectedPositions:
