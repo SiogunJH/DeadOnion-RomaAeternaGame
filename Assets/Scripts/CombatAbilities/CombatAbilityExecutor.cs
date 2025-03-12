@@ -18,6 +18,8 @@ public static class CombatAbilityExecutor
 
     public static void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
     {
+        Debug.Assert(ability != null, "Ability is null");
+
         Debug.Log($"Executing ability: [{ability.Name}]");
         foreach (var effect in ability.AbilityEffects)
         {
