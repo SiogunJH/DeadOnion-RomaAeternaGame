@@ -10,6 +10,9 @@ public class DamageKineticHandler : CombatAbilityEffectHandler
     {
         if (targetCharacter == null) return;
 
+        int initalHealth = targetCharacter.CurrentHealth;
         targetCharacter.TakeElementalDamage(effect.Amount, effect.Type);
+
+        Debug.Log($"[{targetCharacter.UserFriendlyName}] received [{effect.Amount}] points of damage, and is now at [{targetCharacter.CurrentHealth}] health points (was [{initalHealth}]) out of [{targetCharacter.CharacterProfile.TotalHealth}] total!");
     }
 }
