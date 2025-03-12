@@ -6,8 +6,8 @@ public class DamageFireHandler : CombatAbilityEffectHandler
 {
     public override CombatAbilityEffect.EffectType EffectType => CombatAbilityEffect.EffectType.DamageFire;
 
-    protected override void DoEffect(CombatAbilityEffect effect, Character affectedCharacter)
+    protected override void DoEffect(CombatAbilityEffect effect, Character caster, Character targetCharacter, GridTileController targetTile)
     {
-        affectedCharacter.TakeElementalDamage(effect.Amount, effect.Type);
+        targetCharacter.TakeElementalDamage(effect.Amount, effect.Type);
     }
 }
