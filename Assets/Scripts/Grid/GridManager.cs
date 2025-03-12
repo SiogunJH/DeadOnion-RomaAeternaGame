@@ -126,6 +126,12 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
             enemySpawnTiles[i].AddOccupant(instantiatedEnemy);
             instantiatedEnemy.Location = Grid[enemySpawnTiles[i].Coordinates];
             AssignEntityID(instantiatedEnemy);
+
+            // Log
+            if (instantiatedEnemy is Character instantiatedCharacter)
+            {
+                Debug.Log($"Spawned [{instantiatedEnemy.UserFriendlyName}] with [{instantiatedCharacter.CurrentHealth}/{instantiatedCharacter.CharacterProfile.TotalVitality}] health");
+            }
         }
     }
 
