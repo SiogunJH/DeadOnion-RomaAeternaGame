@@ -42,11 +42,19 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
 
     #endregion
 
+    #region Initialization
+
+    public void Initialize()
+    {
+        Debug.Log("Initializing [Grid Manager]");
+
+        DisplayGrid();
+    }
+
+    #endregion
+
     #region Display 
 
-#if UNITY_EDITOR
-    [Button]
-#endif
     private void DisplayGrid()
     {
         // Validate

@@ -26,6 +26,18 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
         }
     }
 
+    #region MonoBehaviour
+
+    private void Start()
+    {
+        Debug.Log("Initializing [Combat Manager]");
+        Initialize();
+    }
+
+    #endregion
+
+    #region Initialization
+
 #if UNITY_EDITOR
     [Button]
 #endif
@@ -37,6 +49,8 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
             Debug.LogWarning("Combat cannot be initialized outside of play mode!");
             return;
         }
+
+        GridManager.Instance.Initialize();
 
         // Handle Combatants
         if (!LoadCharactersOnMap())
@@ -52,6 +66,8 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
         _roundNumber = 0;
         StartCombat();
     }
+
+    #endregion
 
     #region Character Management
 
