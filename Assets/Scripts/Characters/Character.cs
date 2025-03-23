@@ -102,7 +102,7 @@ public class Character : GridEntity
     {
         TakeTrueDamage(amount);
         Debug.LogWarning("Elemental damage not yet implemented");
-        Die();
+        TryToDie();
         return;
 
 #pragma warning disable CS0162 // Unreachable code detected
@@ -316,18 +316,25 @@ public class Character : GridEntity
 
     #endregion
 
+    private bool TryToDie()
+    {
+        if (CurrentHealth <= 0)
+        {
+            Die();
+            return true;
+        }
+
+        return false;
+    }
 
     private void Die()
     {
-        // TODO: UNREGISTER CHARACTER FROM TILE, FUCKASS
-
-        if (CurrentHealth > 0) return;
-
-        CombatManager.Instance.RemoveCharacter(this);
-
-        var gridEntity = this as GridEntity;
-        Destroy(gridEntity.gameObject);
-
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has died");
+
+        CombatManager.Instance.RemoveCharacter(this); // Remove from turn order
+        Location.RemoveOccupant(this); // Remove from tile
+
+        // Remove visually
+        Destroy(gameObject); // TODO: In the future development, this should be replaced by a call to animation controller for death animation
     }
 }
