@@ -260,6 +260,10 @@ public class Character : GridEntity
 
     public void RemoveActionPoints(int amount)
     {
+        // Validate
+        Debug.Assert(_actionPointsLeft >= amount, "Cannot remove more action points than there is available"); // AP availability should be verified before performing an action
+
+        // Remove
         _actionPointsLeft = Mathf.Clamp(_actionPointsLeft - amount, 0, int.MaxValue);
     }
 
