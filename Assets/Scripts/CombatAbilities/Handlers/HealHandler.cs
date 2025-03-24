@@ -6,8 +6,8 @@ public class HealHandler : CombatAbilityEffectHandler
 {
     public override CombatAbilityEffect.EffectType EffectType => CombatAbilityEffect.EffectType.Heal;
 
-    protected override void DoEffect(CombatAbilityEffect effect, Character affectedCharacter)
+    protected override void DoEffect(CombatAbilityEffect effect, Character caster, Character targetCharacter, GridTileController targetTile)
     {
-        affectedCharacter.Heal(effect.Amount);
+        targetCharacter.Heal(effect.Amount);
     }
 }

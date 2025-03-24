@@ -42,11 +42,19 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
 
     #endregion
 
+    #region Initialization
+
+    public void Initialize()
+    {
+        Debug.Log("Initializing [Grid Manager]");
+
+        DisplayGrid();
+    }
+
+    #endregion
+
     #region Display 
 
-#if UNITY_EDITOR
-    [Button]
-#endif
     private void DisplayGrid()
     {
         // Validate
@@ -118,6 +126,12 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
             enemySpawnTiles[i].AddOccupant(instantiatedEnemy);
             instantiatedEnemy.Location = Grid[enemySpawnTiles[i].Coordinates];
             AssignEntityID(instantiatedEnemy);
+
+            // Log
+            if (instantiatedEnemy is Character instantiatedCharacter)
+            {
+                Debug.Log($"Spawned [{instantiatedEnemy.UserFriendlyName}] with [{instantiatedCharacter.CurrentHealth}/{instantiatedCharacter.CharacterProfile.TotalVitality}] health");
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class CombatAbilityEffectHandler
@@ -18,16 +19,28 @@ public abstract class CombatAbilityEffectHandler
     /// <param name="caster">Reference to the person causing the effect, used for ignoring certain targets when ability is used</param>
     public virtual void GridEffectHandler(Vector2 target, CombatAbilityEffect effect, GridMap map, Character caster)
     {
-        List<Character> affected = FindAffectedTargets(target, effect, map, caster);
+        HashSet<GridTileController> affectedTiles = map
+            .GetTilesInPattern(map[(int)target.x, (int)target.y], effect.RelativeAffectedPositions)
+            .Select(tile => tile.Controller)
+            .ToHashSet();
 
-        foreach(var character in affected)
+        foreach (var tile in affectedTiles)
         {
-            DoEffect(effect, character);
-            if(effect.ForAdditionalTurns > 0)
+            var targetCharacter = tile.Data.Occupants
+                .Where(occupant => occupant is Character)
+                .Select(occupant => occupant as Character)
+                .FirstOrDefault(); // TODO: Change this logic to affect all GridEntities
+
+            DoEffect(effect, caster, targetCharacter, tile);
+
+            if (targetCharacter != null && effect.ForAdditionalTurns > 0)
             {
-                character.AddEffect(effect);
+                targetCharacter.AddEffect(effect);
             }
         }
+
+        caster.RemoveActionPoints(CombatManager.Instance.CurrentAbility.ActionPointCost);
+        caster.TryToEndTurn();
     }
 
     /// <summary>
@@ -38,7 +51,7 @@ public abstract class CombatAbilityEffectHandler
     /// <param name="affected">Reference to the character already affected by an over time effect</param>
     public virtual void CharacterEffectHandler(CombatAbilityEffect effect, GridMap map, Character affected)
     {
-        DoEffect(effect, affected);
+        DoEffect(effect, caster: affected, targetCharacter: affected, targetTile: affected.Location.Controller);
         effect.ForAdditionalTurns--;
     }
 
@@ -49,14 +62,14 @@ public abstract class CombatAbilityEffectHandler
     protected virtual List<Character> FindAffectedTargets(Vector2 target, CombatAbilityEffect effect, GridMap map, Character caster)
     {
         List<Character> affected = new();
-        foreach(var tilePosition in effect.RelativeAffectedPositions)
+        foreach (var tilePosition in effect.RelativeAffectedPositions)
         {
             GridTileData tile = map[tilePosition.x + (int)target.x, tilePosition.y + (int)target.y];
-            if(tile == null) continue;
+            if (tile == null) continue;
 
-            foreach(var occupant in tile.Occupants)
+            foreach (var occupant in tile.Occupants)
             {
-                if(occupant is Character) affected.Add((Character) occupant);
+                if (occupant is Character) affected.Add((Character)occupant);
             }
         }
         return affected; //As of this moment, doesen't exclude allies
@@ -65,6 +78,6 @@ public abstract class CombatAbilityEffectHandler
     /// <summary>
     /// Calls each method from Character that this effect is supposed to trigger
     /// </summary>
-    protected abstract void DoEffect(CombatAbilityEffect effect, Character affectedCharacter);
+    protected abstract void DoEffect(CombatAbilityEffect effect, Character caster, Character targetCharacter, GridTileController targetTile);
 
 }

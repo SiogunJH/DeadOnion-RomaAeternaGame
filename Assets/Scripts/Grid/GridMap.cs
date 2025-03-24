@@ -20,6 +20,23 @@ public class GridMap : ScriptableObject
 
     #endregion
 
+    #region Tiles Filtering
+
+    public IEnumerable<GridTileData> GetTilesInPattern(GridTileData initialTile, IEnumerable<Vector2Int> relativeOffsets)
+    {
+        HashSet<GridTileData> tilesInRange = new();
+        foreach (var offset in relativeOffsets)
+        {
+            Vector2Int index = new(initialTile.X + offset.x, initialTile.Y + offset.y);
+            GridTileData tile = this[index];
+            if (tile != null) tilesInRange.Add(tile);
+        }
+
+        return tilesInRange;
+    }
+
+    #endregion
+
     #region Pathfinding
 
     public bool FindPathBetween(GridEntity traveler, GridTileData start, GridTileData end, out IEnumerable<GridTileData> path)

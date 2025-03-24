@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 #if UNITY_EDITOR
 using VInspector;
@@ -24,12 +26,15 @@ public class Character : GridEntity
 
     private int _currentArmor;
 
+    [SerializeField] private int _actionPointsLeft;
+
     private int _currentMovePoints;
 
     #region MonoBehaviour
 
     private void Awake()
     {
+        _currentHealth = CharacterProfile.TotalVitality;
         _currentArmor = CharacterProfile.TotalArmor;
         UserFriendlyName = CharacterProfile.Name;
     }
@@ -77,22 +82,27 @@ public class Character : GridEntity
     }
     public void TakeTrueDamage(int damage)
     {
-        //if (damage < 0) return;
-        //uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
-        //uint damageToHealth = (uint)damage - maxDamageBlocked;
-        //_currentHealth -= (int)damageToHealth;
-        //_currentArmor -= (int)maxDamageBlocked;
-        //if (_currentArmor < 0)
-        //{
+        if (damage < 0) return;
+
+        _currentHealth -= damage;
+
+        // uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
+        // uint damageToHealth = (uint)damage - maxDamageBlocked;
+        // _currentHealth -= (int)damageToHealth;
+        // _currentArmor -= (int)maxDamageBlocked;
+        // if (_currentArmor < 0)
+        // {
         //    _currentHealth += _currentArmor;
         //    _currentArmor = 0;
-        //}
-        //Die();
+        // }
+
+        // Die();
     }
     public void TakeElementalDamage(int amount, CombatAbilityEffect.EffectType damageType)
     {
         TakeTrueDamage(amount);
         Debug.LogWarning("Elemental damage not yet implemented");
+        TryToDie();
         return;
 
 #pragma warning disable CS0162 // Unreachable code detected
@@ -248,12 +258,22 @@ public class Character : GridEntity
     [SerializeField, HideInInspector] private bool _hadTurn = false;
     public bool HadTurn => _hadTurn;
 
+    public void RemoveActionPoints(int amount)
+    {
+        // Validate
+        Debug.Assert(_actionPointsLeft >= amount, "Cannot remove more action points than there is available"); // AP availability should be verified before performing an action
+
+        // Remove
+        _actionPointsLeft = Mathf.Clamp(_actionPointsLeft - amount, 0, int.MaxValue);
+    }
+
     public void BeginTurn()
     {
         ResetAttributeChanges();
         ExecuteActiveEffects();
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has started their turn!");
+        _actionPointsLeft = 2; // TODO: Assign action points from Character
 
         StartCoroutine(PerformTurn());
     }
@@ -262,9 +282,18 @@ public class Character : GridEntity
     {
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' is now performing!");
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
+
+        CombatManager.Instance.UI.DisplayAbilities(CharacterProfile.CombatAbilities);
+    }
+
+    public bool TryToEndTurn()
+    {
+        // Validate
+        if (_actionPointsLeft > 0) return false;
 
         EndTurn();
+        return true;
     }
 
     private void EndTurn()
@@ -273,7 +302,9 @@ public class Character : GridEntity
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has finished their turn!");
 
-        TurnManager.Instance.NextTurn();
+        EventSystem.current.SetSelectedGameObject(null);
+        CombatManager.Instance.UI.HideAbilities();
+        CombatManager.Instance.NextTurn();
     }
 
     public void ResetTurn()
@@ -285,11 +316,25 @@ public class Character : GridEntity
 
     #endregion
 
+    private bool TryToDie()
+    {
+        if (CurrentHealth <= 0)
+        {
+            Die();
+            return true;
+        }
+
+        return false;
+    }
 
     private void Die()
     {
-        if (_currentHealth > 0) return;
-        TurnManager.Instance.RemoveCharacter(this);
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has died");
+
+        CombatManager.Instance.RemoveCharacter(this); // Remove from turn order
+        Location.RemoveOccupant(this); // Remove from tile
+
+        // Remove visually
+        Destroy(gameObject); // TODO: In the future development, this should be replaced by a call to animation controller for death animation
     }
 }

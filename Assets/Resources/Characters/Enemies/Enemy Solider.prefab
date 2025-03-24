@@ -134,8 +134,8 @@ MonoBehaviour:
   Location:
     Controller: {fileID: 0}
     Coordinates: {x: 0, y: 0}
-    IsEnabled: 0
     Tags: 0
   ID: -1
-  _profile: {fileID: 11400000, guid: b27c424d4f8be98438ae09860477a5d0, type: 2}
+  _profile: {fileID: 11400000, guid: 0dee28029c5e43b4eb0be0c3324d1951, type: 2}
+  _actionPointsLeft: 0
   _hadTurn: 0

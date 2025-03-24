@@ -7,6 +7,7 @@ public static class CombatAbilityExecutor
     private static readonly Dictionary<CombatAbilityEffect.EffectType, CombatAbilityEffectHandler> _handlers = new()
     {
         {new HealHandler().EffectType, new HealHandler()},
+        {new MoveHandler().EffectType, new MoveHandler()},
         {new DamageAcidHandler().EffectType, new DamageAcidHandler()},
         {new DamageEnergyHandler().EffectType, new DamageEnergyHandler()},
         {new DamageFireHandler().EffectType, new DamageFireHandler()},
@@ -17,9 +18,13 @@ public static class CombatAbilityExecutor
 
     public static void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
     {
-        foreach(var effect in ability.AbilityEffects)
+        Debug.Assert(ability != null, "Ability is null");
+
+        Debug.Log($"Executing ability: [{ability.Name}]");
+        foreach (var effect in ability.AbilityEffects)
         {
-            if(_handlers.TryGetValue(effect.Type, out var handler))
+            Debug.Log($"Executing effect: [{effect.Type}]");
+            if (_handlers.TryGetValue(effect.Type, out var handler))
             {
                 handler.GridEffectHandler(target, effect, map, caster);
             }
