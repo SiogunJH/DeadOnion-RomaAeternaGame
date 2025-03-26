@@ -10,12 +10,8 @@ public static class CombatAbilityExecutor
     {
         {new HealHandler().EffectType, new HealHandler()},
         {new MoveHandler().EffectType, new MoveHandler()},
-        {new DamageAcidHandler().EffectType, new DamageAcidHandler()},
-        {new DamageEnergyHandler().EffectType, new DamageEnergyHandler()},
-        {new DamageFireHandler().EffectType, new DamageFireHandler()},
-        {new DamageKineticHandler().EffectType, new DamageKineticHandler()},
-        {new DamagePlasmaHandler().EffectType, new DamagePlasmaHandler()},
-        {new SkipTurnHandler().EffectType, new SkipTurnHandler()}
+        {new DamageHandler().EffectType, new DamageHandler()},
+        {new SkipTurnHandler().EffectType, new SkipTurnHandler()},
     };
 
     public static void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
