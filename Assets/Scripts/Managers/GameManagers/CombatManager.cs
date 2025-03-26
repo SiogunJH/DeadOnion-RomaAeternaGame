@@ -39,7 +39,7 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
     #region Initialization
 
 #if UNITY_EDITOR
-    [Button]
+    // [Button]
 #endif
     public void Initialize()
     {
