@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dfe4ed35f2494e438c6e504aafbe89c, type: 3}
-  m_Name: BadGuy
+  m_Name: Valeria CP
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
-  Name: BadGuy
+  Name: Valeria
   _vitality: 1
   _power: 1
   _endurance: 1
@@ -57,4 +57,4 @@ MonoBehaviour:
   _bonusArmorPierce: 0
   CombatAbilities:
   - {fileID: 11400000, guid: 51cbfe6cb1c408141b2c4a814c3f3cdd, type: 2}
-  - {fileID: 11400000, guid: 8f4370dcbeb37af4b8ec62c79a4e8e01, type: 2}
+  - {fileID: 11400000, guid: 5418bfcc75caf0148ab3d850584ee3bb, type: 2}
