@@ -8,8 +8,7 @@ public class GridTileController : MonoBehaviour
     public GridTileData Data;
 
     private MeshRenderer _tileMeshRenderer;
-    private bool _isHighlighted;
-    private bool _usePartialHighlight;
+    private HighlighMode _highlightMode;
 
     #region MonoBehaviour
 
@@ -21,54 +20,78 @@ public class GridTileController : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (_isHighlighted)
+        if (_highlightMode == HighlighMode.Valid)
         {
-            SetHighlight(true, false);
+            SetHighlightMode(HighlighMode.Hovered);
         }
     }
 
     public void OnMouseExit()
     {
-        if (_isHighlighted)
+        if (_highlightMode == HighlighMode.Hovered)
         {
-            SetHighlight(true, true);
+            SetHighlightMode(HighlighMode.Valid);
         }
     }
 
     public void OnMouseDown()
     {
-        if (_isHighlighted)
+        // Validate tile target
+        if (_highlightMode != HighlighMode.Hovered)
         {
-            var ability = CombatManager.Instance.CurrentAbility;
-            var target = Data.Coordinates;
-            var map = GridManager.Instance.Grid;
-            var caster = CombatManager.Instance.CurrentCombatant;
+            Debug.Log($"Click Denied!\nTile is not Highlighted, and cannot be targeted!");
+        }
 
-            CombatAbilityExecutor.ExecuteAbility(target, ability, map, caster);
-        }
-        else
+        // Gather variables
+        var ability = CombatManager.Instance.CurrentAbility;
+        var target = Data.Coordinates;
+        var map = GridManager.Instance.Grid;
+        var caster = CombatManager.Instance.CurrentCombatant;
+
+        // Check if the ability can be used
+        if (!ability.CanUseAbility(caster))
         {
-            Debug.Log($"Click denied");
+            Debug.Log("Click Denied!\nAbility cannot be used!");
+            return;
         }
+
+        CombatAbilityExecutor.ExecuteAbility(target, ability, map, caster);
+
+        CombatManager.Instance.CurrentAbility = null;
+        CombatManager.Instance.ClearTileHighlight();
     }
 
     #endregion
 
-    public void SetHighlight(bool setHighlightActive, bool usePartialHighlight = true)
+    public void SetHighlightMode(HighlighMode highlighMode)
     {
-        _isHighlighted = setHighlightActive;
-        _usePartialHighlight = usePartialHighlight;
+        _highlightMode = highlighMode;
 
-        UpdateHighlightMode();
+        bool highlight = highlighMode != HighlighMode.None;
+        bool usePartialHighlight = highlighMode == HighlighMode.Valid || highlighMode == HighlighMode.Invalid;
+        bool animatePartialHighlight = highlighMode == HighlighMode.Valid;
+        bool validHighlight = highlighMode != HighlighMode.Invalid;
+
+        UpdateHighlightMode(highlight, usePartialHighlight, animatePartialHighlight, validHighlight);
     }
 
-    private void UpdateHighlightMode()
+    private void UpdateHighlightMode(bool isHighlighted, bool usePartialHighlight, bool animatePartialHighlight, bool validHighlight)
     {
         MaterialPropertyBlock propertyBlock = new();
 
         _tileMeshRenderer.GetPropertyBlock(propertyBlock);
-        propertyBlock.SetFloat("_IsHighlighted", _isHighlighted ? 1 : 0);
-        propertyBlock.SetFloat("_UsePartialHighlight", _usePartialHighlight ? 1 : 0);
+        propertyBlock.SetFloat("_IsHighlighted", isHighlighted ? 1 : 0);
+        propertyBlock.SetFloat("_UsePartialHighlight", usePartialHighlight ? 1 : 0);
+        propertyBlock.SetFloat("_AnimatePartialHighlight", animatePartialHighlight ? 1 : 0);
+        propertyBlock.SetFloat("_ValidHighlight", validHighlight ? 1 : 0);
         _tileMeshRenderer.SetPropertyBlock(propertyBlock);
+    }
+
+    public enum HighlighMode
+    {
+        None = 0,
+        Hovered = 1 << 0,
+        Valid = 1 << 1,
+        Invalid = 1 << 2,
     }
 }
