@@ -71,7 +71,7 @@ public class CombatAbilityCreator : EditorWindow
         GL.Space(10);
         CombatAbility prevAbility = _combatAbility;
         _combatAbility = (CombatAbility)EditorGUILayout.ObjectField("Current Ability", _combatAbility, typeof(CombatAbility), false, GL.Width(FIELD_WIDTH + 100));
-        if(_combatAbility != prevAbility)
+        if (_combatAbility != prevAbility)
         {
             EditorUtility.SetDirty(_combatAbility);
             _selectedEffect = null;
@@ -101,7 +101,7 @@ public class CombatAbilityCreator : EditorWindow
         if (_rightMouseIsDown && _combatAbility != null) _isErasing = true;
         else _isErasing = false;
 
-        if((_isPainting && _isErasing) || GUIUtility.hotControl != 0)
+        if ((_isPainting && _isErasing) || GUIUtility.hotControl != 0)
         {
             _isPainting = false;
             _isErasing = false;
@@ -109,7 +109,7 @@ public class CombatAbilityCreator : EditorWindow
     }
     private void DrawAbilityEmptyGUI()
     {
-        if(GL.Button("Create new ability", GL.MaxWidth(BUTTON_WIDTH), GL.MaxHeight(BUTTON_HEIGHT)))
+        if (GL.Button("Create new ability", GL.MaxWidth(BUTTON_WIDTH), GL.MaxHeight(BUTTON_HEIGHT)))
         {
             _combatAbility = CreateInstance<CombatAbility>();
             _combatAbility.Width = ABILITY_MAX_SIZE;
@@ -118,7 +118,7 @@ public class CombatAbilityCreator : EditorWindow
     }
     private void DrawAbilityPresentGUI()
     {
-        if(GL.Button("Save", GL.MaxWidth(BUTTON_WIDTH), GL.MaxHeight(BUTTON_HEIGHT)))
+        if (GL.Button("Save", GL.MaxWidth(BUTTON_WIDTH), GL.MaxHeight(BUTTON_HEIGHT)))
         {
             if (!AssetDatabase.Contains(_combatAbility))
             {
@@ -149,36 +149,36 @@ public class CombatAbilityCreator : EditorWindow
 
     private void DrawGrid()
     {
-        if(_combatAbility == null) return;
+        if (_combatAbility == null) return;
         DrawDivider();
         GL.BeginHorizontal();
         GL.Label("Now painting:", GL.MaxWidth(90));
-        if(_selectedEffect == null) GL.Label("Range", GL.MaxWidth(90));
+        if (_selectedEffect == null) GL.Label("Range", GL.MaxWidth(90));
         else GL.Label("Affected tiles", GL.MaxWidth(90));
         GL.EndHorizontal();
 
         int side = (int)(((_windowWidth - (2 * GRID_PADDING) - WINDOW_PADDING) - (GRID_DIVIDER_WIDTH * _combatAbility.Width)) / _combatAbility.Width * 1f);
-        if(side > GRID_SQUARE_MAX_WIDTH) side = GRID_SQUARE_MAX_WIDTH;
-        if(side < GRID_SQUARE_MIN_WIDTH) side = GRID_SQUARE_MIN_WIDTH;
+        if (side > GRID_SQUARE_MAX_WIDTH) side = GRID_SQUARE_MAX_WIDTH;
+        if (side < GRID_SQUARE_MIN_WIDTH) side = GRID_SQUARE_MIN_WIDTH;
 
         List<Vector2Int> affectedTiles = _selectedEffect == null ? new List<Vector2Int>(_combatAbility.Range) : new List<Vector2Int>(_selectedEffect.RelativeAffectedPositions);
 
         GL.Space(GRID_PADDING);
-        for(int y = 0; y < _combatAbility.Height; y++)
+        for (int y = 0; y < _combatAbility.Height; y++)
         {
             GL.BeginHorizontal();
             GL.Space(GRID_PADDING);
-            for(int x = 0; x < _combatAbility.Width; x++)
+            for (int x = 0; x < _combatAbility.Width; x++)
             {
                 Rect rec = GUILayoutUtility.GetRect(side, side, GL.ExpandWidth(false));
-                EditorGUI.DrawRect(rec, ChooseColor(x,y, ref affectedTiles));
+                EditorGUI.DrawRect(rec, ChooseColor(x, y, ref affectedTiles));
                 PaintTile(x, y, rec, ref affectedTiles);
                 GL.Space(GRID_DIVIDER_WIDTH);
             }
             GL.EndHorizontal();
             GL.Space(GRID_DIVIDER_WIDTH);
         }
-        GL.Space(Mathf.Max(0,GRID_PADDING - GRID_DIVIDER_WIDTH));
+        GL.Space(Mathf.Max(0, GRID_PADDING - GRID_DIVIDER_WIDTH));
     }
     private Vector2Int ChangeAbsoluteCoordinateToRelative(int x, int y, int width, int height)
     {
@@ -209,7 +209,7 @@ public class CombatAbilityCreator : EditorWindow
     {
         try
         {
-            if(_effectColors.ContainsKey(effectType)) return _effectColors[effectType];
+            if (_effectColors.ContainsKey(effectType)) return _effectColors[effectType];
             else return _effectColors[CombatAbilityEffect.EffectType.None];
         }
         catch (KeyNotFoundException)
@@ -219,13 +219,13 @@ public class CombatAbilityCreator : EditorWindow
     }
     private void PaintTile(int x, int y, Rect rec, ref List<Vector2Int> affectedTiles)
     {
-        if(_isPainting)
+        if (_isPainting)
         {
-            Vector2Int relativePosition = ChangeAbsoluteCoordinateToRelative(x,y, _combatAbility.Width, _combatAbility.Height);
+            Vector2Int relativePosition = ChangeAbsoluteCoordinateToRelative(x, y, _combatAbility.Width, _combatAbility.Height);
 
             if (rec.Contains(Event.current.mousePosition) && !affectedTiles.Contains(relativePosition))
             {
-                if (_selectedEffect == null) _combatAbility.Range.Add(relativePosition); 
+                if (_selectedEffect == null) _combatAbility.Range.Add(relativePosition);
                 else _selectedEffect.RelativeAffectedPositions.Add(relativePosition);
                 EditorUtility.SetDirty(_combatAbility);
                 Repaint();
@@ -233,7 +233,7 @@ public class CombatAbilityCreator : EditorWindow
         }
         else if (_isErasing)
         {
-            Vector2Int relativePosition = ChangeAbsoluteCoordinateToRelative(x,y, _combatAbility.Width, _combatAbility.Height);
+            Vector2Int relativePosition = ChangeAbsoluteCoordinateToRelative(x, y, _combatAbility.Width, _combatAbility.Height);
 
             if (rec.Contains(Event.current.mousePosition) && affectedTiles.Contains(relativePosition))
             {
@@ -252,7 +252,7 @@ public class CombatAbilityCreator : EditorWindow
 
     private void DrawCombatAbility()
     {
-        if(_combatAbility == null) return;
+        if (_combatAbility == null) return;
 
         int prevWidth = _combatAbility.Width;
         int prevHeight = _combatAbility.Height;
@@ -327,7 +327,7 @@ public class CombatAbilityCreator : EditorWindow
         GL.Label($"Ability effects: {effectsLength}");
 
         GL.BeginHorizontal();
-        if(GL.Button("+", GL.MaxWidth(22), GL.MaxHeight(22)))
+        if (GL.Button("+", GL.MaxWidth(22), GL.MaxHeight(22)))
         {
             int length = _combatAbility.AbilityEffects.Length;
             CombatAbilityEffect[] copyList = GetCopyOfAbilityEffects(_combatAbility.AbilityEffects);
@@ -339,7 +339,7 @@ public class CombatAbilityCreator : EditorWindow
             GUI.FocusControl(null);
             EditorUtility.SetDirty(_combatAbility);
         }
-        if(GL.Button("-", GL.MaxWidth(22), GL.MaxHeight(22)))
+        if (GL.Button("-", GL.MaxWidth(22), GL.MaxHeight(22)))
         {
             int length = _combatAbility.AbilityEffects.Length;
             CombatAbilityEffect[] copyList = GetCopyOfAbilityEffects(_combatAbility.AbilityEffects);
@@ -355,7 +355,7 @@ public class CombatAbilityCreator : EditorWindow
     private CombatAbilityEffect[] GetCopyOfAbilityEffects(CombatAbilityEffect[] original)
     {
         CombatAbilityEffect[] copyList = new CombatAbilityEffect[original.Length];
-        for(int i = 0; i < original.Length; i++)
+        for (int i = 0; i < original.Length; i++)
         {
             copyList[i] = original[i];
         }
@@ -364,7 +364,7 @@ public class CombatAbilityCreator : EditorWindow
     }
     private ref CombatAbilityEffect[] CopyAbilityEffectsToNewArray(CombatAbilityEffect[] original, ref CombatAbilityEffect[] copy)
     {
-        for(int i = 0; i < original.Length; i++)
+        for (int i = 0; i < original.Length; i++)
         {
             if (i >= copy.Length)
                 break;
@@ -394,7 +394,7 @@ public class CombatAbilityCreator : EditorWindow
                 boxStyle.normal.background = EditorGUIUtility.whiteTexture;
                 Color prevColor = GUI.color;
                 GUI.color = Color.green;
-                GL.Box(GUIContent.none, boxStyle, GL.Width(BUTTON_HEIGHT-10), GL.Height(BUTTON_HEIGHT-10));
+                GL.Box(GUIContent.none, boxStyle, GL.Width(BUTTON_HEIGHT - 10), GL.Height(BUTTON_HEIGHT - 10));
                 GUI.color = prevColor;
                 GL.Space(16);
 
@@ -402,21 +402,21 @@ public class CombatAbilityCreator : EditorWindow
                 GL.Label("Amount:", GL.MaxWidth(50));
                 int prevAmount = _selectedEffect.Amount;
                 _selectedEffect.Amount = EditorGUILayout.IntField(_selectedEffect.Amount, GL.MaxWidth(50));
-                if(_selectedEffect.Amount != prevAmount) EditorUtility.SetDirty(_combatAbility);
+                if (_selectedEffect.Amount != prevAmount) EditorUtility.SetDirty(_combatAbility);
 
                 GL.Space(8);
                 GL.Label("For additional turns:", GL.MaxWidth(115));
                 int prevForTurns = _selectedEffect.ForAdditionalTurns;
                 _selectedEffect.ForAdditionalTurns = EditorGUILayout.IntField(_selectedEffect.ForAdditionalTurns, GL.MaxWidth(50));
-                if(_selectedEffect.ForAdditionalTurns != prevForTurns) EditorUtility.SetDirty(_combatAbility);
+                if (_selectedEffect.ForAdditionalTurns != prevForTurns) EditorUtility.SetDirty(_combatAbility);
 
-                if(_selectedEffect.Type == (CombatAbilityEffect.EffectType.ChangeAttribute))
+                if (_selectedEffect.Type == (CombatAbilityEffect.EffectType.ChangeAttribute))
                 {
                     GL.Space(8);
                     GL.Label("Changed Attribute:", GL.MaxWidth(110));
                     Character.Attribute attribute = _selectedEffect.ChangedAttribute;
                     _selectedEffect.ChangedAttribute = (Character.Attribute)EditorGUILayout.EnumPopup(_selectedEffect.ChangedAttribute, GL.MaxWidth(BUTTON_WIDTH));
-                    if(_selectedEffect.ChangedAttribute != attribute) EditorUtility.SetDirty(_combatAbility);
+                    if (_selectedEffect.ChangedAttribute != attribute) EditorUtility.SetDirty(_combatAbility);
                 }
             }
 
