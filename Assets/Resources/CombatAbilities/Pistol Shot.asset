@@ -18,8 +18,9 @@ MonoBehaviour:
   ActionPointCost: 1
   HasCastTime: 0
   AbilityEffects:
-  - Type: 5
+  - Type: 4101
     Amount: 3
+    MinMax: {x: 4, y: 6}
     ForAdditionalTurns: 0
     ChangedAttribute: 0
     RelativeAffectedPositions:
