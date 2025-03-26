@@ -17,7 +17,7 @@ public class GridEntity : MonoBehaviour
     [Tab("Grid Entity")]
 #endif
 
-    public GridEntityCategory Category;
+    public GridEntityCategory Team;
     public bool OccupiesTheWholeTile;
 
 #if UNITY_EDITOR
