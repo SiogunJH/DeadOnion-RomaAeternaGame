@@ -26,11 +26,7 @@ public class CombatAbilityCreator : EditorWindow
         { CombatAbilityEffect.EffectType.SkipTurn, new Color(0.2f, 0.4f, 0.2f) },
         { CombatAbilityEffect.EffectType.Interact, new Color(0.2f, 0.4f, 0.2f) },
         { CombatAbilityEffect.EffectType.Reload, new Color(0.2f, 0.4f, 0.2f) },
-        { CombatAbilityEffect.EffectType.DamageKinetic, new Color(0.3f, 0.3f, 0.4f) },
-        { CombatAbilityEffect.EffectType.DamageEnergy, new Color(0.1f, 0.2f, 0.4f) },
-        { CombatAbilityEffect.EffectType.DamageFire, new Color(0.4f, 0.1f, 0.1f) },
-        { CombatAbilityEffect.EffectType.DamagePlasma, new Color(0.3f, 0.0f, 0.4f) },
-        { CombatAbilityEffect.EffectType.DamageAcid, new Color(0.4f, 0.3f, 0.0f) },
+        { CombatAbilityEffect.EffectType.Damage, new Color(0.3f, 0.3f, 0.4f) },
         { CombatAbilityEffect.EffectType.Heal, new Color(0.0f, 0.4f, 0.0f) },
         { CombatAbilityEffect.EffectType.Shield, new Color(0.0f, 0.4f, 0.4f) },
 
@@ -398,26 +394,21 @@ public class CombatAbilityCreator : EditorWindow
                 GUI.color = prevColor;
                 GL.Space(16);
 
+                GL.BeginHorizontal();
 
-                GL.Label("Amount:", GL.MaxWidth(50));
-                int prevAmount = _selectedEffect.Amount;
-                _selectedEffect.Amount = EditorGUILayout.IntField(_selectedEffect.Amount, GL.MaxWidth(50));
-                if (_selectedEffect.Amount != prevAmount) EditorUtility.SetDirty(_combatAbility);
+                bool needsAmountField = ((int)_selectedEffect.Type & CombatAbilityEffect.AMOUNT_FIELD_FLAG) != 0;
+                if (needsAmountField) DisplayAmountField(ref _selectedEffect.Amount);
 
-                GL.Space(8);
-                GL.Label("For additional turns:", GL.MaxWidth(115));
-                int prevForTurns = _selectedEffect.ForAdditionalTurns;
-                _selectedEffect.ForAdditionalTurns = EditorGUILayout.IntField(_selectedEffect.ForAdditionalTurns, GL.MaxWidth(50));
-                if (_selectedEffect.ForAdditionalTurns != prevForTurns) EditorUtility.SetDirty(_combatAbility);
+                bool needsMinMax = ((int)_selectedEffect.Type & CombatAbilityEffect.MINMAX_FIELD_FLAG) != 0;
+                if (needsMinMax) DisplayMinMaxField(ref _selectedEffect.MinMax);
 
-                if (_selectedEffect.Type == (CombatAbilityEffect.EffectType.ChangeAttribute))
-                {
-                    GL.Space(8);
-                    GL.Label("Changed Attribute:", GL.MaxWidth(110));
-                    Character.Attribute attribute = _selectedEffect.ChangedAttribute;
-                    _selectedEffect.ChangedAttribute = (Character.Attribute)EditorGUILayout.EnumPopup(_selectedEffect.ChangedAttribute, GL.MaxWidth(BUTTON_WIDTH));
-                    if (_selectedEffect.ChangedAttribute != attribute) EditorUtility.SetDirty(_combatAbility);
-                }
+                bool needsForTurnsField = ((int)_selectedEffect.Type & CombatAbilityEffect.DOT_FIELD_FLAG) != 0;
+                if (needsForTurnsField) DisplayForTurnsField(ref _selectedEffect.ForAdditionalTurns);
+
+                bool needsAttribField = ((int)_selectedEffect.Type & CombatAbilityEffect.ATTRIBUTE_FIELD_FLAG) != 0;
+                if (needsAttribField) DisplayAttributeField(ref _selectedEffect.ChangedAttribute);
+
+                GL.EndHorizontal();
             }
 
             GL.EndHorizontal();
@@ -427,6 +418,41 @@ public class CombatAbilityCreator : EditorWindow
                 GUI.FocusControl(null);
             }
         }
+    }
+
+    private void DisplayMinMaxField(ref Vector2Int minMaxRef)
+    {
+        var prevMin = minMaxRef;
+        GL.Label("Min:", GL.MaxWidth(30));
+        int customX = EditorGUILayout.IntField(minMaxRef.x, GL.MaxWidth(50));
+        GL.Label("Max:", GL.MaxWidth(30));
+        int customY = EditorGUILayout.IntField(minMaxRef.y, GL.MaxWidth(50));
+        minMaxRef = new Vector2Int(customX, customY);
+        if (minMaxRef != prevMin) EditorUtility.SetDirty(_combatAbility);
+    }
+
+    private void DisplayAmountField(ref int amountRef)
+    {
+        GL.Label("Amount:", GL.MaxWidth(50));
+        int prevAmount = amountRef;
+        amountRef = EditorGUILayout.IntField(amountRef, GL.MaxWidth(50));
+        if (amountRef != prevAmount) EditorUtility.SetDirty(_combatAbility);
+    }
+
+    private void DisplayAttributeField(ref Character.Attribute attributeRef)
+    {
+        GL.Label("Attribute:", GL.MaxWidth(110));
+        Character.Attribute prevAttribute = attributeRef;
+        attributeRef = (Character.Attribute)EditorGUILayout.EnumPopup(attributeRef, GL.MaxWidth(BUTTON_WIDTH));
+        if (attributeRef != prevAttribute) EditorUtility.SetDirty(_combatAbility);
+    }
+
+    private void DisplayForTurnsField(ref int forTurnsRef)
+    {
+        GL.Label("For additional turns:", GL.MaxWidth(115));
+        int prevForTurns = forTurnsRef;
+        forTurnsRef = EditorGUILayout.IntField(forTurnsRef, GL.MaxWidth(50));
+        if (forTurnsRef != prevForTurns) EditorUtility.SetDirty(_combatAbility);
     }
 
     #endregion
