@@ -359,6 +359,7 @@ MonoBehaviour:
   _persistBetweenScenes: 0
   UI: {fileID: 1337726705}
   CurrentCombatant: {fileID: 0}
+  CurrentAbility: {fileID: 0}
 --- !u!4 &537338828
 Transform:
   m_ObjectHideFlags: 0
