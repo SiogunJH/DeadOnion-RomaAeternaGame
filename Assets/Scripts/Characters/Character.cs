@@ -77,14 +77,18 @@ public class Character : GridEntity
     public void Heal(int amount)
     {
         if (amount < 0) return;
+
         _currentHealth += amount;
         _currentHealth = Mathf.Min(_currentHealth, 1);
     }
-    public void TakeTrueDamage(int damage)
+    public void TakeDamage(int amount)
     {
-        if (damage < 0) return;
+        if (amount < 0) return;
 
-        _currentHealth -= damage;
+        _currentHealth -= amount;
+
+        Debug.Log($"[{UserFriendlyName}] received [{amount}] points of damage!\n[{_currentHealth + amount}/{CharacterProfile.TotalVitality}] -> [{_currentHealth}/{CharacterProfile.TotalVitality}]");
+        TryToDie();
 
         // uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
         // uint damageToHealth = (uint)damage - maxDamageBlocked;
@@ -97,33 +101,6 @@ public class Character : GridEntity
         // }
 
         // Die();
-    }
-    public void TakeElementalDamage(int amount, CombatAbilityEffect.EffectType damageType)
-    {
-        TakeTrueDamage(amount);
-        Debug.LogWarning("Elemental damage not yet implemented");
-        TryToDie();
-        return;
-
-#pragma warning disable CS0162 // Unreachable code detected
-        if (amount < 0) return;
-        switch (damageType)
-        {
-            case CombatAbilityEffect.EffectType.DamageAcid:
-            case CombatAbilityEffect.EffectType.DamageKinetic:
-            case CombatAbilityEffect.EffectType.DamageEnergy:
-            case CombatAbilityEffect.EffectType.DamagePlasma:
-            case CombatAbilityEffect.EffectType.DamageFire:
-                break;
-
-            default:
-                Debug.Log("Given EffectType is not a type of damage");
-                return;
-        }
-
-        Debug.Log("Do damage here"); //don't forget about armor
-                                     //die
-#pragma warning restore CS0162 // Unreachable code detected
     }
     public void GainArmor(int amount)
     {
