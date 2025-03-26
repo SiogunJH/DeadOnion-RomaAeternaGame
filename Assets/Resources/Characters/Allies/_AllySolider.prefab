@@ -95,7 +95,11 @@ GameObject:
   - component: {fileID: 5029854460934400298}
   - component: {fileID: 365454816790848774}
   m_Layer: 0
+<<<<<<<< HEAD:Assets/Resources/Characters/Allies/_AllySolider.prefab
   m_Name: _AllySolider
+========
+  m_Name: _EnemySolider
+>>>>>>>> 2b5e22f (Character prefabs):Assets/Resources/Characters/Enemies/_EnemySolider.prefab
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -129,12 +133,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9638e16abf483cf4bb7011a8ad495afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<<< HEAD:Assets/Resources/Characters/Allies/_AllySolider.prefab
   Team: 1
+========
+  Team: 2
+>>>>>>>> 2b5e22f (Character prefabs):Assets/Resources/Characters/Enemies/_EnemySolider.prefab
   OccupiesTheWholeTile: 1
   Location:
     Controller: {fileID: 0}
     Coordinates: {x: 0, y: 0}
     Tags: 0
   ID: -1
+<<<<<<<< HEAD:Assets/Resources/Characters/Allies/_AllySolider.prefab
   _profile: {fileID: 0}
+========
+  _profile: {fileID: 11400000, guid: 0dee28029c5e43b4eb0be0c3324d1951, type: 2}
+>>>>>>>> 2b5e22f (Character prefabs):Assets/Resources/Characters/Enemies/_EnemySolider.prefab
   _hadTurn: 0
