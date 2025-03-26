@@ -121,7 +121,7 @@ public class GridEntity : MonoBehaviour
 
     #region DEBUG
 
-    [Button]
+    // [Button]
     private void MoveAtRandom()
     {
         // Validate
