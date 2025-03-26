@@ -196,15 +196,23 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
 
     #region Ability Handling
 
-    public void HighlightTilesInRange(bool setHighlight)
+    public void HighlightTilesInRange()
     {
         Character caster = CurrentCombatant;
         CombatAbility ability = CurrentAbility;
-        IEnumerable<GridTileController> tilesToHighlight = GridManager.Instance.Grid.GetTilesInPattern(caster.Location, ability.Range).Select(tile => tile.Controller);
 
-        foreach (var tile in tilesToHighlight)
+        // Mark all tiles as invalid
+        IEnumerable<GridTileController> allTilesInRange = GridManager.Instance.Grid.GetTilesInPattern(caster.Location, ability.Range).Select(tile => tile.Controller);
+        foreach (var tile in allTilesInRange)
         {
-            tile.SetHighlight(setHighlight);
+            tile.SetHighlightMode(GridTileController.HighlighMode.Invalid);
+        }
+
+        // Mark valid tiles
+        IEnumerable<GridTileController> validTiles = ability.GetValidTargets(caster).Select(tile => tile.Controller);
+        foreach (var tile in validTiles)
+        {
+            tile.SetHighlightMode(GridTileController.HighlighMode.Valid);
         }
     }
 
@@ -219,7 +227,7 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
         // Clear highlight
         foreach (var tile in tilesToClear)
         {
-            tile.SetHighlight(false);
+            tile.SetHighlightMode(GridTileController.HighlighMode.None);
         }
     }
 
