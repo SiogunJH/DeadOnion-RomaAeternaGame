@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flavio
       objectReference: {fileID: 0}
+    - target: {fileID: 4636059800182575962, guid: ab85453703cfb4244a1711dc88c28abd, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3f451f1b23af336478aa192c6ba7695d, type: 3}
     - target: {fileID: 5029854460934400298, guid: ab85453703cfb4244a1711dc88c28abd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

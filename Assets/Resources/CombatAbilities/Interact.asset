@@ -20,6 +20,7 @@ MonoBehaviour:
   AbilityEffects:
   - Type: 3
     Amount: 0
+    MinMax: {x: 0, y: 0}
     ForAdditionalTurns: 0
     ChangedAttribute: 0
     RelativeAffectedPositions:
@@ -29,3 +30,4 @@ MonoBehaviour:
   - {x: -1, y: 0}
   - {x: 0, y: 1}
   - {x: 1, y: 0}
+  TargetTile: 0
