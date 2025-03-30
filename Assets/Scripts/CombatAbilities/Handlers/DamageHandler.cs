@@ -68,7 +68,7 @@ public class DamageHandler : CombatAbilityEffectHandler
         log += $"\nFinal damage is {finalDamage}!";
 
         // Log with no stack tree
-        Debug.unityLogger.logHandler.LogFormat(LogType.Log, null, log);
+        Debug.Log(log);
         target.TakeDamage(finalDamage);
     }
 }
