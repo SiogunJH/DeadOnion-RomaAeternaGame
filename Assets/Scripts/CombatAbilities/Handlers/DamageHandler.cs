@@ -10,6 +10,7 @@ public class DamageHandler : CombatAbilityEffectHandler
     {
         if (targetCharacter == null) return;
 
-        targetCharacter.TakeDamage(effect.Amount);
+        int damage = Random.Range(effect.MinMax.x, effect.MinMax.y + 1);
+        targetCharacter.TakeDamage(damage);
     }
 }
