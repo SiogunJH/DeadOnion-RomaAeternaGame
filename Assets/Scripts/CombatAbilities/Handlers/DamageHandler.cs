@@ -67,7 +67,6 @@ public class DamageHandler : CombatAbilityEffectHandler
         int finalDamage = modifiedDamage - armorReduction;
         log += $"\nFinal damage is {finalDamage}!";
 
-        // Log with no stack tree
         Debug.Log(log);
         target.TakeDamage(finalDamage);
     }
