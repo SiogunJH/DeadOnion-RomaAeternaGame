@@ -30,6 +30,8 @@ public class Character : GridEntity
 
     private int _currentMovePoints;
 
+    private const int DEFAULT_ACTION_POINTS_AMOUNT = 2;
+
     #region MonoBehaviour
 
     private void Awake()
@@ -252,7 +254,7 @@ public class Character : GridEntity
         ExecuteActiveEffects();
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has started their turn!");
-        ActionPointsLeft = 2; // TODO: Assign action points from Character
+        ActionPointsLeft = DEFAULT_ACTION_POINTS_AMOUNT;
 
         StartCoroutine(PerformTurn());
     }
