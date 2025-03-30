@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dfe4ed35f2494e438c6e504aafbe89c, type: 3}
-  m_Name: ExampleCharacter
+  m_Name: Grunt (Knife)
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
-  Name: Cannon Fodder
+  Name: Grunt with a Knife
   _vitality: 1
   _power: 1
   _endurance: 1
@@ -30,22 +30,22 @@ MonoBehaviour:
   _poisonResist: 1
   _burnResist: 1
   _bleedResist: 1
-  _additionalVitality: 1
-  _additionalPower: 1
-  _additionalEndurance: 1
-  _additionalArmor: 1
-  _additionalAmmo: 1
-  _additionalInitiative: 50
-  _additionalMovementSpeed: 1
+  _additionalVitality: 9
+  _additionalPower: 0
+  _additionalEndurance: 0
+  _additionalArmor: 0
+  _additionalAmmo: 0
+  _additionalInitiative: 0
+  _additionalMovementSpeed: 0
   _additionalAccuracy: 0
-  _additionalEvasion: 80
-  _additionalCritChance: 1
-  _additionalCritDamage: 1
-  _additionalStunResist: 1
-  _additionalEnergyResist: 1
-  _additionalPoisonResist: 1
-  _additionalBurnResist: 1
-  _additionalBleedResist: 1
+  _additionalEvasion: 0
+  _additionalCritChance: 0
+  _additionalCritDamage: 0
+  _additionalStunResist: 0
+  _additionalEnergyResist: 0
+  _additionalPoisonResist: 0
+  _additionalBurnResist: 0
+  _additionalBleedResist: 0
   _bonusDamageModifier: 0
   _bonusDamageMultiplier: 0
   _bonusStunBuildup: 0
@@ -56,7 +56,5 @@ MonoBehaviour:
   _bonusArmorDamageModifier: 0
   _bonusArmorPierce: 0
   CombatAbilities:
-  - {fileID: 11400000, guid: 2ad451a2268ad8441b72837b3980bbfe, type: 2}
+  - {fileID: 11400000, guid: 51cbfe6cb1c408141b2c4a814c3f3cdd, type: 2}
   - {fileID: 11400000, guid: 5418bfcc75caf0148ab3d850584ee3bb, type: 2}
-  - {fileID: 11400000, guid: aabe5c52fe5dd41479c2a75be00915e2, type: 2}
-  - {fileID: 11400000, guid: 9b9fbec5e5846c24db16c436f49b3bda, type: 2}

@@ -76,7 +76,8 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
             }
         }
 
-        DisplayEnemies();
+        DisplayCombatants(Grid.Enemies, GridTileData.TileTag.EnemySpawn);
+        DisplayCombatants(Grid.Allies, GridTileData.TileTag.AllySpawn);
     }
 
     private void DisplayTile(int x, int y)
@@ -98,39 +99,39 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
         tile.SetOccupants(null);
     }
 
-    private void DisplayEnemies()
+    private void DisplayCombatants(List<Character> combatants, GridTileData.TileTag spawnTileTag)
     {
-        List<GridTileData> enemySpawnTilePool = Grid.Tiles.Where(tile => tile.Value.HasTag(GridTileData.TileTag.EnemySpawn)).Select(tile => tile.Value).ToList();
-        Debug.Assert(enemySpawnTilePool.Count >= Grid.Enemies.Count, "Amount of enemies to spawn is greater than available spawn tiles!");
+        List<GridTileData> combatantSpawnTilePool = Grid.Tiles.Where(tile => tile.Value.HasTag(spawnTileTag)).Select(tile => tile.Value).ToList();
+        Debug.Assert(combatantSpawnTilePool.Count >= combatants.Count, "Amount of combatants to spawn is greater than available spawn tiles!");
 
-        List<GridTileData> enemySpawnTiles = new();
-        for (int i = 0; i < Grid.Enemies.Count; i++)
+        List<GridTileData> combatantSpawnTiles = new();
+        for (int i = 0; i < combatants.Count; i++)
         {
-            int randIndex = Random.Range(0, enemySpawnTilePool.Count);
+            int randIndex = Random.Range(0, combatantSpawnTilePool.Count);
 
-            enemySpawnTiles.Add(enemySpawnTilePool[randIndex]);
-            enemySpawnTilePool.RemoveAt(randIndex);
+            combatantSpawnTiles.Add(combatantSpawnTilePool[randIndex]);
+            combatantSpawnTilePool.RemoveAt(randIndex);
         }
 
-        Debug.Assert(enemySpawnTiles.Count == Grid.Enemies.Count);
-        for (int i = 0; i < Grid.Enemies.Count; i++)
+        Debug.Assert(combatantSpawnTiles.Count == combatants.Count);
+        for (int i = 0; i < combatants.Count; i++)
         {
             // Validate
-            Debug.Assert(Grid.Enemies[i] != null, "Enemy cannot be null!", this);
+            Debug.Assert(combatants[i] != null, "Enemy cannot be null!", this);
 
             // Create visual representation and clone
-            var instantiatedEnemy = Instantiate(Grid.Enemies[i].gameObject, enemySpawnTiles[i].Controller.transform).GetComponent<GridEntity>();
-            instantiatedEnemy.transform.localPosition = Vector3.zero;
+            var instantiatedCombatant = Instantiate(combatants[i].gameObject, combatantSpawnTiles[i].Controller.transform).GetComponent<GridEntity>();
+            instantiatedCombatant.transform.localPosition = Vector3.zero;
 
             // Assign data
-            enemySpawnTiles[i].AddOccupant(instantiatedEnemy);
-            instantiatedEnemy.Location = Grid[enemySpawnTiles[i].Coordinates];
-            AssignEntityID(instantiatedEnemy);
+            combatantSpawnTiles[i].AddOccupant(instantiatedCombatant);
+            instantiatedCombatant.Location = Grid[combatantSpawnTiles[i].Coordinates];
+            AssignEntityID(instantiatedCombatant);
 
             // Log
-            if (instantiatedEnemy is Character instantiatedCharacter)
+            if (instantiatedCombatant is Character instantiatedCharacter)
             {
-                Debug.Log($"Spawned [{instantiatedEnemy.UserFriendlyName}] with [{instantiatedCharacter.CurrentHealth}/{instantiatedCharacter.CharacterProfile.TotalVitality}] health");
+                Debug.Log($"Spawned [{instantiatedCombatant.UserFriendlyName}] with [{instantiatedCharacter.CurrentHealth}/{instantiatedCharacter.CharacterProfile.TotalVitality}] health");
             }
         }
     }

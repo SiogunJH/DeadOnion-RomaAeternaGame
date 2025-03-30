@@ -8,9 +8,6 @@ using UnityEngine.UI;
 
 public class CombatAbilityUIManager : MonoBehaviour
 {
-    private static EventTrigger.Entry SelectEntryTrigger => new() { eventID = EventTriggerType.Select };
-    private static EventTrigger.Entry DeselectEntryTrigger => new() { eventID = EventTriggerType.Deselect };
-
     [SerializeField] private List<CombatAbilityUIObject> _combatAbilityObjects;
     [SerializeField] private GameObject _combatAbilityUIObjectPrefab;
 
@@ -55,26 +52,15 @@ public class CombatAbilityUIManager : MonoBehaviour
         abilityUI.Button.interactable = true;
 
         // Add OnSelect listener
-        EventTrigger.Entry selectEntry = SelectEntryTrigger;
-        void OnSelect(BaseEventData _)
+        abilityUI.Button.onClick.RemoveAllListeners();
+        void OnClick()
         {
-            // Debug.Log("Select event called");
-            CombatManager.Instance.CurrentAbility = ability;
-            CombatManager.Instance.HighlightTilesInRange(true);
-        }
-        selectEntry.callback.AddListener(OnSelect);
-        abilityUI.EventTrigger.triggers.Add(selectEntry);
-
-        // Add OnDeselect listener
-        EventTrigger.Entry deselectEntry = DeselectEntryTrigger;
-        void OnDeselect(BaseEventData _)
-        {
-            // Debug.Log("Deselect event called");
             CombatManager.Instance.ClearTileHighlight();
-            CombatManager.Instance.CurrentAbility = null;
+
+            CombatManager.Instance.CurrentAbility = ability;
+            CombatManager.Instance.HighlightTilesInRange();
         }
-        deselectEntry.callback.AddListener(OnDeselect);
-        abilityUI.EventTrigger.triggers.Add(deselectEntry);
+        abilityUI.Button.onClick.AddListener(OnClick);
     }
 
     private void RemoveAbilityFromView(CombatAbilityUIObject abilityUI)

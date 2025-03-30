@@ -26,7 +26,7 @@ public class Character : GridEntity
 
     private int _currentArmor;
 
-    [SerializeField] private int _actionPointsLeft;
+    public int ActionPointsLeft { get; private set; }
 
     private int _currentMovePoints;
 
@@ -261,10 +261,10 @@ public class Character : GridEntity
     public void RemoveActionPoints(int amount)
     {
         // Validate
-        Debug.Assert(_actionPointsLeft >= amount, "Cannot remove more action points than there is available"); // AP availability should be verified before performing an action
+        Debug.Assert(ActionPointsLeft >= amount, "Cannot remove more action points than there is available"); // AP availability should be verified before performing an action
 
         // Remove
-        _actionPointsLeft = Mathf.Clamp(_actionPointsLeft - amount, 0, int.MaxValue);
+        ActionPointsLeft = Mathf.Clamp(ActionPointsLeft - amount, 0, int.MaxValue);
     }
 
     public void BeginTurn()
@@ -273,7 +273,7 @@ public class Character : GridEntity
         ExecuteActiveEffects();
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has started their turn!");
-        _actionPointsLeft = 2; // TODO: Assign action points from Character
+        ActionPointsLeft = 2; // TODO: Assign action points from Character
 
         StartCoroutine(PerformTurn());
     }
@@ -290,7 +290,7 @@ public class Character : GridEntity
     public bool TryToEndTurn()
     {
         // Validate
-        if (_actionPointsLeft > 0) return false;
+        if (ActionPointsLeft > 0) return false;
 
         EndTurn();
         return true;

@@ -9,6 +9,7 @@ public class GridMap : ScriptableObject
     public int Height => _gridBase.Height;
     public Dictionary<Vector2, GridTileData> Tiles => _gridBase.Tiles;
 
+    public List<Character> Allies;
     public List<Character> Enemies;
 
     [SerializeField] private GridBase _gridBase;
