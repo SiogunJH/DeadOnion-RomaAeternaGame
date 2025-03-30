@@ -18,10 +18,10 @@ public static class CombatAbilityExecutor
     {
         Debug.Assert(ability != null, "Ability is null");
 
-        Debug.Log($"Executing ability: [{ability.Name}]");
+        // Debug.Log($"Executing ability: [{ability.Name}]");
         foreach (var effect in ability.AbilityEffects)
         {
-            Debug.Log($"Executing effect: [{effect.Type}]");
+            // Debug.Log($"Executing effect: [{effect.Type}]");
             if (_handlers.TryGetValue(effect.Type, out var handler))
             {
                 handler.GridEffectHandler(target, effect, map, caster);

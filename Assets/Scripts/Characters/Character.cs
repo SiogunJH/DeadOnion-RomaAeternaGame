@@ -90,8 +90,6 @@ public class Character : GridEntity
         if (amount < 0) return;
 
         _currentHealth -= amount;
-
-        Debug.Log($"[{UserFriendlyName}] received [{amount}] points of damage!\n[{_currentHealth + amount}/{CharacterProfile.TotalVitality}] -> [{_currentHealth}/{CharacterProfile.TotalVitality}]");
         TryToDie();
 
         // uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
