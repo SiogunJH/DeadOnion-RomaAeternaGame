@@ -292,7 +292,6 @@ public class Character : GridEntity
     {
         _hadTurn = false;
         _currentMovePoints = CharacterProfile.TotalMovementSpeed;
-        _currentMovePoints = 1;
     }
 
     #endregion
