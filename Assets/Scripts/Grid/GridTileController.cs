@@ -40,6 +40,7 @@ public class GridTileController : MonoBehaviour
         if (_highlightMode != HighlighMode.Hovered)
         {
             Debug.Log($"Click Denied!\nTile is not Highlighted, and cannot be targeted!");
+            return;
         }
 
         // Gather variables
