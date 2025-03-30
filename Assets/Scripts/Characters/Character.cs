@@ -190,6 +190,9 @@ public class Character : GridEntity
     private float _accuracyModification { get; set; }
     public float Accuracy => Mathf.Max(0, _profile.TotalAccuracy + _accuracyModification);
 
+    private float _weakspotDamageModification { get; set; }
+    public float WeakspotDamage => Mathf.Max(0, _profile.TotalWeakspotDamage + _weakspotDamageModification);
+
     private float _evasionModification { get; set; }
     public float Evasion => Mathf.Max(0, _profile.TotalEvasion + _evasionModification);
 
