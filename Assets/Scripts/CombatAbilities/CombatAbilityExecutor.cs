@@ -37,6 +37,8 @@ public static class CombatAbilityExecutor
         {
             AnimationPlayer.Instance.PlayAnimation();
         }
+        caster.RemoveActionPoints(CombatManager.Instance.CurrentAbility.ActionPointCost);
+        caster.TryToEndTurn();
     }
     public static void ExecuteEffectOnCharacter(CombatAbilityEffect effect, GridMap map, Character affected)
     {
