@@ -54,6 +54,8 @@ MonoBehaviour:
   ID: -1
   _profile: {fileID: 11400000, guid: 0dee28029c5e43b4eb0be0c3324d1951, type: 2}
   _hadTurn: 0
+  _billboard: {fileID: 8868421721101701345}
+  _hurtSprite: {fileID: 21300000, guid: 058d189adf55e314cb592b44d2df3525, type: 3}
 --- !u!1001 &4452292781426849447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -130,5 +132,10 @@ PrefabInstance:
 --- !u!4 &5237263439826326635 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8459950239938683596, guid: c1ce6ad76ef2efd41a2016e454744d68, type: 3}
+  m_PrefabInstance: {fileID: 4452292781426849447}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8868421721101701345 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5105760517140227654, guid: c1ce6ad76ef2efd41a2016e454744d68, type: 3}
   m_PrefabInstance: {fileID: 4452292781426849447}
   m_PrefabAsset: {fileID: 0}
