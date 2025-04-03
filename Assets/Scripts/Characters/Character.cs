@@ -336,5 +336,23 @@ public class Character : GridEntity
 
         // Remove visually
         Destroy(gameObject); // TODO: In the future development, this should be replaced by a call to animation controller for death animation
+        //Animation controller is beeing done but i will still not do it. LOL
     }
+
+    #region >>> Animation <<<
+
+    [SerializeField]
+    private GameObject _billboard;
+    public GameObject Billboard => _billboard;
+
+    [SerializeField]
+    private Sprite _hurtSprite = null;
+    public Sprite HurtSprite => _hurtSprite;
+
+    public void OnAnimationFinish() //add this to event in animation player
+    {
+
+    }
+
+    #endregion
 }
