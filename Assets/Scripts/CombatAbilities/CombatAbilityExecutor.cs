@@ -12,6 +12,7 @@ public static class CombatAbilityExecutor
         {new MoveHandler().EffectType, new MoveHandler()},
         {new DamageHandler().EffectType, new DamageHandler()},
         {new SkipTurnHandler().EffectType, new SkipTurnHandler()},
+        {new ReloadHandler().EffectType, new ReloadHandler()},
     };
 
     public static void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
@@ -37,7 +38,18 @@ public static class CombatAbilityExecutor
         {
             AnimationPlayer.Instance.PlayAnimation();
         }
-        caster.RemoveActionPoints(CombatManager.Instance.CurrentAbility.ActionPointCost);
+
+        // Handle ability cost
+        if (ability.CanUseMovePointsInsteadOfActionPoints && caster.CurrentMovePoints >= ability.ActionPointCost)
+        {
+            caster.RemoveMovementPoints(ability.ActionPointCost);
+        }
+        else
+        {
+            caster.RemoveActionPoints(ability.ActionPointCost);
+        }
+        caster.RemoveAmmoPoints(ability.AmmoPointCost);
+
         caster.TryToEndTurn();
     }
     public static void ExecuteEffectOnCharacter(CombatAbilityEffect effect, GridMap map, Character affected)

@@ -289,6 +289,15 @@ public class CombatAbilityCreator : EditorWindow
         if (prevCastTime != _combatAbility.HasCastTime) EditorUtility.SetDirty(_combatAbility);
         GL.EndHorizontal();
 
+        // Ammo Points int
+        GL.BeginHorizontal();
+        int prevAmmoCost = _combatAbility.AmmoPointCost;
+        GL.Label("Ammo Cost", GL.MaxWidth(120));
+        _combatAbility.AmmoPointCost = EditorGUILayout.IntField(_combatAbility.AmmoPointCost, GL.MaxWidth(30));
+        if (prevAmmoCost != _combatAbility.AmmoPointCost) EditorUtility.SetDirty(_combatAbility);
+        GL.EndHorizontal();
+
+        // Action Points int
         GL.BeginHorizontal();
         int prevCost = _combatAbility.ActionPointCost;
         GL.Label("Action Point Cost", GL.MaxWidth(120));
@@ -296,6 +305,21 @@ public class CombatAbilityCreator : EditorWindow
         if (prevCost != _combatAbility.ActionPointCost) EditorUtility.SetDirty(_combatAbility);
         GL.EndHorizontal();
 
+        // Move Points Usage Allowance flag
+        GL.BeginHorizontal();
+        bool prevMoveAllowance = _combatAbility.CanUseMovePointsInsteadOfActionPoints;
+        GL.Label("Use Move Points", GL.MaxWidth(120));
+        _combatAbility.CanUseMovePointsInsteadOfActionPoints = EditorGUILayout.Toggle(_combatAbility.CanUseMovePointsInsteadOfActionPoints, GL.MaxWidth(30));
+        if (prevMoveAllowance != _combatAbility.CanUseMovePointsInsteadOfActionPoints) EditorUtility.SetDirty(_combatAbility);
+        GL.EndHorizontal();
+
+        // Target Tile filter
+        GL.BeginHorizontal();
+        CombatAbility.TileType prevTileFilter = _combatAbility.TargetTile;
+        GL.Label("Target Tile", GL.MaxWidth(120));
+        _combatAbility.TargetTile = (CombatAbility.TileType)EditorGUILayout.EnumFlagsField(_combatAbility.TargetTile, GL.MaxWidth(120));
+        if (prevTileFilter != _combatAbility.TargetTile) EditorUtility.SetDirty(_combatAbility);
+        GL.EndHorizontal();
 
 
         _combatAbility.Width = (Mathf.RoundToInt(rawWidth) * 2) + 1;

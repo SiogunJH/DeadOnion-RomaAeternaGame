@@ -24,13 +24,10 @@ public class Character : GridEntity
     [EndTab]
 #endif
 
-    private int _currentArmor;
+    public int CurrentActionPoints { get; private set; }
+    public int CurrentMovePoints { get; private set; }
 
-    public int ActionPointsLeft { get; private set; }
-
-    private int _currentMovePoints;
-
-    private const int DEFAULT_ACTION_POINTS_AMOUNT = 2;
+    public const int DEFAULT_ACTION_POINTS_AMOUNT = 2;
 
     #region MonoBehaviour
 
@@ -44,9 +41,10 @@ public class Character : GridEntity
         if (_hurtSprite == null) Debug.LogWarning($"[Hurt Sprite] is not assigned to [{name}]!", this);
 
         // Initialize
-        _currentMovePoints = CharacterProfile.TotalMovementSpeed;
-        _currentHealth = CharacterProfile.TotalVitality;
-        _currentArmor = CharacterProfile.TotalArmor;
+        _currentHealth = MaxVitality;
+        _currentAmmo = CharacterProfile.TotalAmmo;
+
+        CurrentMovePoints = CharacterProfile.TotalMovementSpeed;
     }
 
     #endregion
@@ -120,7 +118,7 @@ public class Character : GridEntity
     }
     public void Reload()
     {
-        Debug.Log("Character reloaded");
+        _currentAmmo = CharacterProfile.TotalAmmo;
     }
     public void Move()
     {
@@ -248,13 +246,31 @@ public class Character : GridEntity
     [SerializeField, HideInInspector] private bool _hadTurn = false;
     public bool HadTurn => _hadTurn;
 
+    public void RemoveAmmoPoints(int amount)
+    {
+        // Validate
+        Debug.Assert(CurrentAmmo >= amount, "Cannot remove more ammo points than there is available"); // AP availability should be verified before performing an action
+
+        // Remove
+        _currentAmmo = Mathf.Clamp(CurrentAmmo - amount, 0, int.MaxValue);
+    }
+
+    public void RemoveMovementPoints(int amount)
+    {
+        // Validate
+        Debug.Assert(CurrentMovePoints >= amount, "Cannot remove more movement points than there is available"); // AP availability should be verified before performing an action
+
+        // Remove
+        CurrentMovePoints = Mathf.Clamp(CurrentMovePoints - amount, 0, int.MaxValue);
+    }
+
     public void RemoveActionPoints(int amount)
     {
         // Validate
-        Debug.Assert(ActionPointsLeft >= amount, "Cannot remove more action points than there is available"); // AP availability should be verified before performing an action
+        Debug.Assert(CurrentActionPoints >= amount, "Cannot remove more action points than there is available"); // AP availability should be verified before performing an action
 
         // Remove
-        ActionPointsLeft = Mathf.Clamp(ActionPointsLeft - amount, 0, int.MaxValue);
+        CurrentActionPoints = Mathf.Clamp(CurrentActionPoints - amount, 0, int.MaxValue);
     }
 
     public void BeginTurn()
@@ -309,7 +325,7 @@ public class Character : GridEntity
     public void ResetTurn()
     {
         _hadTurn = false;
-        _currentMovePoints = CharacterProfile.TotalMovementSpeed;
+
     }
 
     #endregion
