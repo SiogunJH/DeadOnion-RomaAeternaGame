@@ -36,7 +36,11 @@ public static class CombatAbilityExecutor
             }
         }
 
-        AnimationPlayer.Instance.PlayAnimation();
+        // Play animation if needed
+        if (ability.PlaysAnimation)
+        {
+            AnimationPlayer.Instance.PlayAnimation();
+        }
     }
     public static void ExecuteEffectOnCharacter(CombatAbilityEffect effect, GridMap map, Character affected)
     {
