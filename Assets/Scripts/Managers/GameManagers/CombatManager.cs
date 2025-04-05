@@ -13,6 +13,7 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
     public CombatAbilityUIManager UI;
     public Character CurrentCombatant = null;
     public CombatAbility CurrentAbility = null;
+    public CombatAbility MostRecentAbility = null;
 
     private List<Character> _charactersOnMap = new();
     private int _roundNumber;

@@ -39,21 +39,24 @@ public class AnimationPlayer : MonoBehaviourSingleton<AnimationPlayer>
         GameObject casterBillboard = Instantiate(CombatManager.Instance.CurrentCombatant.Billboard, gameObject.transform);
         Dictionary<Character, GameObject> affectedCharacters = new();
 
-        foreach(var c in CombatAbilityExecutor.AffectedCharacters)
+        foreach (var c in CombatAbilityExecutor.AffectedCharacters)
         {
-            affectedCharacters.Add(c ,Instantiate(c.Billboard, gameObject.transform));
+            Debug.Assert(c != null, "Character is null!");
+            Debug.Assert(c.Billboard != null, "Billboard is null!");
+
+            affectedCharacters.Add(c, Instantiate(c.Billboard, gameObject.transform));
         }
 
         //position
         casterBillboard.transform.position = (_guyLeftPosition.transform.position + (Vector3.left * 3));
-        foreach(var x in affectedCharacters)
+        foreach (var x in affectedCharacters)
         {
             x.Value.transform.position = (_guyRightPosition.transform.position + (Vector3.right * 3));
         }
 
         //set first sprite
-        casterBillboard.GetComponentInChildren<SpriteRenderer>().sprite = CombatManager.Instance.CurrentAbility.CasterFrame1;
-        foreach(var x in  affectedCharacters)
+        casterBillboard.GetComponentInChildren<SpriteRenderer>().sprite = CombatManager.Instance.MostRecentAbility.CasterFrame1;
+        foreach (var x in affectedCharacters)
         {
             x.Value.GetComponentInChildren<SpriteRenderer>().sprite = x.Key.HurtSprite; //yes I just call getComponent in a loop, what are you going to do about it?
         }
@@ -61,18 +64,18 @@ public class AnimationPlayer : MonoBehaviourSingleton<AnimationPlayer>
     }
     private IEnumerator MoveSpritesIntoView(GameObject casterBillboard, Dictionary<Character, GameObject> affectedCharacters)
     {
-        while(casterBillboard.transform.position != _guyLeftPosition.transform.position)
+        while (casterBillboard.transform.position != _guyLeftPosition.transform.position)
         {
             yield return null;
             casterBillboard.transform.position += (Vector3.right * _moveIntoViewSpeed) * Time.deltaTime;
-            foreach(var x in affectedCharacters)
+            foreach (var x in affectedCharacters)
             {
                 x.Value.transform.position += (Vector3.left * _moveIntoViewSpeed) * Time.deltaTime;
             }
-            if(casterBillboard.transform.position.x > _guyLeftPosition.transform.position.x)
+            if (casterBillboard.transform.position.x > _guyLeftPosition.transform.position.x)
             {
                 casterBillboard.transform.position = _guyLeftPosition.transform.position;
-                foreach(var x in affectedCharacters)
+                foreach (var x in affectedCharacters)
                 {
                     x.Value.transform.position = _guyRightPosition.transform.position;
                 }
@@ -87,7 +90,7 @@ public class AnimationPlayer : MonoBehaviourSingleton<AnimationPlayer>
         // HERE YOU SHOULD CALL UI AND SPAWN SOME NUMBERS I GUESS //
         ////////////////////////////////////////////////////////////
         //Also play some sounds I guess
-        if(CombatManager.Instance.CurrentAbility.CasterFrame2 != null)
+        if (CombatManager.Instance.MostRecentAbility.CasterFrame2 != null)
         {
             StartCoroutine(FinishedAnimationDelay(casterBillboard, affectedCharacters));
         }
@@ -103,7 +106,7 @@ public class AnimationPlayer : MonoBehaviourSingleton<AnimationPlayer>
     }
     private IEnumerator PlaySprite2(GameObject casterBillboard, Dictionary<Character, GameObject> affectedCharacters)
     {
-        casterBillboard.GetComponentInChildren<SpriteRenderer>().sprite = CombatManager.Instance.CurrentAbility.CasterFrame2;
+        casterBillboard.GetComponentInChildren<SpriteRenderer>().sprite = CombatManager.Instance.MostRecentAbility.CasterFrame2;
         yield return new WaitForSeconds(_delayAfterAnimation);
         FinishAnimation(casterBillboard, affectedCharacters);
     }
@@ -115,7 +118,7 @@ public class AnimationPlayer : MonoBehaviourSingleton<AnimationPlayer>
     private void FinishAnimation(GameObject casterBillboard, Dictionary<Character, GameObject> affectedCharacters)
     {
         Destroy(casterBillboard);
-        foreach(var x in affectedCharacters)
+        foreach (var x in affectedCharacters)
         {
             Destroy(x.Value);
         }
