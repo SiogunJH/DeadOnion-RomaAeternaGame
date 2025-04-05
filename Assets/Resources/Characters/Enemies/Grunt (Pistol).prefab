@@ -12,13 +12,17 @@ PrefabInstance:
       propertyPath: UserFriendlyName
       value: Alien Rogue
       objectReference: {fileID: 0}
+    - target: {fileID: 365454816790848774, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
+      propertyPath: _profile
+      value: 
+      objectReference: {fileID: 11400000, guid: 0dee28029c5e43b4eb0be0c3324d1951, type: 2}
     - target: {fileID: 4188062137734071572, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
       propertyPath: m_Icon
       value: 
       objectReference: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 4188062137734071572, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
       propertyPath: m_Name
-      value: Enemy Solider (Speedy)
+      value: Grunt (Pistol)
       objectReference: {fileID: 0}
     - target: {fileID: 4636059800182575962, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
       propertyPath: m_Color.b
