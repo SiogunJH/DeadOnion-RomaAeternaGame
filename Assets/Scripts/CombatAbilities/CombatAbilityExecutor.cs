@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class CombatAbilityExecutor
 {
+    public static HashSet<Character> AffectedCharacters = new();
+
     private static readonly Dictionary<CombatAbilityEffect.EffectType, CombatAbilityEffectHandler> _handlers = new()
     {
         {new HealHandler().EffectType, new HealHandler()},
@@ -32,6 +34,12 @@ public static class CombatAbilityExecutor
             {
                 Debug.LogError($"No handler of type: {effect.Type} was found when trying to execute: {ability.name} from: {caster.name}");
             }
+        }
+
+        // Play animation if needed
+        if (ability.PlaysAnimation)
+        {
+            AnimationPlayer.Instance.PlayAnimation();
         }
     }
     public static void ExecuteEffectOnCharacter(CombatAbilityEffect effect, GridMap map, Character affected)

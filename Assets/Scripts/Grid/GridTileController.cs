@@ -43,6 +43,9 @@ public class GridTileController : MonoBehaviour
             return;
         }
 
+        // Save the most recent ability
+        CombatManager.Instance.MostRecentAbility = CombatManager.Instance.CurrentAbility;
+
         // Gather variables
         var ability = CombatManager.Instance.CurrentAbility;
         var target = Data.Coordinates;

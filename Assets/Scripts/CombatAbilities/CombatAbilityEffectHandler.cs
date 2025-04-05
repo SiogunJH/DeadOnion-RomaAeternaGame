@@ -32,6 +32,7 @@ public abstract class CombatAbilityEffectHandler
                 .FirstOrDefault(); // TODO: Change this logic to affect all GridEntities
 
             DoEffect(effect, caster, targetCharacter, tile);
+            CombatAbilityExecutor.AffectedCharacters.Add(targetCharacter);
 
             if (targetCharacter != null && effect.ForAdditionalTurns > 0)
             {

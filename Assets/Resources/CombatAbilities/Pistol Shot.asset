@@ -46,3 +46,6 @@ MonoBehaviour:
   - {x: -1, y: -2}
   - {x: -2, y: -1}
   TargetTile: 4
+  PlaysAnimation: 1
+  CasterFrame1: {fileID: 21300000, guid: f5aa9ac4775cf804d8d55c15750cd7f0, type: 3}
+  CasterFrame2: {fileID: 21300000, guid: ad5f1f56859eaef49b4c3b27bd1f9e77, type: 3}

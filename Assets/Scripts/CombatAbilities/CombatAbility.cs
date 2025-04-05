@@ -104,4 +104,8 @@ public class CombatAbility : ScriptableObject
     }
 
     #endregion
+
+    public bool PlaysAnimation = false;
+    public Sprite CasterFrame1 = null;
+    public Sprite CasterFrame2 = null;
 }

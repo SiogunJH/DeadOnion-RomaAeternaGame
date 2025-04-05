@@ -100,4 +100,8 @@ public class CameraManager : MonoBehaviourSingleton<CameraManager>
 
         cam.Priority = 1;
     }
+    public bool AnimationCameraInPosition()
+    {
+        return _cam.transform.position == _animationCamera.transform.position;
+    }
 }
