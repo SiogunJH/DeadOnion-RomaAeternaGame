@@ -87,8 +87,7 @@ public class Character : GridEntity
         if (amount < 0) return;
 
         _currentHealth += amount;
-        _currentHealth = Mathf.Max(_currentHealth, CharacterProfile.TotalVitality); // Prevent overheal
-
+        _currentHealth = Mathf.Min(_currentHealth, CharacterProfile.TotalVitality); // Prevent overheal
         Debug.Log($"[{UserFriendlyName}] received [{amount}] points of health!\n[{_currentHealth - amount}/{CharacterProfile.TotalVitality}] -> [{_currentHealth}/{CharacterProfile.TotalVitality}]");
     }
     public void TakeDamage(int amount)
