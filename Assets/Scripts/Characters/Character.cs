@@ -263,7 +263,12 @@ public class Character : GridEntity
         ExecuteActiveEffects();
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has started their turn!");
-        ActionPointsLeft = DEFAULT_ACTION_POINTS_AMOUNT;
+
+        CurrentActionPoints = DEFAULT_ACTION_POINTS_AMOUNT;
+        CurrentMovePoints = CharacterProfile.TotalMovementSpeed;
+
+        CombatManager.Instance.SelectedCharacterInfoDisplay.UpdateReferenceCharacter(this);
+        CombatManager.Instance.SelectedCharacterInfoDisplay.UpdateInfo();
 
         StartCoroutine(PerformTurn());
     }
@@ -280,7 +285,11 @@ public class Character : GridEntity
     public bool TryToEndTurn()
     {
         // Validate
-        if (ActionPointsLeft > 0) return false;
+        if (CurrentActionPoints > 0)
+        {
+            CombatManager.Instance.SelectedCharacterInfoDisplay.UpdateInfo();
+            return false;
+        }
 
         EndTurn();
         return true;
