@@ -36,9 +36,17 @@ public class Character : GridEntity
 
     private void Awake()
     {
+        UserFriendlyName = CharacterProfile.Name;
+
+        // Validate
+        if (_profile == null) Debug.LogError($"[Character Profile] is not assigned to [{name}]!", this);
+        if (_billboard == null) Debug.LogWarning($"[Billboard] is not assigned to [{name}]!", this);
+        if (_hurtSprite == null) Debug.LogWarning($"[Hurt Sprite] is not assigned to [{name}]!", this);
+
+        // Initialize
+        _currentMovePoints = CharacterProfile.TotalMovementSpeed;
         _currentHealth = CharacterProfile.TotalVitality;
         _currentArmor = CharacterProfile.TotalArmor;
-        UserFriendlyName = CharacterProfile.Name;
     }
 
     #endregion
