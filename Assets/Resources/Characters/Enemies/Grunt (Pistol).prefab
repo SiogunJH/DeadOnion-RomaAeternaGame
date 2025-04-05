@@ -76,6 +76,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6153105621426779441, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153105621426779441, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153105621426779441, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6925486864298949202, guid: be6e7d7af7aff3b4495cad736eb51845, type: 3}
       propertyPath: m_Color.b
       value: 0.2921858
