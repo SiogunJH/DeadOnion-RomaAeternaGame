@@ -60,3 +60,4 @@ MonoBehaviour:
   CombatAbilities:
   - {fileID: 11400000, guid: 51cbfe6cb1c408141b2c4a814c3f3cdd, type: 2}
   - {fileID: 11400000, guid: 5418bfcc75caf0148ab3d850584ee3bb, type: 2}
+  - {fileID: 11400000, guid: aabe5c52fe5dd41479c2a75be00915e2, type: 2}

@@ -15,7 +15,9 @@ MonoBehaviour:
   Name: Pistol Shot
   Width: 7
   Height: 7
+  AmmoPointCost: 1
   ActionPointCost: 1
+  CanUseMovePointsInsteadOfActionPoints: 0
   HasCastTime: 0
   AbilityEffects:
   - Type: 4101
