@@ -24,19 +24,27 @@ public class Character : GridEntity
     [EndTab]
 #endif
 
-    private int _currentArmor;
+    public int CurrentActionPoints { get; private set; }
+    public int CurrentMovePoints { get; private set; }
 
-    public int ActionPointsLeft { get; private set; }
-
-    private int _currentMovePoints;
+    public const int DEFAULT_ACTION_POINTS_AMOUNT = 2;
 
     #region MonoBehaviour
 
     private void Awake()
     {
-        _currentHealth = CharacterProfile.TotalVitality;
-        _currentArmor = CharacterProfile.TotalArmor;
         UserFriendlyName = CharacterProfile.Name;
+
+        // Validate
+        if (_profile == null) Debug.LogError($"[Character Profile] is not assigned to [{name}]!", this);
+        if (_billboard == null) Debug.LogWarning($"[Billboard] is not assigned to [{name}]!", this);
+        if (_hurtSprite == null) Debug.LogWarning($"[Hurt Sprite] is not assigned to [{name}]!", this);
+
+        // Initialize
+        _currentHealth = MaxVitality;
+        _currentAmmo = CharacterProfile.TotalAmmo;
+
+        CurrentMovePoints = CharacterProfile.TotalMovementSpeed;
     }
 
     #endregion
@@ -77,14 +85,17 @@ public class Character : GridEntity
     public void Heal(int amount)
     {
         if (amount < 0) return;
-        _currentHealth += amount;
-        _currentHealth = Mathf.Min(_currentHealth, 1);
-    }
-    public void TakeTrueDamage(int damage)
-    {
-        if (damage < 0) return;
 
-        _currentHealth -= damage;
+        _currentHealth += amount;
+        _currentHealth = Mathf.Min(_currentHealth, CharacterProfile.TotalVitality); // Prevent overheal
+        Debug.Log($"[{UserFriendlyName}] received [{amount}] points of health!\n[{_currentHealth - amount}/{CharacterProfile.TotalVitality}] -> [{_currentHealth}/{CharacterProfile.TotalVitality}]");
+    }
+    public void TakeDamage(int amount)
+    {
+        if (amount < 0) return;
+
+        _currentHealth -= amount;
+        TryToDie();
 
         // uint maxDamageBlocked = (uint)Mathf.RoundToInt(damage * ArmorClassToDamageReduction(CharacterProfile.ArmorClass));
         // uint damageToHealth = (uint)damage - maxDamageBlocked;
@@ -98,33 +109,6 @@ public class Character : GridEntity
 
         // Die();
     }
-    public void TakeElementalDamage(int amount, CombatAbilityEffect.EffectType damageType)
-    {
-        TakeTrueDamage(amount);
-        Debug.LogWarning("Elemental damage not yet implemented");
-        TryToDie();
-        return;
-
-#pragma warning disable CS0162 // Unreachable code detected
-        if (amount < 0) return;
-        switch (damageType)
-        {
-            case CombatAbilityEffect.EffectType.DamageAcid:
-            case CombatAbilityEffect.EffectType.DamageKinetic:
-            case CombatAbilityEffect.EffectType.DamageEnergy:
-            case CombatAbilityEffect.EffectType.DamagePlasma:
-            case CombatAbilityEffect.EffectType.DamageFire:
-                break;
-
-            default:
-                Debug.Log("Given EffectType is not a type of damage");
-                return;
-        }
-
-        Debug.Log("Do damage here"); //don't forget about armor
-                                     //die
-#pragma warning restore CS0162 // Unreachable code detected
-    }
     public void GainArmor(int amount)
     {
         //if (amount < 0) return;
@@ -133,7 +117,7 @@ public class Character : GridEntity
     }
     public void Reload()
     {
-        Debug.Log("Character reloaded");
+        _currentAmmo = CharacterProfile.TotalAmmo;
     }
     public void Move()
     {
@@ -209,6 +193,9 @@ public class Character : GridEntity
     private float _accuracyModification { get; set; }
     public float Accuracy => Mathf.Max(0, _profile.TotalAccuracy + _accuracyModification);
 
+    private float _weakspotDamageModification { get; set; }
+    public float WeakspotDamage => Mathf.Max(0, _profile.TotalWeakspotDamage + _weakspotDamageModification);
+
     private float _evasionModification { get; set; }
     public float Evasion => Mathf.Max(0, _profile.TotalEvasion + _evasionModification);
 
@@ -258,13 +245,31 @@ public class Character : GridEntity
     [SerializeField, HideInInspector] private bool _hadTurn = false;
     public bool HadTurn => _hadTurn;
 
+    public void RemoveAmmoPoints(int amount)
+    {
+        // Validate
+        Debug.Assert(CurrentAmmo >= amount, "Cannot remove more ammo points than there is available"); // AP availability should be verified before performing an action
+
+        // Remove
+        _currentAmmo = Mathf.Clamp(CurrentAmmo - amount, 0, int.MaxValue);
+    }
+
+    public void RemoveMovementPoints(int amount)
+    {
+        // Validate
+        Debug.Assert(CurrentMovePoints >= amount, "Cannot remove more movement points than there is available"); // AP availability should be verified before performing an action
+
+        // Remove
+        CurrentMovePoints = Mathf.Clamp(CurrentMovePoints - amount, 0, int.MaxValue);
+    }
+
     public void RemoveActionPoints(int amount)
     {
         // Validate
-        Debug.Assert(ActionPointsLeft >= amount, "Cannot remove more action points than there is available"); // AP availability should be verified before performing an action
+        Debug.Assert(CurrentActionPoints >= amount, "Cannot remove more action points than there is available"); // AP availability should be verified before performing an action
 
         // Remove
-        ActionPointsLeft = Mathf.Clamp(ActionPointsLeft - amount, 0, int.MaxValue);
+        CurrentActionPoints = Mathf.Clamp(CurrentActionPoints - amount, 0, int.MaxValue);
     }
 
     public void BeginTurn()
@@ -273,7 +278,12 @@ public class Character : GridEntity
         ExecuteActiveEffects();
 
         Debug.Log($"Character '{CharacterProfile.Name} [{ID}]' has started their turn!");
-        ActionPointsLeft = 2; // TODO: Assign action points from Character
+
+        CurrentActionPoints = DEFAULT_ACTION_POINTS_AMOUNT;
+        CurrentMovePoints = CharacterProfile.TotalMovementSpeed;
+
+        CombatManager.Instance.SelectedCharacterInfoDisplay.UpdateReferenceCharacter(this);
+        CombatManager.Instance.SelectedCharacterInfoDisplay.UpdateInfo();
 
         StartCoroutine(PerformTurn());
     }
@@ -290,7 +300,11 @@ public class Character : GridEntity
     public bool TryToEndTurn()
     {
         // Validate
-        if (ActionPointsLeft > 0) return false;
+        if (CurrentActionPoints > 0)
+        {
+            CombatManager.Instance.SelectedCharacterInfoDisplay.UpdateInfo();
+            return false;
+        }
 
         EndTurn();
         return true;
@@ -310,8 +324,7 @@ public class Character : GridEntity
     public void ResetTurn()
     {
         _hadTurn = false;
-        _currentMovePoints = CharacterProfile.TotalMovementSpeed;
-        _currentMovePoints = 1;
+
     }
 
     #endregion

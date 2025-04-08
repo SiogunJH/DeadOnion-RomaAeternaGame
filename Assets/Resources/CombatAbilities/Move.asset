@@ -15,11 +15,14 @@ MonoBehaviour:
   Name: Move
   Width: 3
   Height: 3
+  AmmoPointCost: 0
   ActionPointCost: 1
+  CanUseMovePointsInsteadOfActionPoints: 1
   HasCastTime: 0
   AbilityEffects:
   - Type: 1
     Amount: 0
+    MinMax: {x: 0, y: 0}
     ForAdditionalTurns: 0
     ChangedAttribute: 0
     RelativeAffectedPositions:
@@ -30,3 +33,6 @@ MonoBehaviour:
   - {x: 0, y: 1}
   - {x: 1, y: 0}
   TargetTile: 1
+  PlaysAnimation: 0
+  CasterFrame1: {fileID: 0}
+  CasterFrame2: {fileID: 0}

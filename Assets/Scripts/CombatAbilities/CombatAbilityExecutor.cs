@@ -10,22 +10,19 @@ public static class CombatAbilityExecutor
     {
         {new HealHandler().EffectType, new HealHandler()},
         {new MoveHandler().EffectType, new MoveHandler()},
-        {new DamageAcidHandler().EffectType, new DamageAcidHandler()},
-        {new DamageEnergyHandler().EffectType, new DamageEnergyHandler()},
-        {new DamageFireHandler().EffectType, new DamageFireHandler()},
-        {new DamageKineticHandler().EffectType, new DamageKineticHandler()},
-        {new DamagePlasmaHandler().EffectType, new DamagePlasmaHandler()},
-        {new SkipTurnHandler().EffectType, new SkipTurnHandler()}
+        {new DamageHandler().EffectType, new DamageHandler()},
+        {new SkipTurnHandler().EffectType, new SkipTurnHandler()},
+        {new ReloadHandler().EffectType, new ReloadHandler()},
     };
 
     public static void ExecuteAbility(Vector2 target, CombatAbility ability, GridMap map, Character caster)
     {
         Debug.Assert(ability != null, "Ability is null");
 
-        Debug.Log($"Executing ability: [{ability.Name}]");
+        // Debug.Log($"Executing ability: [{ability.Name}]");
         foreach (var effect in ability.AbilityEffects)
         {
-            Debug.Log($"Executing effect: [{effect.Type}]");
+            // Debug.Log($"Executing effect: [{effect.Type}]");
             if (_handlers.TryGetValue(effect.Type, out var handler))
             {
                 handler.GridEffectHandler(target, effect, map, caster);
@@ -41,6 +38,19 @@ public static class CombatAbilityExecutor
         {
             AnimationPlayer.Instance.PlayAnimation();
         }
+
+        // Handle ability cost
+        if (ability.CanUseMovePointsInsteadOfActionPoints && caster.CurrentMovePoints >= ability.ActionPointCost)
+        {
+            caster.RemoveMovementPoints(ability.ActionPointCost);
+        }
+        else
+        {
+            caster.RemoveActionPoints(ability.ActionPointCost);
+        }
+        caster.RemoveAmmoPoints(ability.AmmoPointCost);
+
+        caster.TryToEndTurn();
     }
     public static void ExecuteEffectOnCharacter(CombatAbilityEffect effect, GridMap map, Character affected)
     {

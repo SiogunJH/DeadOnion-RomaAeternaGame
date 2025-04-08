@@ -13,7 +13,11 @@ public class CombatAbility : ScriptableObject
     public int Height = 0;
 
     [HideInInspector]
+    public int AmmoPointCost = 0;
+    [HideInInspector]
     public int ActionPointCost = 0;
+    [HideInInspector]
+    public bool CanUseMovePointsInsteadOfActionPoints = false;
     [HideInInspector]
     public bool HasCastTime = false;
 
@@ -22,27 +26,44 @@ public class CombatAbility : ScriptableObject
     [HideInInspector]
     public List<Vector2Int> Range = new();
 
+    [HideInInspector]
     public TileType TargetTile = TileType.Unknown;
 
     #region 
 
     public bool CanUseAbility(Character combatant)
     {
-        // Has enough action points left
-        if (combatant.ActionPointsLeft < ActionPointCost)
+        // Check if has enough action points left
+        if (combatant.CurrentActionPoints < ActionPointCost)
         {
-            // Debug.Log($"[CanUseAbility] {combatant.CharacterProfile.Name} has not enough action points left to use {Name}");
+            if (!CanUseMovePointsInsteadOfActionPoints)
+            {
+                Debug.Log($"[CanUseAbility] {combatant.CharacterProfile.Name} does not have enough action points to use {Name}");
+                return false;
+            }
+
+            if (combatant.CurrentMovePoints < ActionPointCost)
+            {
+                Debug.Log($"[CanUseAbility] {combatant.CharacterProfile.Name} does not have enough move points or action points to use {Name}");
+                return false;
+            }
+        }
+
+        // Check if has enough ammo left
+        if (combatant.CurrentAmmo < AmmoPointCost)
+        {
+            Debug.Log($"[CanUseAbility] {combatant.CharacterProfile.Name} does not have enough ammo points to use {Name}");
             return false;
         }
 
         // Has a valid tile target
         if (GetValidTargets(combatant).Count() == 0)
         {
-            // Debug.Log($"[CanUseAbility] {combatant.CharacterProfile.Name} has no valid targets for {Name}");
+            Debug.Log($"[CanUseAbility] {combatant.CharacterProfile.Name} has no valid targets for {Name}");
             return false;
         }
 
-        // Debug.Log($"[CanUseAbility] {combatant.CharacterProfile.Name} can use {Name}");
+        Debug.Log($"[CanUseAbility] {combatant.CharacterProfile.Name} can use {Name}");
         return true;
     }
 

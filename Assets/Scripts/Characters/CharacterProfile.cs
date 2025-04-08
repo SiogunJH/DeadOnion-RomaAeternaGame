@@ -105,7 +105,17 @@ public class CharacterProfile : ScriptableObject
         set { _accuracy = Mathf.Max(Settings.MinAccuracy, Mathf.Min(Settings.MaxAccuracy, value)); }
     }
 
-    [SerializeField] [HideInInspector]
+    [SerializeField]
+    [HideInInspector]
+    private float _weakspotDamage = 1f;
+    public float BaseWeakspotDamage
+    {
+        get { return _weakspotDamage; }
+        set { _weakspotDamage = Mathf.Max(Settings.MinWeakspotDamage, Mathf.Min(Settings.MaxWeakspotDamage, value)); }
+    }
+
+    [SerializeField]
+    [HideInInspector]
     private float _evasion = 1f;
     public float BaseEvasion
     {
@@ -253,7 +263,18 @@ public class CharacterProfile : ScriptableObject
     }
     public float TotalAccuracy => BaseAccuracy + AdditionalAccuracy;
 
-    [SerializeField] [HideInInspector]
+    [SerializeField]
+    [HideInInspector]
+    private float _additionalWeakspotDamage = 0;
+    public float AdditionalWeakspotDamage
+    {
+        get { return _additionalWeakspotDamage; }
+        set { _additionalWeakspotDamage = value; }
+    }
+    public float TotalWeakspotDamage => BaseWeakspotDamage + AdditionalWeakspotDamage;
+
+    [SerializeField]
+    [HideInInspector]
     private float _additionalEvasion = 0;
     public float AdditionalEvasion
     {

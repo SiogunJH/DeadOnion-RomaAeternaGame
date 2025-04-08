@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -23,6 +24,16 @@ public class GridTileController : MonoBehaviour
         if (_highlightMode == HighlighMode.Valid)
         {
             SetHighlightMode(HighlighMode.Hovered);
+
+            if (Data.Occupants.Any())
+            {
+                CombatManager.Instance.PreviewedCharacterInfoDisplay.UpdateReferenceCharacter(Data.Occupants.First() as Character);
+            }
+            else
+            {
+                CombatManager.Instance.PreviewedCharacterInfoDisplay.UpdateReferenceCharacter(null);
+            }
+            CombatManager.Instance.PreviewedCharacterInfoDisplay.UpdateInfo();
         }
     }
 

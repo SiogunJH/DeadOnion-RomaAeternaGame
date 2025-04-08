@@ -8,6 +8,9 @@ public class HealHandler : CombatAbilityEffectHandler
 
     protected override void DoEffect(CombatAbilityEffect effect, Character caster, Character targetCharacter, GridTileController targetTile)
     {
-        targetCharacter.Heal(effect.Amount);
+        if (targetCharacter == null) return;
+
+        int heal = Random.Range(effect.MinMax.x, effect.MinMax.y + 1);
+        targetCharacter.Heal(heal);
     }
 }

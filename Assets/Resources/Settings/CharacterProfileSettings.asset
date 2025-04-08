@@ -18,7 +18,7 @@ MonoBehaviour:
   _maxPower: 100
   _minEndurance: 1
   _maxEndurance: 100
-  _minArmor: 1
+  _minArmor: 0
   _maxArmor: 100
   _minAmmo: 1
   _maxAmmo: 100
@@ -26,14 +26,16 @@ MonoBehaviour:
   _maxInitiative: 100
   _minMovementSpeed: 1
   _maxMovementSpeed: 100
-  _minAccuracy: 1
-  _maxAccuracy: 100
-  _minEvasion: 1
-  _maxEvasion: 100
-  _minCritChance: 1
-  _maxCritChance: 100
-  _minCritDamage: 1
-  _maxCritDamage: 100
+  _minAccuracy: 0
+  _maxAccuracy: 5
+  _minWeakspotDamage: 0
+  _maxWeakspotDamage: 5
+  _minEvasion: 0
+  _maxEvasion: 5
+  _minCritChance: 0
+  _maxCritChance: 5
+  _minCritDamage: 0
+  _maxCritDamage: 5
   _minStunResist: 1
   _maxStunResist: 100
   _minEnergyResist: 1
