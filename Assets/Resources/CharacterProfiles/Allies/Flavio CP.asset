@@ -14,22 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
   Name: Flavio
-  _vitality: 1
-  _power: 1
-  _endurance: 1
-  _armor: 1
-  _ammo: 1
-  _initiative: 1
-  _movementSpeed: 1
-  _accuracy: 1
-  _evasion: 1
-  _critChance: 1
-  _critDamage: 1
-  _stunResist: 1
-  _energyResist: 1
-  _poisonResist: 1
-  _burnResist: 1
-  _bleedResist: 1
+  _vitality: 38
+  _power: 0
+  _endurance: 10
+  _armor: 5
+  _ammo: 4
+  _initiative: 4
+  _movementSpeed: 3
+  _accuracy: 0.8
+  _weakspotDamage: 0.5
+  _evasion: 0.15
+  _critChance: 0.15
+  _critDamage: 0.5
+  _stunResist: 20
+  _energyResist: 15
+  _poisonResist: 15
+  _burnResist: 15
+  _bleedResist: 15
   _additionalVitality: 0
   _additionalPower: 0
   _additionalEndurance: 0
@@ -38,6 +39,7 @@ MonoBehaviour:
   _additionalInitiative: 0
   _additionalMovementSpeed: 0
   _additionalAccuracy: 0
+  _additionalWeakspotDamage: 0
   _additionalEvasion: 0
   _additionalCritChance: 0
   _additionalCritDamage: 0
@@ -56,5 +58,12 @@ MonoBehaviour:
   _bonusArmorDamageModifier: 0
   _bonusArmorPierce: 0
   CombatAbilities:
-  - {fileID: 11400000, guid: 51cbfe6cb1c408141b2c4a814c3f3cdd, type: 2}
+  - {fileID: 11400000, guid: 9b9fbec5e5846c24db16c436f49b3bda, type: 2}
   - {fileID: 11400000, guid: 5418bfcc75caf0148ab3d850584ee3bb, type: 2}
+  - {fileID: 11400000, guid: aabe5c52fe5dd41479c2a75be00915e2, type: 2}
+  - {fileID: 11400000, guid: d1aa4f3f1027b264a9a14d62db4749db, type: 2}
+  - {fileID: 11400000, guid: 1f853a5a17a38564aad914edda749103, type: 2}
+  - {fileID: 11400000, guid: f83996f4d90c572469af1cb6e7a3a154, type: 2}
+  - {fileID: 11400000, guid: 5e345a8168bc97049b380dbb90f322b1, type: 2}
+  - {fileID: 11400000, guid: e727eb3409d4ab140a93f3b7827fc949, type: 2}
+  - {fileID: 11400000, guid: bc43b3a9faf1ed54a8dac5a59e4b011e, type: 2}

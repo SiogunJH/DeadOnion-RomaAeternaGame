@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,10 @@ public class CombatManager : MonoBehaviourSingleton<CombatManager>
 {
     [Tab("Combat Manager")]
     public CombatAbilityUIManager UI;
+
+    public CharacterInfoDisplay SelectedCharacterInfoDisplay;
+    public CharacterInfoDisplay PreviewedCharacterInfoDisplay;
+
     public Character CurrentCombatant = null;
     public CombatAbility CurrentAbility = null;
     public CombatAbility MostRecentAbility = null;

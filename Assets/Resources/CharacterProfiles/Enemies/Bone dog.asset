@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dfe4ed35f2494e438c6e504aafbe89c, type: 3}
+  m_Name: Bone dog
+  m_EditorClassIdentifier: 
+  _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
+  Name: Bone dog
+  _vitality: 32
+  _power: 0
+  _endurance: 20
+  _armor: 4
+  _ammo: 2
+  _initiative: 3
+  _movementSpeed: 3
+  _accuracy: 0.8
+  _weakspotDamage: 0.5
+  _evasion: 0.1
+  _critChance: 0.15
+  _critDamage: 0.5
+  _stunResist: 20
+  _energyResist: 10
+  _poisonResist: 10
+  _burnResist: 10
+  _bleedResist: 10
+  _additionalVitality: 0
+  _additionalPower: 0
+  _additionalEndurance: 0
+  _additionalArmor: 0
+  _additionalAmmo: 0
+  _additionalInitiative: 0
+  _additionalMovementSpeed: 0
+  _additionalAccuracy: 0
+  _additionalWeakspotDamage: 0
+  _additionalEvasion: 0
+  _additionalCritChance: 0
+  _additionalCritDamage: 0
+  _additionalStunResist: 0
+  _additionalEnergyResist: 0
+  _additionalPoisonResist: 0
+  _additionalBurnResist: 0
+  _additionalBleedResist: 0
+  _bonusDamageModifier: 0
+  _bonusDamageMultiplier: 0
+  _bonusStunBuildup: 0
+  _bonusPoisionBuildup: 0
+  _bonusBurnBuildup: 0
+  _bonusBleedBuildup: 0
+  _bonusEnergyBuildup: 0
+  _bonusArmorDamageModifier: 0
+  _bonusArmorPierce: 0
+  CombatAbilities:
+  - {fileID: 11400000, guid: 51cbfe6cb1c408141b2c4a814c3f3cdd, type: 2}
+  - {fileID: 11400000, guid: 5418bfcc75caf0148ab3d850584ee3bb, type: 2}
+  - {fileID: 11400000, guid: aabe5c52fe5dd41479c2a75be00915e2, type: 2}
+  - {fileID: 11400000, guid: 8d94b17ef5ab48e46a027415e13aeeee, type: 2}
+  - {fileID: 11400000, guid: a68ef05eb9e560e44a6ce152c4f80b38, type: 2}

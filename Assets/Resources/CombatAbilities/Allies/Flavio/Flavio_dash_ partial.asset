@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3766d7adb288009438e665e070d3b2d4, type: 3}
+  m_Name: Flavio_dash_ partial
+  m_EditorClassIdentifier: 
+  Name: Dash
+  Width: 15
+  Height: 15
+  AmmoPointCost: 0
+  ActionPointCost: 1
+  CanUseMovePointsInsteadOfActionPoints: 0
+  HasCastTime: 0
+  AbilityEffects:
+  - Type: 1
+    Amount: 0
+    MinMax: {x: 8, y: 14}
+    ForAdditionalTurns: 0
+    ChangedAttribute: 0
+    RelativeAffectedPositions:
+    - {x: 0, y: 0}
+  - Type: 4
+    Amount: 0
+    MinMax: {x: 0, y: 0}
+    ForAdditionalTurns: 0
+    ChangedAttribute: 0
+    RelativeAffectedPositions:
+    - {x: 0, y: 0}
+  Range:
+  - {x: 0, y: -2}
+  - {x: -1, y: -2}
+  - {x: 1, y: -2}
+  - {x: 1, y: 2}
+  - {x: 0, y: 2}
+  - {x: -1, y: 2}
+  - {x: -2, y: -1}
+  - {x: -2, y: 0}
+  - {x: -2, y: 1}
+  - {x: 2, y: -1}
+  - {x: 2, y: 0}
+  - {x: 2, y: 1}
+  TargetTile: 1
+  PlaysAnimation: 0
+  CasterFrame1: {fileID: 0}
+  CasterFrame2: {fileID: 0}

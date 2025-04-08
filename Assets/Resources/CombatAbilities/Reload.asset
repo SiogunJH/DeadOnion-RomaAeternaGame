@@ -13,16 +13,23 @@ MonoBehaviour:
   m_Name: Reload
   m_EditorClassIdentifier: 
   Name: Reload
-  Width: 15
-  Height: 15
+  Width: 3
+  Height: 3
+  AmmoPointCost: 0
   ActionPointCost: 1
+  CanUseMovePointsInsteadOfActionPoints: 0
   HasCastTime: 0
   AbilityEffects:
   - Type: 4
     Amount: 0
+    MinMax: {x: 0, y: 0}
     ForAdditionalTurns: 0
     ChangedAttribute: 0
     RelativeAffectedPositions:
     - {x: 0, y: 0}
   Range:
   - {x: 0, y: 0}
+  TargetTile: 2
+  PlaysAnimation: 0
+  CasterFrame1: {fileID: 0}
+  CasterFrame2: {fileID: 0}

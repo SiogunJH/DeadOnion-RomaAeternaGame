@@ -15,11 +15,14 @@ MonoBehaviour:
   Name: Fix
   Width: 15
   Height: 15
+  AmmoPointCost: 0
   ActionPointCost: 1
+  CanUseMovePointsInsteadOfActionPoints: 0
   HasCastTime: 0
   AbilityEffects:
-  - Type: 10
+  - Type: 3
     Amount: 1
+    MinMax: {x: 0, y: 0}
     ForAdditionalTurns: 0
     ChangedAttribute: 0
     RelativeAffectedPositions:
@@ -30,3 +33,7 @@ MonoBehaviour:
   - {x: 0, y: 1}
   - {x: 1, y: 0}
   - {x: 0, y: -1}
+  TargetTile: 0
+  PlaysAnimation: 0
+  CasterFrame1: {fileID: 0}
+  CasterFrame2: {fileID: 0}

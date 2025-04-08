@@ -1,0 +1,362 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b69bead1fe706b4b861ddbf054d8831, type: 3}
+  m_Name: Large (7x7)
+  m_EditorClassIdentifier: 
+  <Width>k__BackingField: 7
+  <Height>k__BackingField: 7
+  Tiles:
+    serializedKvps:
+    - Key: {x: 1, y: 1}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 1, y: 1}
+        Tags: 0
+      index: 0
+      isKeyRepeated: 0
+    - Key: {x: 2, y: 1}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 2, y: 1}
+        Tags: 0
+      index: 1
+      isKeyRepeated: 0
+    - Key: {x: 3, y: 1}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 3, y: 1}
+        Tags: 0
+      index: 2
+      isKeyRepeated: 0
+    - Key: {x: 4, y: 1}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 4, y: 1}
+        Tags: 0
+      index: 3
+      isKeyRepeated: 0
+    - Key: {x: 5, y: 1}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 5, y: 1}
+        Tags: 2
+      index: 4
+      isKeyRepeated: 0
+    - Key: {x: 6, y: 1}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 6, y: 1}
+        Tags: 2
+      index: 5
+      isKeyRepeated: 0
+    - Key: {x: 7, y: 1}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 7, y: 1}
+        Tags: 2
+      index: 6
+      isKeyRepeated: 0
+    - Key: {x: 1, y: 2}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 1, y: 2}
+        Tags: 0
+      index: 7
+      isKeyRepeated: 0
+    - Key: {x: 2, y: 2}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 2, y: 2}
+        Tags: 0
+      index: 8
+      isKeyRepeated: 0
+    - Key: {x: 3, y: 2}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 3, y: 2}
+        Tags: 0
+      index: 9
+      isKeyRepeated: 0
+    - Key: {x: 4, y: 2}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 4, y: 2}
+        Tags: 0
+      index: 10
+      isKeyRepeated: 0
+    - Key: {x: 5, y: 2}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 5, y: 2}
+        Tags: 2
+      index: 11
+      isKeyRepeated: 0
+    - Key: {x: 6, y: 2}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 6, y: 2}
+        Tags: 2
+      index: 12
+      isKeyRepeated: 0
+    - Key: {x: 7, y: 2}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 7, y: 2}
+        Tags: 2
+      index: 13
+      isKeyRepeated: 0
+    - Key: {x: 1, y: 3}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 1, y: 3}
+        Tags: 0
+      index: 14
+      isKeyRepeated: 0
+    - Key: {x: 2, y: 3}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 2, y: 3}
+        Tags: 0
+      index: 15
+      isKeyRepeated: 0
+    - Key: {x: 3, y: 3}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 3, y: 3}
+        Tags: 0
+      index: 16
+      isKeyRepeated: 0
+    - Key: {x: 4, y: 3}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 4, y: 3}
+        Tags: 0
+      index: 17
+      isKeyRepeated: 0
+    - Key: {x: 5, y: 3}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 5, y: 3}
+        Tags: 0
+      index: 18
+      isKeyRepeated: 0
+    - Key: {x: 6, y: 3}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 6, y: 3}
+        Tags: 0
+      index: 19
+      isKeyRepeated: 0
+    - Key: {x: 7, y: 3}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 7, y: 3}
+        Tags: 0
+      index: 20
+      isKeyRepeated: 0
+    - Key: {x: 1, y: 4}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 1, y: 4}
+        Tags: 0
+      index: 21
+      isKeyRepeated: 0
+    - Key: {x: 2, y: 4}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 2, y: 4}
+        Tags: 0
+      index: 22
+      isKeyRepeated: 0
+    - Key: {x: 3, y: 4}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 3, y: 4}
+        Tags: 0
+      index: 23
+      isKeyRepeated: 0
+    - Key: {x: 4, y: 4}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 4, y: 4}
+        Tags: 0
+      index: 24
+      isKeyRepeated: 0
+    - Key: {x: 5, y: 4}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 5, y: 4}
+        Tags: 0
+      index: 25
+      isKeyRepeated: 0
+    - Key: {x: 6, y: 4}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 6, y: 4}
+        Tags: 0
+      index: 26
+      isKeyRepeated: 0
+    - Key: {x: 7, y: 4}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 7, y: 4}
+        Tags: 0
+      index: 27
+      isKeyRepeated: 0
+    - Key: {x: 1, y: 5}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 1, y: 5}
+        Tags: 0
+      index: 28
+      isKeyRepeated: 0
+    - Key: {x: 2, y: 5}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 2, y: 5}
+        Tags: 0
+      index: 29
+      isKeyRepeated: 0
+    - Key: {x: 3, y: 5}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 3, y: 5}
+        Tags: 0
+      index: 30
+      isKeyRepeated: 0
+    - Key: {x: 4, y: 5}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 4, y: 5}
+        Tags: 0
+      index: 31
+      isKeyRepeated: 0
+    - Key: {x: 5, y: 5}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 5, y: 5}
+        Tags: 0
+      index: 32
+      isKeyRepeated: 0
+    - Key: {x: 6, y: 5}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 6, y: 5}
+        Tags: 0
+      index: 33
+      isKeyRepeated: 0
+    - Key: {x: 7, y: 5}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 7, y: 5}
+        Tags: 0
+      index: 34
+      isKeyRepeated: 0
+    - Key: {x: 1, y: 6}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 1, y: 6}
+        Tags: 1
+      index: 35
+      isKeyRepeated: 0
+    - Key: {x: 2, y: 6}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 2, y: 6}
+        Tags: 1
+      index: 36
+      isKeyRepeated: 0
+    - Key: {x: 3, y: 6}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 3, y: 6}
+        Tags: 1
+      index: 37
+      isKeyRepeated: 0
+    - Key: {x: 4, y: 6}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 4, y: 6}
+        Tags: 0
+      index: 38
+      isKeyRepeated: 0
+    - Key: {x: 5, y: 6}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 5, y: 6}
+        Tags: 0
+      index: 39
+      isKeyRepeated: 0
+    - Key: {x: 6, y: 6}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 6, y: 6}
+        Tags: 0
+      index: 40
+      isKeyRepeated: 0
+    - Key: {x: 7, y: 6}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 7, y: 6}
+        Tags: 0
+      index: 41
+      isKeyRepeated: 0
+    - Key: {x: 1, y: 7}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 1, y: 7}
+        Tags: 1
+      index: 42
+      isKeyRepeated: 0
+    - Key: {x: 2, y: 7}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 2, y: 7}
+        Tags: 1
+      index: 43
+      isKeyRepeated: 0
+    - Key: {x: 3, y: 7}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 3, y: 7}
+        Tags: 1
+      index: 44
+      isKeyRepeated: 0
+    - Key: {x: 4, y: 7}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 4, y: 7}
+        Tags: 0
+      index: 45
+      isKeyRepeated: 0
+    - Key: {x: 5, y: 7}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 5, y: 7}
+        Tags: 0
+      index: 46
+      isKeyRepeated: 0
+    - Key: {x: 6, y: 7}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 6, y: 7}
+        Tags: 0
+      index: 47
+      isKeyRepeated: 0
+    - Key: {x: 7, y: 7}
+      Value:
+        Controller: {fileID: 0}
+        Coordinates: {x: 7, y: 7}
+        Tags: 0
+      index: 48
+      isKeyRepeated: 0
+    dividerPos: 0.33

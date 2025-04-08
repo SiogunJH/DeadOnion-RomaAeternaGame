@@ -134,6 +134,22 @@ public class CharacterProfileSettings : ScriptableObject
     }
 
     [SerializeField]
+    private float _minWeakspotDamage;
+    public float MinWeakspotDamage
+    {
+        get => _minWeakspotDamage;
+        set => _minWeakspotDamage = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
+    private float _maxWeakspotDamage;
+    public float MaxWeakspotDamage
+    {
+        get => _maxWeakspotDamage;
+        set => _maxWeakspotDamage = Mathf.Max(0, value);
+    }
+
+    [SerializeField]
     private float _minEvasion;
     public float MinEvasion
     {

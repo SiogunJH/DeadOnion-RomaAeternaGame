@@ -39,9 +39,6 @@ public abstract class CombatAbilityEffectHandler
                 targetCharacter.AddEffect(effect);
             }
         }
-
-        caster.RemoveActionPoints(CombatManager.Instance.CurrentAbility.ActionPointCost);
-        caster.TryToEndTurn();
     }
 
     /// <summary>
