@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dfe4ed35f2494e438c6e504aafbe89c, type: 3}
-  m_Name: Corvo CP
+  m_Name: Test Dummy
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
-  Name: Corvo
-  _vitality: 40
+  Name: Testing dummy
+  _vitality: 1000
   _power: 0
-  _endurance: 15
-  _armor: 6
-  _ammo: 6
-  _initiative: 4
-  _movementSpeed: 2
-  _accuracy: 0.8
-  _weakspotDamage: 0.5
+  _endurance: 0
+  _armor: 0
+  _ammo: 1
+  _initiative: 0
+  _movementSpeed: 0
+  _accuracy: 0
+  _weakspotDamage: 0
   _evasion: 0
-  _critChance: 0.1
-  _critDamage: 0.5
-  _stunResist: 20
-  _energyResist: 20
-  _poisonResist: 20
-  _burnResist: 20
-  _bleedResist: 20
+  _critChance: 0
+  _critDamage: 0
+  _stunResist: 0
+  _energyResist: 0
+  _poisonResist: 0
+  _burnResist: 0
+  _bleedResist: 0
   _additionalVitality: 0
   _additionalPower: 0
   _additionalEndurance: 0
@@ -58,6 +58,5 @@ MonoBehaviour:
   _bonusArmorDamageModifier: 0
   _bonusArmorPierce: 0
   CombatAbilities:
-  - {fileID: 11400000, guid: 9b9fbec5e5846c24db16c436f49b3bda, type: 2}
   - {fileID: 11400000, guid: 5418bfcc75caf0148ab3d850584ee3bb, type: 2}
-  - {fileID: 11400000, guid: aabe5c52fe5dd41479c2a75be00915e2, type: 2}
+  - {fileID: 11400000, guid: 9b9fbec5e5846c24db16c436f49b3bda, type: 2}

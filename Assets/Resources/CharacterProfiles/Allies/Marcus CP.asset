@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 8b7922ebf2a3ced4caaf0aa8e46461d0, type: 2}
   Name: Marcus
-  _vitality: 25
-  _power: 1
-  _endurance: 1
-  _armor: 1
+  _vitality: 50
+  _power: 0
+  _endurance: 25
+  _armor: 8
   _ammo: 1
-  _initiative: 1
-  _movementSpeed: 1
-  _accuracy: 1
-  _weakspotDamage: 1
-  _evasion: 1
-  _critChance: 1
-  _critDamage: 1
-  _stunResist: 1
-  _energyResist: 1
-  _poisonResist: 1
-  _burnResist: 1
-  _bleedResist: 1
+  _initiative: 2
+  _movementSpeed: 2
+  _accuracy: 0.8
+  _weakspotDamage: 0.5
+  _evasion: 0
+  _critChance: 0.1
+  _critDamage: 0.5
+  _stunResist: 25
+  _energyResist: 20
+  _poisonResist: 20
+  _burnResist: 20
+  _bleedResist: 20
   _additionalVitality: 0
   _additionalPower: 0
   _additionalEndurance: 0
@@ -58,5 +58,12 @@ MonoBehaviour:
   _bonusArmorDamageModifier: 0
   _bonusArmorPierce: 0
   CombatAbilities:
-  - {fileID: 11400000, guid: 51cbfe6cb1c408141b2c4a814c3f3cdd, type: 2}
+  - {fileID: 11400000, guid: 9b9fbec5e5846c24db16c436f49b3bda, type: 2}
   - {fileID: 11400000, guid: 5418bfcc75caf0148ab3d850584ee3bb, type: 2}
+  - {fileID: 11400000, guid: aabe5c52fe5dd41479c2a75be00915e2, type: 2}
+  - {fileID: 11400000, guid: 108c59bc25208fb468fa2a043fb3a939, type: 2}
+  - {fileID: 11400000, guid: 89608cfd2463ee64eb8b949e4787de81, type: 2}
+  - {fileID: 11400000, guid: 6dd50d6633d56224a9e068f9de7d500c, type: 2}
+  - {fileID: 11400000, guid: 98c4362e2261a2b4eb2284918ef07d9f, type: 2}
+  - {fileID: 11400000, guid: 1b83159de38c7f148b766acc4ea08951, type: 2}
+  - {fileID: 11400000, guid: ef3b9e7a4f9fde14fbcd7fbe579c6165, type: 2}

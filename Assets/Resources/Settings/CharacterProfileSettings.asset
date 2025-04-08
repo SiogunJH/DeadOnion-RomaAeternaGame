@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: CharacterProfileSettings
   m_EditorClassIdentifier: 
   _minVitality: 1
-  _maxVitality: 100
-  _minPower: 1
+  _maxVitality: 1000
+  _minPower: 0
   _maxPower: 100
-  _minEndurance: 1
+  _minEndurance: 0
   _maxEndurance: 100
   _minArmor: 0
   _maxArmor: 100
   _minAmmo: 1
   _maxAmmo: 100
-  _minInitiative: 1
+  _minInitiative: 0
   _maxInitiative: 100
-  _minMovementSpeed: 1
+  _minMovementSpeed: 0
   _maxMovementSpeed: 100
   _minAccuracy: 0
   _maxAccuracy: 5
@@ -36,13 +36,13 @@ MonoBehaviour:
   _maxCritChance: 5
   _minCritDamage: 0
   _maxCritDamage: 5
-  _minStunResist: 1
-  _maxStunResist: 100
-  _minEnergyResist: 1
-  _maxEnergyResist: 100
-  _minPoisonResist: 1
-  _maxPoisonResist: 100
-  _minBurnResist: 1
-  _maxBurnResist: 100
-  _minBleedResist: 1
-  _maxBleedResist: 100
+  _minStunResist: 0
+  _maxStunResist: 500
+  _minEnergyResist: 0
+  _maxEnergyResist: 500
+  _minPoisonResist: 0
+  _maxPoisonResist: 500
+  _minBurnResist: 0
+  _maxBurnResist: 500
+  _minBleedResist: 0
+  _maxBleedResist: 500

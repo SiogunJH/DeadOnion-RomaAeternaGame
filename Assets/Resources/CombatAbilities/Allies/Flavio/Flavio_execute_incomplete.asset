@@ -10,26 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3766d7adb288009438e665e070d3b2d4, type: 3}
-  m_Name: SkipTurn
+  m_Name: Flavio_execute_incomplete
   m_EditorClassIdentifier: 
-  Name: Skip Turn
+  Name: Execute
   Width: 15
   Height: 15
   AmmoPointCost: 0
-  ActionPointCost: 0
+  ActionPointCost: 1
   CanUseMovePointsInsteadOfActionPoints: 0
-  HasCastTime: 1
+  HasCastTime: 0
   AbilityEffects:
-  - Type: 2
+  - Type: 4101
     Amount: 0
-    MinMax: {x: 0, y: 0}
+    MinMax: {x: 15, y: 25}
     ForAdditionalTurns: 0
     ChangedAttribute: 0
     RelativeAffectedPositions:
     - {x: 0, y: 0}
+  - Type: 0
+    Amount: 0
+    MinMax: {x: 0, y: 0}
+    ForAdditionalTurns: 0
+    ChangedAttribute: 0
+    RelativeAffectedPositions: []
   Range:
-  - {x: 0, y: 0}
-  TargetTile: 0
+  - {x: 1, y: 0}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 0, y: 1}
+  - {x: -1, y: -1}
+  - {x: -1, y: 1}
+  - {x: 1, y: 1}
+  - {x: 1, y: -1}
+  TargetTile: 4
   PlaysAnimation: 0
   CasterFrame1: {fileID: 0}
   CasterFrame2: {fileID: 0}
